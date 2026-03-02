@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.33.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20260114-001-auth-tables" author="foundryvtt">
+        <createTable tableName="app_users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_users_pkey" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="app_users_username_key"/>
+            </column>
+            <column name="tenant" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="varchar(255)"/>
+            <column name="password_salt" type="varchar(255)"/>
+            <column name="auth_source" type="varchar(10)" defaultValue="BOTH">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="force_password_change" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(320)"/>
+            <column name="email_verified" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql>ALTER TABLE app_users ADD CONSTRAINT chk_auth_source CHECK (auth_source IN ('LOCAL','OIDC','BOTH'));</sql>
+        <sql>ALTER TABLE app_users ADD CONSTRAINT chk_local_requires_password CHECK (auth_source &lt;&gt; 'LOCAL' OR password_hash IS NOT NULL);</sql>
+
+        <createIndex tableName="app_users" indexName="idx_app_users_username">
+            <column name="username"/>
+        </createIndex>
+        <createIndex tableName="app_users" indexName="idx_app_users_tenant">
+            <column name="tenant"/>
+        </createIndex>
+        <createIndex tableName="app_users" indexName="idx_app_users_enabled">
+            <column name="enabled"/>
+        </createIndex>
+
+        <createTable tableName="app_user_oidc_identities">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_user_oidc_identities_pkey" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="provider" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="issuer" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preferred_username" type="text"/>
+            <column name="email" type="varchar(320)"/>
+            <column name="tenant" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_login_at" type="timestamptz"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="app_user_oidc_identities"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_user_oidc_identities_user_id"
+                                 onDelete="CASCADE"/>
+
+        <addUniqueConstraint tableName="app_user_oidc_identities"
+                             columnNames="issuer, subject"
+                             constraintName="app_user_oidc_identities_issuer_subject_key"/>
+        <addUniqueConstraint tableName="app_user_oidc_identities"
+                             columnNames="provider, issuer, subject"
+                             constraintName="app_user_oidc_identities_provider_issuer_subject_key"/>
+
+        <createIndex tableName="app_user_oidc_identities" indexName="idx_oidc_identities_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="app_user_oidc_identities" indexName="idx_oidc_identities_tenant">
+            <column name="tenant"/>
+        </createIndex>
+
+        <createTable tableName="app_roles">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_roles_pkey" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="app_roles_name_key"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="priority" type="integer" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="app_roles" indexName="idx_app_roles_priority">
+            <column name="priority"/>
+        </createIndex>
+
+        <createTable tableName="app_permissions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_permissions_pkey" nullable="false"/>
+            </column>
+            <column name="permission" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="app_permissions_permission_key"/>
+            </column>
+            <column name="description" type="text"/>
+        </createTable>
+
+        <createTable tableName="app_user_roles">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="app_user_roles"
+                       columnNames="user_id, role_id"
+                       constraintName="app_user_roles_pkey"/>
+
+        <addForeignKeyConstraint baseTableName="app_user_roles"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_user_roles_user_id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="app_user_roles"
+                                 baseColumnNames="role_id"
+                                 referencedTableName="app_roles"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_user_roles_role_id"
+                                 onDelete="CASCADE"/>
+
+        <createTable tableName="app_role_permissions">
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="app_role_permissions"
+                       columnNames="role_id, permission_id"
+                       constraintName="app_role_permissions_pkey"/>
+
+        <addForeignKeyConstraint baseTableName="app_role_permissions"
+                                 baseColumnNames="role_id"
+                                 referencedTableName="app_roles"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_role_permissions_role_id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="app_role_permissions"
+                                 baseColumnNames="permission_id"
+                                 referencedTableName="app_permissions"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_role_permissions_permission_id"
+                                 onDelete="CASCADE"/>
+
+        <createIndex tableName="app_user_roles" indexName="idx_app_user_roles_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="app_user_roles" indexName="idx_app_user_roles_role_id">
+            <column name="role_id"/>
+        </createIndex>
+        <createIndex tableName="app_role_permissions" indexName="idx_app_role_permissions_role_id">
+            <column name="role_id"/>
+        </createIndex>
+        <createIndex tableName="app_role_permissions" indexName="idx_app_role_permissions_permission_id">
+            <column name="permission_id"/>
+        </createIndex>
+
+        <createTable tableName="app_user_mfa_totp">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="app_user_mfa_totp_pkey"/>
+            </column>
+            <column name="secret_enc" type="bytea">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enrolled_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verified_at" type="timestamptz"/>
+            <column name="last_used_at" type="timestamptz"/>
+            <column name="last_failed_at" type="timestamptz"/>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="failed_attempts" type="integer" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked_until" type="timestamptz"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="app_user_mfa_totp"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_user_mfa_totp_user_id"
+                                 onDelete="CASCADE"/>
+
+        <createIndex tableName="app_user_mfa_totp" indexName="idx_mfa_totp_enabled">
+            <column name="enabled"/>
+        </createIndex>
+        <createIndex tableName="app_user_mfa_totp" indexName="idx_mfa_totp_locked_until">
+            <column name="locked_until"/>
+        </createIndex>
+
+        <createTable tableName="app_user_mfa_recovery_codes">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code_hash" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used_at" type="timestamptz"/>
+        </createTable>
+
+        <addPrimaryKey tableName="app_user_mfa_recovery_codes"
+                       columnNames="user_id, code_hash"
+                       constraintName="app_user_mfa_recovery_codes_pkey"/>
+
+        <addForeignKeyConstraint baseTableName="app_user_mfa_recovery_codes"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_user_mfa_recovery_codes_user_id"
+                                 onDelete="CASCADE"/>
+
+        <createIndex tableName="app_user_mfa_recovery_codes" indexName="idx_recovery_codes_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="app_user_mfa_recovery_codes" indexName="idx_recovery_codes_used_at">
+            <column name="used_at"/>
+        </createIndex>
+
+        <createTable tableName="app_user_trusted_devices">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_user_trusted_devices_pkey" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_label" type="text"/>
+            <column name="device_hash" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_used_at" type="timestamptz"/>
+            <column name="expires_at" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="app_user_trusted_devices"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_user_trusted_devices_user_id"
+                                 onDelete="CASCADE"/>
+
+        <addUniqueConstraint tableName="app_user_trusted_devices"
+                             columnNames="user_id, device_hash"
+                             constraintName="app_user_trusted_devices_user_id_device_hash_key"/>
+
+        <createIndex tableName="app_user_trusted_devices" indexName="idx_trusted_devices_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="app_user_trusted_devices" indexName="idx_trusted_devices_expires">
+            <column name="expires_at"/>
+        </createIndex>
+
+        <createTable tableName="app_audit_events">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_audit_events_pkey" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="username" type="varchar(255)"/>
+            <column name="oidc_issuer" type="text"/>
+            <column name="oidc_subject" type="text"/>
+            <column name="event_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="outcome" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="text"/>
+            <column name="session_id" type="text"/>
+            <column name="request_id" type="text"/>
+            <column name="ip_addr" type="inet"/>
+            <column name="user_agent" type="text"/>
+            <column name="detail" type="jsonb"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="app_audit_events"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_audit_events_user_id"
+                                 onDelete="SET NULL"/>
+
+        <sql>ALTER TABLE app_audit_events ADD CONSTRAINT chk_audit_outcome CHECK (outcome IN ('SUCCESS','FAIL','DENY'));</sql>
+
+        <createIndex tableName="app_audit_events" indexName="idx_audit_created_at">
+            <column name="created_at"/>
+        </createIndex>
+        <createIndex tableName="app_audit_events" indexName="idx_audit_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="app_audit_events" indexName="idx_audit_event_type">
+            <column name="event_type"/>
+        </createIndex>
+        <createIndex tableName="app_audit_events" indexName="idx_audit_outcome">
+            <column name="outcome"/>
+        </createIndex>
+        <createIndex tableName="app_audit_events" indexName="idx_audit_oidc_sub">
+            <column name="oidc_subject"/>
+        </createIndex>
+        <sql>CREATE INDEX idx_audit_detail_gin ON app_audit_events USING gin (detail);</sql>
+
+        <createView viewName="users" replaceIfExists="true">
+            SELECT
+              u.username,
+              u.password_hash AS password,
+              u.password_salt
+            FROM app_users u
+            WHERE u.enabled = TRUE
+        </createView>
+
+        <createView viewName="user_roles" replaceIfExists="true">
+            SELECT
+              u.username,
+              r.name AS role_name
+            FROM app_user_roles ur
+            JOIN app_users u ON u.id = ur.user_id
+            JOIN app_roles r ON r.id = ur.role_id
+            WHERE u.enabled = TRUE
+        </createView>
+
+        <createView viewName="roles_permissions" replaceIfExists="true">
+            SELECT
+              r.name AS role_name,
+              p.permission
+            FROM app_role_permissions rp
+            JOIN app_roles r ON r.id = rp.role_id
+            JOIN app_permissions p ON p.id = rp.permission_id
+        </createView>
+
+        <createView viewName="v_auth_user_role_permission_rows_loose" replaceIfExists="true">
+            SELECT
+              u.id AS user_id,
+              u.username AS username,
+              u.tenant AS tenant,
+              u.enabled AS user_enabled,
+              u.auth_source AS auth_source,
+              u.force_password_change AS force_password_change,
+              r.id AS role_id,
+              r.name AS role_name,
+              p.id AS permission_id,
+              p.permission AS permission
+            FROM app_users u
+            LEFT JOIN app_user_roles ur ON ur.user_id = u.id
+            LEFT JOIN app_roles r ON r.id = ur.role_id
+            LEFT JOIN app_role_permissions rp ON rp.role_id = r.id
+            LEFT JOIN app_permissions p ON p.id = rp.permission_id
+            WHERE u.enabled = TRUE
+        </createView>
+
+        <createView viewName="v_auth_user_role_permission_rows_shiro" replaceIfExists="true">
+            SELECT
+              u.username AS username,
+              u.tenant AS tenant,
+              r.name AS role_name,
+              p.permission AS permission
+            FROM app_users u
+            JOIN app_user_roles ur ON ur.user_id = u.id
+            JOIN app_roles r ON r.id = ur.role_id
+            JOIN app_role_permissions rp ON rp.role_id = r.id
+            JOIN app_permissions p ON p.id = rp.permission_id
+            WHERE u.enabled = TRUE
+        </createView>
+
+        <createView viewName="v_auth_user_effective_authorizations" replaceIfExists="true">
+            SELECT
+              u.id AS user_id,
+              u.username AS username,
+              u.tenant AS tenant,
+              u.enabled AS user_enabled,
+              u.auth_source AS auth_source,
+              u.email AS email,
+              COALESCE((
+                SELECT array_agg(DISTINCT r.name ORDER BY r.name)
+                FROM app_user_roles ur
+                JOIN app_roles r ON r.id = ur.role_id
+                WHERE ur.user_id = u.id
+              ), ARRAY[]::TEXT[]) AS roles,
+              COALESCE((
+                SELECT array_agg(DISTINCT p.permission ORDER BY p.permission)
+                FROM app_user_roles ur
+                JOIN app_role_permissions rp ON rp.role_id = ur.role_id
+                JOIN app_permissions p ON p.id = rp.permission_id
+                WHERE ur.user_id = u.id
+              ), ARRAY[]::TEXT[]) AS permissions
+            FROM app_users u
+            WHERE u.enabled = TRUE
+        </createView>
+    </changeSet>
+</databaseChangeLog>

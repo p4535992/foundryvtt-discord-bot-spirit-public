@@ -1,0 +1,62 @@
+.swagger-ui .opblock.opblock-get {
+  border-color: #61affe;
+  background: rgba(97, 175, 254, 0.1);
+}
+
+.swagger-ui .opblock.opblock-post {
+  border-color: #49cc90;
+  background: rgba(73, 204, 144, 0.1);
+}
+
+.swagger-ui .opblock.opblock-put {
+  border-color: #fca130;
+  background: rgba(252, 161, 48, 0.1);
+}
+
+.swagger-ui .opblock.opblock-delete {
+  border-color: #f93e3e;
+  background: rgba(249, 62, 62, 0.1);
+}
+
+.swagger-ui .opblock.opblock-patch {
+  border-color: #50e3c2;
+  background: rgba(80, 227, 194, 0.1);
+}
+
+.swagger-ui .opblock.opblock-options {
+  border-color: #0d5aa7;
+  background: rgba(13, 90, 167, 0.1);
+}
+
+.swagger-ui .opblock.opblock-head {
+  border-color: #9012fe;
+  background: rgba(144, 18, 254, 0.1);
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-get {
+  background: #61affe;
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-post {
+  background: #49cc90;
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-put {
+  background: #fca130;
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-delete {
+  background: #f93e3e;
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-patch {
+  background: #50e3c2;
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-options {
+  background: #0d5aa7;
+}
+
+.swagger-ui .opblock .opblock-summary-method.opblock-summary-head {
+  background: #9012fe;
+}

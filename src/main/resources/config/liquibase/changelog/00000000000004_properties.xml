@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.33.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20260115-001-properties" author="foundryvtt">
+        <createTable tableName="app_properties">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="app_properties_pkey" nullable="false"/>
+            </column>
+            <column name="tenant" type="varchar(100)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="role_id" type="bigint"/>
+            <column name="is_global" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="property_key" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="property_value" type="text"/>
+            <column name="value_type" type="varchar(100)" defaultValue="java.lang.String">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="created_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="app_properties"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="app_users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_properties_user_id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="app_properties"
+                                 baseColumnNames="role_id"
+                                 referencedTableName="app_roles"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_app_properties_role_id"
+                                 onDelete="CASCADE"/>
+
+        <sql>ALTER TABLE app_properties ADD CONSTRAINT chk_property_scope CHECK ((user_id IS NOT NULL AND role_id IS NULL AND is_global = FALSE) OR (user_id IS NULL AND role_id IS NOT NULL AND is_global = FALSE) OR (user_id IS NULL AND role_id IS NULL AND is_global = TRUE));</sql>
+
+        <createIndex tableName="app_properties" indexName="idx_properties_key">
+            <column name="property_key"/>
+        </createIndex>
+        <createIndex tableName="app_properties" indexName="idx_properties_tenant">
+            <column name="tenant"/>
+        </createIndex>
+
+        <sql>CREATE INDEX idx_properties_user ON app_properties(user_id) WHERE user_id IS NOT NULL;</sql>
+        <sql>CREATE INDEX idx_properties_role ON app_properties(role_id) WHERE role_id IS NOT NULL;</sql>
+
+        <sql>CREATE UNIQUE INDEX ux_properties_user_tenant_key ON app_properties(user_id, tenant, property_key) WHERE user_id IS NOT NULL AND tenant IS NOT NULL;</sql>
+        <sql>CREATE UNIQUE INDEX ux_properties_user_nulltenant_key ON app_properties(user_id, property_key) WHERE user_id IS NOT NULL AND tenant IS NULL;</sql>
+        <sql>CREATE UNIQUE INDEX ux_properties_role_tenant_key ON app_properties(role_id, tenant, property_key) WHERE role_id IS NOT NULL AND tenant IS NOT NULL;</sql>
+        <sql>CREATE UNIQUE INDEX ux_properties_role_nulltenant_key ON app_properties(role_id, property_key) WHERE role_id IS NOT NULL AND tenant IS NULL;</sql>
+        <sql>CREATE UNIQUE INDEX ux_properties_global_tenant_key ON app_properties(tenant, property_key) WHERE is_global = TRUE AND tenant IS NOT NULL;</sql>
+        <sql>CREATE UNIQUE INDEX ux_properties_global_nulltenant_key ON app_properties(property_key) WHERE is_global = TRUE AND tenant IS NULL;</sql>
+
+        <sql splitStatements="false">
+            CREATE OR REPLACE FUNCTION trg_set_updated_at()
+            RETURNS TRIGGER AS $$
+            BEGIN
+              NEW.updated_at := now();
+              RETURN NEW;
+            END;
+            $$ LANGUAGE plpgsql;
+        </sql>
+
+        <sql>
+            CREATE TRIGGER app_properties_set_updated_at
+            BEFORE UPDATE ON app_properties
+            FOR EACH ROW
+            EXECUTE FUNCTION trg_set_updated_at();
+        </sql>
+
+        <createView viewName="effective_properties" replaceIfExists="true">
+            SELECT
+              user_id,
+              tenant,
+              property_key,
+              property_value,
+              value_type
+            FROM (
+              SELECT
+                u.id AS user_id,
+                u.tenant AS tenant,
+                p.property_key,
+                p.property_value,
+                p.value_type,
+                ROW_NUMBER() OVER (
+                  PARTITION BY u.id, p.property_key
+                  ORDER BY
+                    (p.user_id IS NOT NULL) DESC,
+                    (p.role_id IS NOT NULL) DESC,
+                    (p.is_global = TRUE) DESC,
+                    (p.tenant IS NOT NULL) DESC,
+                    COALESCE(r.priority, 0) DESC,
+                    p.role_id DESC NULLS LAST,
+                    p.id DESC
+                ) AS rn
+              FROM app_users u
+              JOIN app_properties p
+                ON (
+                     p.user_id = u.id
+                  OR p.role_id IN (
+                       SELECT ur.role_id
+                       FROM app_user_roles ur
+                       WHERE ur.user_id = u.id
+                     )
+                  OR p.is_global = TRUE
+                )
+              LEFT JOIN app_roles r
+                ON r.id = p.role_id
+              WHERE u.enabled = TRUE
+                AND (p.tenant = u.tenant OR p.tenant IS NULL)
+            ) ranked
+            WHERE rn = 1
+        </createView>
+    </changeSet>
+</databaseChangeLog>
