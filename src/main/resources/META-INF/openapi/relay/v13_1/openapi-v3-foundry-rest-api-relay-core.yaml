@@ -1,0 +1,349 @@
+﻿openapi: 3.0.3
+info:
+  title: Foundry REST API Relay - Core
+  version: 1.0.0
+  description: Core relay endpoints for Foundry VTT bot integrations.
+servers:
+  - url: http://localhost:30000
+tags:
+  - name: Default
+  - name: Session
+  - name: Roll
+  - name: Search
+  - name: Utilities
+paths:
+  /api/status:
+    get:
+      tags: [Default]
+      summary: Relay status
+      operationId: apiStatusGet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /clients:
+    get:
+      tags: [Default]
+      summary: Connected Foundry clients
+      operationId: clientsGet
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /session:
+    get:
+      tags: [Session]
+      summary: Current headless sessions
+      operationId: sessionGet
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /session-handshake:
+    post:
+      tags: [Session]
+      summary: Create session handshake
+      operationId: sessionHandshakePost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: foundryUrl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: worldName
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /start-session:
+    post:
+      tags: [Session]
+      summary: Start headless session
+      operationId: startSessionPost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /end-session:
+    delete:
+      tags: [Session]
+      summary: End headless session
+      operationId: endSessionDelete
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /roll:
+    post:
+      tags: [Roll]
+      summary: Execute roll
+      operationId: rollPost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RollRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /lastroll:
+    get:
+      tags: [Roll]
+      summary: Last roll
+      operationId: lastrollGet
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /rolls:
+    get:
+      tags: [Roll]
+      summary: Recent rolls
+      operationId: rollsGet
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /search:
+    get:
+      tags: [Search]
+      summary: Search entities
+      operationId: searchGet
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /execute-js:
+    post:
+      tags: [Utilities]
+      summary: Execute JavaScript in Foundry
+      operationId: executeJsPost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+components:
+  schemas:
+    RollRequest:
+      type: object
+      required:
+        - formula
+      properties:
+        formula:
+          type: string
+        itemUuid:
+          type: string
+          nullable: true
+        flavor:
+          type: string
+        createChatMessage:
+          type: boolean
+          default: true
+        target:
+          type: string
+          nullable: true
+        speaker:
+          type: string
+          nullable: true
+        whisper:
+          type: array
+          items:
+            type: string
+      additionalProperties: true

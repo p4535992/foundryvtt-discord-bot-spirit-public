@@ -1,0 +1,176 @@
+﻿openapi: 3.0.3
+info:
+  title: Foundry REST API Relay - DnD5e
+  version: 1.0.0
+  description: DnD5e-specific relay endpoints for Foundry VTT bot integrations.
+servers:
+  - url: http://localhost:30000
+tags:
+  - name: DnD5e
+paths:
+  /dnd5e/get-actor-details:
+    get:
+      tags: [DnD5e]
+      summary: Get actor details
+      operationId: dnd5eGetActorDetailsGet
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: actorUuid
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: details
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /dnd5e/modify-experience:
+    post:
+      tags: [DnD5e]
+      summary: Modify actor experience
+      operationId: dnd5eModifyExperiencePost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: actorUuid
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /dnd5e/use-ability:
+    post:
+      tags: [DnD5e]
+      summary: Use actor ability
+      operationId: dnd5eUseAbilityPost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: actorUuid
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: abilityName
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+
+  /dnd5e/modify-item-charges:
+    post:
+      tags: [DnD5e]
+      summary: Modify actor item charges
+      operationId: dnd5eModifyItemChargesPost
+      parameters:
+        - name: x-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: actorUuid
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: itemName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
