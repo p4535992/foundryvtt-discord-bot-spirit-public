@@ -167,7 +167,7 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object endSession(String apiKeyOverride, String sessionId) {
         try {
-            return this.sessionApi.endSessionDelete(sessionId, this.resolveApiKey(apiKeyOverride));
+            return this.sessionApi.endSessionDelete(this.resolveApiKey(apiKeyOverride), sessionId);
         } catch (ApiException exception) {
             throw this.relayCallFailed("end session", exception);
         }
@@ -176,7 +176,7 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object roll(String apiKeyOverride, String clientId, RollRequest rollRequest) {
         try {
-            return this.rollApi.rollPost(clientId, rollRequest, this.resolveApiKey(apiKeyOverride));
+            return this.rollApi.rollPost(this.resolveApiKey(apiKeyOverride), clientId, rollRequest);
         } catch (ApiException exception) {
             throw this.relayCallFailed("execute roll", exception);
         }
@@ -185,7 +185,7 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object getLastRoll(String apiKeyOverride, String clientId) {
         try {
-            return this.rollApi.lastrollGet(clientId, this.resolveApiKey(apiKeyOverride));
+            return this.rollApi.lastrollGet(this.resolveApiKey(apiKeyOverride), clientId);
         } catch (ApiException exception) {
             throw this.relayCallFailed("get last roll", exception);
         }
@@ -194,7 +194,7 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object getRecentRolls(String apiKeyOverride, String clientId, Integer limit) {
         try {
-            return this.rollApi.rollsGet(clientId, this.resolveApiKey(apiKeyOverride), limit);
+            return this.rollApi.rollsGet(this.resolveApiKey(apiKeyOverride), clientId, limit);
         } catch (ApiException exception) {
             throw this.relayCallFailed("get roll history", exception);
         }
@@ -203,7 +203,7 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object search(String apiKeyOverride, String clientId, String query, String filter) {
         try {
-            return this.searchApi.searchGet(clientId, query, this.resolveApiKey(apiKeyOverride),
+            return this.searchApi.searchGet(this.resolveApiKey(apiKeyOverride), clientId, query,
                     filter);
         } catch (ApiException exception) {
             throw this.relayCallFailed("search entities", exception);
@@ -213,10 +213,8 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object executeJavaScript(String apiKeyOverride, String clientId, Object requestBody) {
         try {
-            return this.utilitiesApi.executeJsPost(
-                    clientId,
-                    this.asRequiredStringObjectMap(requestBody),
-                    this.resolveApiKey(apiKeyOverride));
+            return this.utilitiesApi.executeJsPost(this.resolveApiKey(apiKeyOverride), clientId,
+                    this.asRequiredStringObjectMap(requestBody));
         } catch (ApiException exception) {
             throw this.relayCallFailed("execute javascript", exception);
         }

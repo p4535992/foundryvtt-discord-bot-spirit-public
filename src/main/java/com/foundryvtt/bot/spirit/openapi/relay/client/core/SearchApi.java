@@ -1,6 +1,6 @@
 /*
- * Foundry REST API Relay - Core
- * Core relay endpoints for Foundry VTT bot integrations.
+ * Foundry REST API Documentation
+ * ### How to use Foundry REST API:  - Install the [Foundry VTT Module](https://github.com/ThreeHats/foundryvtt-rest-api) - Get an API key for the public relay server at [https://foundryvtt-rest-api-relay.fly.dev/](https://foundryvtt-rest-api-relay.fly.dev/) - Download [Postman](https://www.postman.com/downloads/) and the import the API Test Collection for an easy way to start testing endpoints. - Read this documentation for information about how to use each endpoint  ---  Foundry REST API provides various API endpoints for fetching and interacting with your foundry world data through a node.js server that act as a relay.  ## **Getting started guide**  To start using the Foundry REST API, you need to -  - Have your API key in the module settings. - Each request must have the your API key in the \"x-api-key\" header. - Endpoints other than /clients require a clientId parameter that matches a connected world.
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import java.math.BigDecimal;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -73,9 +74,9 @@ public class SearchApi {
 
     /**
      * Build call for searchGet
-     * @param clientId  (required)
-     * @param query  (required)
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param query Search string (optional)
      * @param filter  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -84,10 +85,10 @@ public class SearchApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call searchGetCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String query, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String filter, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call searchGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String query, @jakarta.annotation.Nullable String filter, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -144,75 +145,65 @@ public class SearchApi {
         }
 
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "noauthAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call searchGetValidateBeforeCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String query, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String filter, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'clientId' is set
-        if (clientId == null) {
-            throw new ApiException("Missing the required parameter 'clientId' when calling searchGet(Async)");
-        }
-
-        // verify the required parameter 'query' is set
-        if (query == null) {
-            throw new ApiException("Missing the required parameter 'query' when calling searchGet(Async)");
-        }
-
-        return searchGetCall(clientId, query, xApiKey, filter, _callback);
+    private okhttp3.Call searchGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String query, @jakarta.annotation.Nullable String filter, final ApiCallback _callback) throws ApiException {
+        return searchGetCall(xApiKey, clientId, query, filter, _callback);
 
     }
 
     /**
-     * Search entities
-     * 
-     * @param clientId  (required)
-     * @param query  (required)
+     * /search
+     * ## Searches Foundry VTT entities using QuickInsert  Filters can be a single string for filtering by type (\&quot;actor\&quot;, \&quot;item\&quot;, ext.), or chained together (name:bob,documentType:actor)  Available filters:  - documentType: type of document (\&quot;Actor\&quot;, \&quot;Item\&quot;, ext) - folder: folder location of the entity (not always defined) - id: unique identifier of the entity - name: name of the entity - package: package identifier the entity belongs to (compendiums minus \&quot;Compendium.\&quot;) - packageName: human-readable package name (readable name of compendium) - subType: sub-type of the entity (\&quot;npc\&quot;, \&quot;equipment\&quot;, ext) - uuid: universal unique identifier - icon: icon HTML for the entity - journalLink: journal link to entity - tagline: same as packageName - formattedMatch: HTML with **applied to matching search parts** - **resultType: constructor name of the QuickInsert result type (\&quot;EntitySearchItem\&quot;. \&quot;CompendiumSearchItem\&quot;, \&quot;EmbeddedEntitySearchItem\&quot;, ext)**
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param query Search string (optional)
      * @param filter  (optional)
-     * @return Map&lt;String, Object&gt;
+     * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Map<String, Object> searchGet(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String query, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String filter) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = searchGetWithHttpInfo(clientId, query, xApiKey, filter);
+    public Object searchGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String query, @jakarta.annotation.Nullable String filter) throws ApiException {
+        ApiResponse<Object> localVarResp = searchGetWithHttpInfo(xApiKey, clientId, query, filter);
         return localVarResp.getData();
     }
 
     /**
-     * Search entities
-     * 
-     * @param clientId  (required)
-     * @param query  (required)
+     * /search
+     * ## Searches Foundry VTT entities using QuickInsert  Filters can be a single string for filtering by type (\&quot;actor\&quot;, \&quot;item\&quot;, ext.), or chained together (name:bob,documentType:actor)  Available filters:  - documentType: type of document (\&quot;Actor\&quot;, \&quot;Item\&quot;, ext) - folder: folder location of the entity (not always defined) - id: unique identifier of the entity - name: name of the entity - package: package identifier the entity belongs to (compendiums minus \&quot;Compendium.\&quot;) - packageName: human-readable package name (readable name of compendium) - subType: sub-type of the entity (\&quot;npc\&quot;, \&quot;equipment\&quot;, ext) - uuid: universal unique identifier - icon: icon HTML for the entity - journalLink: journal link to entity - tagline: same as packageName - formattedMatch: HTML with **applied to matching search parts** - **resultType: constructor name of the QuickInsert result type (\&quot;EntitySearchItem\&quot;. \&quot;CompendiumSearchItem\&quot;, \&quot;EmbeddedEntitySearchItem\&quot;, ext)**
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param query Search string (optional)
      * @param filter  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> searchGetWithHttpInfo(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String query, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String filter) throws ApiException {
-        okhttp3.Call localVarCall = searchGetValidateBeforeCall(clientId, query, xApiKey, filter, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+    public ApiResponse<Object> searchGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String query, @jakarta.annotation.Nullable String filter) throws ApiException {
+        okhttp3.Call localVarCall = searchGetValidateBeforeCall(xApiKey, clientId, query, filter, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Search entities (asynchronously)
-     * 
-     * @param clientId  (required)
-     * @param query  (required)
+     * /search (asynchronously)
+     * ## Searches Foundry VTT entities using QuickInsert  Filters can be a single string for filtering by type (\&quot;actor\&quot;, \&quot;item\&quot;, ext.), or chained together (name:bob,documentType:actor)  Available filters:  - documentType: type of document (\&quot;Actor\&quot;, \&quot;Item\&quot;, ext) - folder: folder location of the entity (not always defined) - id: unique identifier of the entity - name: name of the entity - package: package identifier the entity belongs to (compendiums minus \&quot;Compendium.\&quot;) - packageName: human-readable package name (readable name of compendium) - subType: sub-type of the entity (\&quot;npc\&quot;, \&quot;equipment\&quot;, ext) - uuid: universal unique identifier - icon: icon HTML for the entity - journalLink: journal link to entity - tagline: same as packageName - formattedMatch: HTML with **applied to matching search parts** - **resultType: constructor name of the QuickInsert result type (\&quot;EntitySearchItem\&quot;. \&quot;CompendiumSearchItem\&quot;, \&quot;EmbeddedEntitySearchItem\&quot;, ext)**
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param query Search string (optional)
      * @param filter  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -221,13 +212,13 @@ public class SearchApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call searchGetAsync(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String query, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String filter, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call searchGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String query, @jakarta.annotation.Nullable String filter, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = searchGetValidateBeforeCall(clientId, query, xApiKey, filter, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+        okhttp3.Call localVarCall = searchGetValidateBeforeCall(xApiKey, clientId, query, filter, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

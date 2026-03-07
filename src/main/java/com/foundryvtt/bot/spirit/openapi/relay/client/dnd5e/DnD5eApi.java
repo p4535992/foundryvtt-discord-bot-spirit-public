@@ -1,6 +1,6 @@
 /*
- * Foundry REST API Relay - DnD5e
- * DnD5e-specific relay endpoints for Foundry VTT bot integrations.
+ * Foundry REST API Documentation
+ * ### How to use Foundry REST API:  - Install the [Foundry VTT Module](https://github.com/ThreeHats/foundryvtt-rest-api) - Get an API key for the public relay server at [https://foundryvtt-rest-api-relay.fly.dev/](https://foundryvtt-rest-api-relay.fly.dev/) - Download [Postman](https://www.postman.com/downloads/) and the import the API Test Collection for an easy way to start testing endpoints. - Read this documentation for information about how to use each endpoint  ---  Foundry REST API provides various API endpoints for fetching and interacting with your foundry world data through a node.js server that act as a relay.  ## **Getting started guide**  To start using the Foundry REST API, you need to -  - Have your API key in the module settings. - Each request must have the your API key in the \"x-api-key\" header. - Endpoints other than /clients require a clientId parameter that matches a connected world.
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -73,10 +73,12 @@ public class DnD5eApi {
 
     /**
      * Build call for dnd5eGetActorDetailsGet
-     * @param clientId  (required)
-     * @param actorUuid  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
      * @param details  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param details2  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -84,10 +86,10 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eGetActorDetailsGetCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String details, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call dnd5eGetActorDetailsGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String details2, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -116,12 +118,12 @@ public class DnD5eApi {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
         }
 
-        if (actorUuid != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("actorUuid", actorUuid));
+        if (actorUuid2 != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("actorUuid", actorUuid2));
         }
 
-        if (details != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("details", details));
+        if (details2 != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("details", details2));
         }
 
         final String[] localVarAccepts = {
@@ -144,76 +146,79 @@ public class DnD5eApi {
         }
 
 
+        if (actorUuid != null) {
+            localVarHeaderParams.put("actorUuid", localVarApiClient.parameterToString(actorUuid));
+        }
+
+
+        if (details != null) {
+            localVarHeaderParams.put("details", localVarApiClient.parameterToString(details));
+        }
+
+
         String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call dnd5eGetActorDetailsGetValidateBeforeCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String details, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'clientId' is set
-        if (clientId == null) {
-            throw new ApiException("Missing the required parameter 'clientId' when calling dnd5eGetActorDetailsGet(Async)");
-        }
-
-        // verify the required parameter 'actorUuid' is set
-        if (actorUuid == null) {
-            throw new ApiException("Missing the required parameter 'actorUuid' when calling dnd5eGetActorDetailsGet(Async)");
-        }
-
-        return dnd5eGetActorDetailsGetCall(clientId, actorUuid, xApiKey, details, _callback);
+    private okhttp3.Call dnd5eGetActorDetailsGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String details2, final ApiCallback _callback) throws ApiException {
+        return dnd5eGetActorDetailsGetCall(xApiKey, actorUuid, details, clientId, actorUuid2, details2, _callback);
 
     }
 
     /**
-     * Get actor details
+     * get-actor-details
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
      * @param details  (optional)
-     * @return Map&lt;String, Object&gt;
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param details2  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public Map<String, Object> dnd5eGetActorDetailsGet(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String details) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = dnd5eGetActorDetailsGetWithHttpInfo(clientId, actorUuid, xApiKey, details);
-        return localVarResp.getData();
+    public void dnd5eGetActorDetailsGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String details2) throws ApiException {
+        dnd5eGetActorDetailsGetWithHttpInfo(xApiKey, actorUuid, details, clientId, actorUuid2, details2);
     }
 
     /**
-     * Get actor details
+     * get-actor-details
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
      * @param details  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param details2  (optional)
+     * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> dnd5eGetActorDetailsGetWithHttpInfo(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String details) throws ApiException {
-        okhttp3.Call localVarCall = dnd5eGetActorDetailsGetValidateBeforeCall(clientId, actorUuid, xApiKey, details, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    public ApiResponse<Void> dnd5eGetActorDetailsGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String details2) throws ApiException {
+        okhttp3.Call localVarCall = dnd5eGetActorDetailsGetValidateBeforeCall(xApiKey, actorUuid, details, clientId, actorUuid2, details2, null);
+        return localVarApiClient.execute(localVarCall);
     }
 
     /**
-     * Get actor details (asynchronously)
+     * get-actor-details (asynchronously)
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
      * @param details  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param details2  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -221,22 +226,21 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eGetActorDetailsGetAsync(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String details, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call dnd5eGetActorDetailsGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String details2, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = dnd5eGetActorDetailsGetValidateBeforeCall(clientId, actorUuid, xApiKey, details, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = dnd5eGetActorDetailsGetValidateBeforeCall(xApiKey, actorUuid, details, clientId, actorUuid2, details2, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
     /**
      * Build call for dnd5eModifyExperiencePost
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -245,10 +249,10 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eModifyExperiencePostCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull Integer amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call dnd5eModifyExperiencePostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable Integer amount, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -311,78 +315,60 @@ public class DnD5eApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call dnd5eModifyExperiencePostValidateBeforeCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull Integer amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'clientId' is set
-        if (clientId == null) {
-            throw new ApiException("Missing the required parameter 'clientId' when calling dnd5eModifyExperiencePost(Async)");
-        }
-
-        // verify the required parameter 'actorUuid' is set
-        if (actorUuid == null) {
-            throw new ApiException("Missing the required parameter 'actorUuid' when calling dnd5eModifyExperiencePost(Async)");
-        }
-
-        // verify the required parameter 'amount' is set
-        if (amount == null) {
-            throw new ApiException("Missing the required parameter 'amount' when calling dnd5eModifyExperiencePost(Async)");
-        }
-
-        return dnd5eModifyExperiencePostCall(clientId, actorUuid, amount, xApiKey, requestBody, _callback);
+    private okhttp3.Call dnd5eModifyExperiencePostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable Integer amount, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return dnd5eModifyExperiencePostCall(xApiKey, clientId, actorUuid, amount, requestBody, _callback);
 
     }
 
     /**
-     * Modify actor experience
+     * modify-experience
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
-     * @return Map&lt;String, Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public Map<String, Object> dnd5eModifyExperiencePost(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull Integer amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = dnd5eModifyExperiencePostWithHttpInfo(clientId, actorUuid, amount, xApiKey, requestBody);
-        return localVarResp.getData();
+    public void dnd5eModifyExperiencePost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable Integer amount, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        dnd5eModifyExperiencePostWithHttpInfo(xApiKey, clientId, actorUuid, amount, requestBody);
     }
 
     /**
-     * Modify actor experience
+     * modify-experience
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> dnd5eModifyExperiencePostWithHttpInfo(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull Integer amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = dnd5eModifyExperiencePostValidateBeforeCall(clientId, actorUuid, amount, xApiKey, requestBody, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    public ApiResponse<Void> dnd5eModifyExperiencePostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable Integer amount, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = dnd5eModifyExperiencePostValidateBeforeCall(xApiKey, clientId, actorUuid, amount, requestBody, null);
+        return localVarApiClient.execute(localVarCall);
     }
 
     /**
-     * Modify actor experience (asynchronously)
+     * modify-experience (asynchronously)
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -391,23 +377,22 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eModifyExperiencePostAsync(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull Integer amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call dnd5eModifyExperiencePostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable Integer amount, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = dnd5eModifyExperiencePostValidateBeforeCall(clientId, actorUuid, amount, xApiKey, requestBody, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = dnd5eModifyExperiencePostValidateBeforeCall(xApiKey, clientId, actorUuid, amount, requestBody, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
     /**
      * Build call for dnd5eModifyItemChargesPost
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param itemName  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param itemName  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -416,10 +401,10 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eModifyItemChargesPostCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String itemName, @jakarta.annotation.Nonnull String amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call dnd5eModifyItemChargesPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String itemName, @jakarta.annotation.Nullable String amount, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -486,86 +471,63 @@ public class DnD5eApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call dnd5eModifyItemChargesPostValidateBeforeCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String itemName, @jakarta.annotation.Nonnull String amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'clientId' is set
-        if (clientId == null) {
-            throw new ApiException("Missing the required parameter 'clientId' when calling dnd5eModifyItemChargesPost(Async)");
-        }
-
-        // verify the required parameter 'actorUuid' is set
-        if (actorUuid == null) {
-            throw new ApiException("Missing the required parameter 'actorUuid' when calling dnd5eModifyItemChargesPost(Async)");
-        }
-
-        // verify the required parameter 'itemName' is set
-        if (itemName == null) {
-            throw new ApiException("Missing the required parameter 'itemName' when calling dnd5eModifyItemChargesPost(Async)");
-        }
-
-        // verify the required parameter 'amount' is set
-        if (amount == null) {
-            throw new ApiException("Missing the required parameter 'amount' when calling dnd5eModifyItemChargesPost(Async)");
-        }
-
-        return dnd5eModifyItemChargesPostCall(clientId, actorUuid, itemName, amount, xApiKey, requestBody, _callback);
+    private okhttp3.Call dnd5eModifyItemChargesPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String itemName, @jakarta.annotation.Nullable String amount, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return dnd5eModifyItemChargesPostCall(xApiKey, clientId, actorUuid, itemName, amount, requestBody, _callback);
 
     }
 
     /**
-     * Modify actor item charges
+     * modify-item-charges
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param itemName  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param itemName  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
-     * @return Map&lt;String, Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public Map<String, Object> dnd5eModifyItemChargesPost(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String itemName, @jakarta.annotation.Nonnull String amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = dnd5eModifyItemChargesPostWithHttpInfo(clientId, actorUuid, itemName, amount, xApiKey, requestBody);
-        return localVarResp.getData();
+    public void dnd5eModifyItemChargesPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String itemName, @jakarta.annotation.Nullable String amount, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        dnd5eModifyItemChargesPostWithHttpInfo(xApiKey, clientId, actorUuid, itemName, amount, requestBody);
     }
 
     /**
-     * Modify actor item charges
+     * modify-item-charges
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param itemName  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param itemName  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> dnd5eModifyItemChargesPostWithHttpInfo(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String itemName, @jakarta.annotation.Nonnull String amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = dnd5eModifyItemChargesPostValidateBeforeCall(clientId, actorUuid, itemName, amount, xApiKey, requestBody, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    public ApiResponse<Void> dnd5eModifyItemChargesPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String itemName, @jakarta.annotation.Nullable String amount, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = dnd5eModifyItemChargesPostValidateBeforeCall(xApiKey, clientId, actorUuid, itemName, amount, requestBody, null);
+        return localVarApiClient.execute(localVarCall);
     }
 
     /**
-     * Modify actor item charges (asynchronously)
+     * modify-item-charges (asynchronously)
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param itemName  (required)
-     * @param amount  (required)
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid  (optional)
+     * @param itemName  (optional)
+     * @param amount  (optional)
      * @param requestBody  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -574,22 +536,23 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eModifyItemChargesPostAsync(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String itemName, @jakarta.annotation.Nonnull String amount, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call dnd5eModifyItemChargesPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String itemName, @jakarta.annotation.Nullable String amount, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = dnd5eModifyItemChargesPostValidateBeforeCall(clientId, actorUuid, itemName, amount, xApiKey, requestBody, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = dnd5eModifyItemChargesPostValidateBeforeCall(xApiKey, clientId, actorUuid, itemName, amount, requestBody, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
     /**
      * Build call for dnd5eUseAbilityPost
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param abilityName  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
+     * @param details  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param abilityName  (optional)
      * @param requestBody  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -598,10 +561,10 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eUseAbilityPostCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String abilityName, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call dnd5eUseAbilityPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String abilityName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -630,8 +593,8 @@ public class DnD5eApi {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
         }
 
-        if (actorUuid != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("actorUuid", actorUuid));
+        if (actorUuid2 != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("actorUuid", actorUuid2));
         }
 
         if (abilityName != null) {
@@ -659,83 +622,81 @@ public class DnD5eApi {
         }
 
 
+        if (actorUuid != null) {
+            localVarHeaderParams.put("actorUuid", localVarApiClient.parameterToString(actorUuid));
+        }
+
+
+        if (details != null) {
+            localVarHeaderParams.put("details", localVarApiClient.parameterToString(details));
+        }
+
+
         String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call dnd5eUseAbilityPostValidateBeforeCall(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String abilityName, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'clientId' is set
-        if (clientId == null) {
-            throw new ApiException("Missing the required parameter 'clientId' when calling dnd5eUseAbilityPost(Async)");
-        }
-
-        // verify the required parameter 'actorUuid' is set
-        if (actorUuid == null) {
-            throw new ApiException("Missing the required parameter 'actorUuid' when calling dnd5eUseAbilityPost(Async)");
-        }
-
-        // verify the required parameter 'abilityName' is set
-        if (abilityName == null) {
-            throw new ApiException("Missing the required parameter 'abilityName' when calling dnd5eUseAbilityPost(Async)");
-        }
-
-        return dnd5eUseAbilityPostCall(clientId, actorUuid, abilityName, xApiKey, requestBody, _callback);
+    private okhttp3.Call dnd5eUseAbilityPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String abilityName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return dnd5eUseAbilityPostCall(xApiKey, actorUuid, details, clientId, actorUuid2, abilityName, requestBody, _callback);
 
     }
 
     /**
-     * Use actor ability
+     * use-item
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param abilityName  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
+     * @param details  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param abilityName  (optional)
      * @param requestBody  (optional)
-     * @return Map&lt;String, Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public Map<String, Object> dnd5eUseAbilityPost(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String abilityName, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = dnd5eUseAbilityPostWithHttpInfo(clientId, actorUuid, abilityName, xApiKey, requestBody);
-        return localVarResp.getData();
+    public void dnd5eUseAbilityPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String abilityName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        dnd5eUseAbilityPostWithHttpInfo(xApiKey, actorUuid, details, clientId, actorUuid2, abilityName, requestBody);
     }
 
     /**
-     * Use actor ability
+     * use-item
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param abilityName  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
+     * @param details  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param abilityName  (optional)
      * @param requestBody  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> dnd5eUseAbilityPostWithHttpInfo(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String abilityName, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = dnd5eUseAbilityPostValidateBeforeCall(clientId, actorUuid, abilityName, xApiKey, requestBody, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    public ApiResponse<Void> dnd5eUseAbilityPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String abilityName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = dnd5eUseAbilityPostValidateBeforeCall(xApiKey, actorUuid, details, clientId, actorUuid2, abilityName, requestBody, null);
+        return localVarApiClient.execute(localVarCall);
     }
 
     /**
-     * Use actor ability (asynchronously)
+     * use-item (asynchronously)
      * 
-     * @param clientId  (required)
-     * @param actorUuid  (required)
-     * @param abilityName  (required)
      * @param xApiKey  (optional)
+     * @param actorUuid  (optional)
+     * @param details  (optional)
+     * @param clientId  (optional)
+     * @param actorUuid2  (optional)
+     * @param abilityName  (optional)
      * @param requestBody  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -744,14 +705,13 @@ public class DnD5eApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Successful response </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call dnd5eUseAbilityPostAsync(@jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String actorUuid, @jakarta.annotation.Nonnull String abilityName, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call dnd5eUseAbilityPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String actorUuid, @jakarta.annotation.Nullable String details, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String actorUuid2, @jakarta.annotation.Nullable String abilityName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = dnd5eUseAbilityPostValidateBeforeCall(clientId, actorUuid, abilityName, xApiKey, requestBody, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = dnd5eUseAbilityPostValidateBeforeCall(xApiKey, actorUuid, details, clientId, actorUuid2, abilityName, requestBody, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
 }

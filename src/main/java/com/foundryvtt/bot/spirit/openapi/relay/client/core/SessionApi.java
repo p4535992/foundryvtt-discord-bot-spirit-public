@@ -1,6 +1,6 @@
 /*
- * Foundry REST API Relay - Core
- * Core relay endpoints for Foundry VTT bot integrations.
+ * Foundry REST API Documentation
+ * ### How to use Foundry REST API:  - Install the [Foundry VTT Module](https://github.com/ThreeHats/foundryvtt-rest-api) - Get an API key for the public relay server at [https://foundryvtt-rest-api-relay.fly.dev/](https://foundryvtt-rest-api-relay.fly.dev/) - Download [Postman](https://www.postman.com/downloads/) and the import the API Test Collection for an easy way to start testing endpoints. - Read this documentation for information about how to use each endpoint  ---  Foundry REST API provides various API endpoints for fetching and interacting with your foundry world data through a node.js server that act as a relay.  ## **Getting started guide**  To start using the Foundry REST API, you need to -  - Have your API key in the module settings. - Each request must have the your API key in the \"x-api-key\" header. - Endpoints other than /clients require a clientId parameter that matches a connected world.
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -73,8 +73,8 @@ public class SessionApi {
 
     /**
      * Build call for endSessionDelete
-     * @param sessionId  (required)
      * @param xApiKey  (optional)
+     * @param sessionId The session to end (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -82,10 +82,10 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call endSessionDeleteCall(@jakarta.annotation.Nonnull String sessionId, @jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call endSessionDeleteCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -139,60 +139,55 @@ public class SessionApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call endSessionDeleteValidateBeforeCall(@jakarta.annotation.Nonnull String sessionId, @jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'sessionId' is set
-        if (sessionId == null) {
-            throw new ApiException("Missing the required parameter 'sessionId' when calling endSessionDelete(Async)");
-        }
-
-        return endSessionDeleteCall(sessionId, xApiKey, _callback);
+    private okhttp3.Call endSessionDeleteValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId, final ApiCallback _callback) throws ApiException {
+        return endSessionDeleteCall(xApiKey, sessionId, _callback);
 
     }
 
     /**
-     * End headless session
-     * 
-     * @param sessionId  (required)
+     * /end-session
+     * Ends a headless Foundry session.
      * @param xApiKey  (optional)
-     * @return Map&lt;String, Object&gt;
+     * @param sessionId The session to end (optional)
+     * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Map<String, Object> endSessionDelete(@jakarta.annotation.Nonnull String sessionId, @jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = endSessionDeleteWithHttpInfo(sessionId, xApiKey);
+    public Object endSessionDelete(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId) throws ApiException {
+        ApiResponse<Object> localVarResp = endSessionDeleteWithHttpInfo(xApiKey, sessionId);
         return localVarResp.getData();
     }
 
     /**
-     * End headless session
-     * 
-     * @param sessionId  (required)
+     * /end-session
+     * Ends a headless Foundry session.
      * @param xApiKey  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @param sessionId The session to end (optional)
+     * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> endSessionDeleteWithHttpInfo(@jakarta.annotation.Nonnull String sessionId, @jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        okhttp3.Call localVarCall = endSessionDeleteValidateBeforeCall(sessionId, xApiKey, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+    public ApiResponse<Object> endSessionDeleteWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId) throws ApiException {
+        okhttp3.Call localVarCall = endSessionDeleteValidateBeforeCall(xApiKey, sessionId, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * End headless session (asynchronously)
-     * 
-     * @param sessionId  (required)
+     * /end-session (asynchronously)
+     * Ends a headless Foundry session.
      * @param xApiKey  (optional)
+     * @param sessionId The session to end (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -200,13 +195,13 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call endSessionDeleteAsync(@jakarta.annotation.Nonnull String sessionId, @jakarta.annotation.Nullable String xApiKey, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call endSessionDeleteAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = endSessionDeleteValidateBeforeCall(sessionId, xApiKey, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+        okhttp3.Call localVarCall = endSessionDeleteValidateBeforeCall(xApiKey, sessionId, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
@@ -220,7 +215,7 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
     public okhttp3.Call sessionGetCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
@@ -279,45 +274,45 @@ public class SessionApi {
     }
 
     /**
-     * Current headless sessions
-     * 
+     * /session
+     * Gets the currently active headless Foundry session.
      * @param xApiKey  (optional)
-     * @return Map&lt;String, Object&gt;
+     * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Map<String, Object> sessionGet(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = sessionGetWithHttpInfo(xApiKey);
+    public Object sessionGet(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
+        ApiResponse<Object> localVarResp = sessionGetWithHttpInfo(xApiKey);
         return localVarResp.getData();
     }
 
     /**
-     * Current headless sessions
-     * 
+     * /session
+     * Gets the currently active headless Foundry session.
      * @param xApiKey  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> sessionGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
+    public ApiResponse<Object> sessionGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
         okhttp3.Call localVarCall = sessionGetValidateBeforeCall(xApiKey, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Current headless sessions (asynchronously)
-     * 
+     * /session (asynchronously)
+     * Gets the currently active headless Foundry session.
      * @param xApiKey  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -326,23 +321,23 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sessionGetAsync(@jakarta.annotation.Nullable String xApiKey, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call sessionGetAsync(@jakarta.annotation.Nullable String xApiKey, final ApiCallback<Object> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = sessionGetValidateBeforeCall(xApiKey, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
      * Build call for sessionHandshakePost
-     * @param foundryUrl  (required)
-     * @param username  (required)
-     * @param password  (required)
      * @param xApiKey  (optional)
-     * @param worldName  (optional)
+     * @param xFoundryUrl The url to your foundry game (optional)
+     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
+     * @param xPassword The password to log in with (optional)
+     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
      * @param requestBody  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -351,10 +346,10 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sessionHandshakePostCall(@jakarta.annotation.Nonnull String foundryUrl, @jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String worldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call sessionHandshakePostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -379,22 +374,6 @@ public class SessionApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-        if (foundryUrl != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("foundryUrl", foundryUrl));
-        }
-
-        if (username != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("username", username));
-        }
-
-        if (password != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("password", password));
-        }
-
-        if (worldName != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("worldName", worldName));
-        }
-
         final String[] localVarAccepts = {
             "application/json"
         };
@@ -416,86 +395,91 @@ public class SessionApi {
         }
 
 
+        if (xFoundryUrl != null) {
+            localVarHeaderParams.put("x-foundry-url", localVarApiClient.parameterToString(xFoundryUrl));
+        }
+
+
+        if (xUsername != null) {
+            localVarHeaderParams.put("x-username", localVarApiClient.parameterToString(xUsername));
+        }
+
+
+        if (xPassword != null) {
+            localVarHeaderParams.put("x-password", localVarApiClient.parameterToString(xPassword));
+        }
+
+
+        if (xWorldName != null) {
+            localVarHeaderParams.put("x-world-name", localVarApiClient.parameterToString(xWorldName));
+        }
+
+
         String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call sessionHandshakePostValidateBeforeCall(@jakarta.annotation.Nonnull String foundryUrl, @jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String worldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'foundryUrl' is set
-        if (foundryUrl == null) {
-            throw new ApiException("Missing the required parameter 'foundryUrl' when calling sessionHandshakePost(Async)");
-        }
-
-        // verify the required parameter 'username' is set
-        if (username == null) {
-            throw new ApiException("Missing the required parameter 'username' when calling sessionHandshakePost(Async)");
-        }
-
-        // verify the required parameter 'password' is set
-        if (password == null) {
-            throw new ApiException("Missing the required parameter 'password' when calling sessionHandshakePost(Async)");
-        }
-
-        return sessionHandshakePostCall(foundryUrl, username, password, xApiKey, worldName, requestBody, _callback);
+    private okhttp3.Call sessionHandshakePostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return sessionHandshakePostCall(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody, _callback);
 
     }
 
     /**
-     * Create session handshake
-     * 
-     * @param foundryUrl  (required)
-     * @param username  (required)
-     * @param password  (required)
+     * /session-handshake
+     * Creates a temporary, one-time-use, token that can be used to create a headless Foundry session.
      * @param xApiKey  (optional)
-     * @param worldName  (optional)
+     * @param xFoundryUrl The url to your foundry game (optional)
+     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
+     * @param xPassword The password to log in with (optional)
+     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
      * @param requestBody  (optional)
-     * @return Map&lt;String, Object&gt;
+     * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Map<String, Object> sessionHandshakePost(@jakarta.annotation.Nonnull String foundryUrl, @jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String worldName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = sessionHandshakePostWithHttpInfo(foundryUrl, username, password, xApiKey, worldName, requestBody);
+    public Object sessionHandshakePost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        ApiResponse<Object> localVarResp = sessionHandshakePostWithHttpInfo(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody);
         return localVarResp.getData();
     }
 
     /**
-     * Create session handshake
-     * 
-     * @param foundryUrl  (required)
-     * @param username  (required)
-     * @param password  (required)
+     * /session-handshake
+     * Creates a temporary, one-time-use, token that can be used to create a headless Foundry session.
      * @param xApiKey  (optional)
-     * @param worldName  (optional)
+     * @param xFoundryUrl The url to your foundry game (optional)
+     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
+     * @param xPassword The password to log in with (optional)
+     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
      * @param requestBody  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> sessionHandshakePostWithHttpInfo(@jakarta.annotation.Nonnull String foundryUrl, @jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String worldName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = sessionHandshakePostValidateBeforeCall(foundryUrl, username, password, xApiKey, worldName, requestBody, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+    public ApiResponse<Object> sessionHandshakePostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = sessionHandshakePostValidateBeforeCall(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Create session handshake (asynchronously)
-     * 
-     * @param foundryUrl  (required)
-     * @param username  (required)
-     * @param password  (required)
+     * /session-handshake (asynchronously)
+     * Creates a temporary, one-time-use, token that can be used to create a headless Foundry session.
      * @param xApiKey  (optional)
-     * @param worldName  (optional)
+     * @param xFoundryUrl The url to your foundry game (optional)
+     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
+     * @param xPassword The password to log in with (optional)
+     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
      * @param requestBody  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -504,20 +488,20 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sessionHandshakePostAsync(@jakarta.annotation.Nonnull String foundryUrl, @jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String worldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call sessionHandshakePostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sessionHandshakePostValidateBeforeCall(foundryUrl, username, password, xApiKey, worldName, requestBody, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+        okhttp3.Call localVarCall = sessionHandshakePostValidateBeforeCall(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
      * Build call for startSessionPost
      * @param xApiKey  (optional)
-     * @param requestBody  (optional)
+     * @param body  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -525,10 +509,10 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call startSessionPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call startSessionPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -542,7 +526,7 @@ public class SessionApi {
             basePath = null;
         }
 
-        Object localVarPostBody = requestBody;
+        Object localVarPostBody = body;
 
         // create path and map variables
         String localVarPath = "/start-session";
@@ -579,55 +563,55 @@ public class SessionApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call startSessionPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        return startSessionPostCall(xApiKey, requestBody, _callback);
+    private okhttp3.Call startSessionPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        return startSessionPostCall(xApiKey, body, _callback);
 
     }
 
     /**
-     * Start headless session
-     * 
+     * /start-session
+     * Starts a headless Foundry session. Must provide a handshake token and the encrypted password.
      * @param xApiKey  (optional)
-     * @param requestBody  (optional)
-     * @return Map&lt;String, Object&gt;
+     * @param body  (optional)
+     * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Map<String, Object> startSessionPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Map<String, Object>> localVarResp = startSessionPostWithHttpInfo(xApiKey, requestBody);
+    public Object startSessionPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body) throws ApiException {
+        ApiResponse<Object> localVarResp = startSessionPostWithHttpInfo(xApiKey, body);
         return localVarResp.getData();
     }
 
     /**
-     * Start headless session
-     * 
+     * /start-session
+     * Starts a headless Foundry session. Must provide a handshake token and the encrypted password.
      * @param xApiKey  (optional)
-     * @param requestBody  (optional)
-     * @return ApiResponse&lt;Map&lt;String, Object&gt;&gt;
+     * @param body  (optional)
+     * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Map<String, Object>> startSessionPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = startSessionPostValidateBeforeCall(xApiKey, requestBody, null);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+    public ApiResponse<Object> startSessionPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body) throws ApiException {
+        okhttp3.Call localVarCall = startSessionPostValidateBeforeCall(xApiKey, body, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Start headless session (asynchronously)
-     * 
+     * /start-session (asynchronously)
+     * Starts a headless Foundry session. Must provide a handshake token and the encrypted password.
      * @param xApiKey  (optional)
-     * @param requestBody  (optional)
+     * @param body  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -635,13 +619,13 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call startSessionPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Map<String, Object>> _callback) throws ApiException {
+    public okhttp3.Call startSessionPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = startSessionPostValidateBeforeCall(xApiKey, requestBody, _callback);
-        Type localVarReturnType = new TypeToken<Map<String, Object>>(){}.getType();
+        okhttp3.Call localVarCall = startSessionPostValidateBeforeCall(xApiKey, body, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

@@ -1,5 +1,6 @@
 package com.foundryvtt.bot.spirit.system.dnd5e.service;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,6 +13,7 @@ import com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.DnD5eApi;
 import com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.invoker.ApiClient;
 import com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.invoker.ApiException;
 import com.foundryvtt.bot.spirit.service.RestRelayService;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Default DnD5e relay service implementation.
@@ -67,11 +69,14 @@ public class Dnd5eServiceImpl implements Dnd5eService {
             String actorUuid,
             String details) {
         try {
-            return this.dnD5eApi.dnd5eGetActorDetailsGet(
+            return this.executeForObject(this.dnD5eApi.dnd5eGetActorDetailsGetCall(
+                    this.resolveApiKey(apiKeyOverride),
+                    actorUuid,
+                    details,
                     clientId,
                     actorUuid,
-                    this.resolveApiKey(apiKeyOverride),
-                    details);
+                    details,
+                    null));
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("get actor details", exception);
         }
@@ -85,12 +90,13 @@ public class Dnd5eServiceImpl implements Dnd5eService {
             Integer amount,
             Map<String, Object> requestBody) {
         try {
-            return this.dnD5eApi.dnd5eModifyExperiencePost(
+            return this.executeForObject(this.dnD5eApi.dnd5eModifyExperiencePostCall(
+                    this.resolveApiKey(apiKeyOverride),
                     clientId,
                     actorUuid,
                     amount,
-                    this.resolveApiKey(apiKeyOverride),
-                    requestBody);
+                    requestBody,
+                    null));
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("modify experience", exception);
         }
@@ -104,12 +110,15 @@ public class Dnd5eServiceImpl implements Dnd5eService {
             String abilityName,
             Map<String, Object> requestBody) {
         try {
-            return this.dnD5eApi.dnd5eUseAbilityPost(
+            return this.executeForObject(this.dnD5eApi.dnd5eUseAbilityPostCall(
+                    this.resolveApiKey(apiKeyOverride),
+                    actorUuid,
+                    null,
                     clientId,
                     actorUuid,
                     abilityName,
-                    this.resolveApiKey(apiKeyOverride),
-                    requestBody);
+                    requestBody,
+                    null));
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("use ability", exception);
         }
@@ -124,16 +133,23 @@ public class Dnd5eServiceImpl implements Dnd5eService {
             String amount,
             Map<String, Object> requestBody) {
         try {
-            return this.dnD5eApi.dnd5eModifyItemChargesPost(
+            return this.executeForObject(this.dnD5eApi.dnd5eModifyItemChargesPostCall(
+                    this.resolveApiKey(apiKeyOverride),
                     clientId,
                     actorUuid,
                     itemName,
                     amount,
-                    this.resolveApiKey(apiKeyOverride),
-                    requestBody);
+                    requestBody,
+                    null));
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("modify item charges", exception);
         }
+    }
+
+    private Object executeForObject(okhttp3.Call call) throws ApiException {
+        Type responseType = new TypeToken<Object>() {
+        }.getType();
+        return this.dnD5eApi.getApiClient().execute(call, responseType).getData();
     }
 
     /**

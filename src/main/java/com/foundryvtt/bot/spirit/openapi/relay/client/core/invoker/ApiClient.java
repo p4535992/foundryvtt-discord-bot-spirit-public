@@ -1,6 +1,6 @@
 /*
- * Foundry REST API Relay - Core
- * Core relay endpoints for Foundry VTT bot integrations.
+ * Foundry REST API Documentation
+ * ### How to use Foundry REST API:  - Install the [Foundry VTT Module](https://github.com/ThreeHats/foundryvtt-rest-api) - Get an API key for the public relay server at [https://foundryvtt-rest-api-relay.fly.dev/](https://foundryvtt-rest-api-relay.fly.dev/) - Download [Postman](https://www.postman.com/downloads/) and the import the API Test Collection for an easy way to start testing endpoints. - Read this documentation for information about how to use each endpoint  ---  Foundry REST API provides various API endpoints for fetching and interacting with your foundry world data through a node.js server that act as a relay.  ## **Getting started guide**  To start using the Foundry REST API, you need to -  - Have your API key in the module settings. - Each request must have the your API key in the \"x-api-key\" header. - Endpoints other than /clients require a clientId parameter that matches a connected world.
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -58,10 +58,10 @@ import com.foundryvtt.bot.spirit.openapi.relay.client.core.invoker.auth.ApiKeyAu
  */
 public class ApiClient {
 
-    protected String basePath = "http://localhost:30000";
+    protected String basePath = "http://localhost";
     protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(Arrays.asList(
     new ServerConfiguration(
-      "http://localhost:30000",
+      "http://{{baseurl}}",
       "No description provided",
       new HashMap<String, ServerVariable>()
     )
@@ -154,7 +154,7 @@ public class ApiClient {
     /**
      * Set base path
      *
-     * @param basePath Base path of the URL (e.g http://localhost:30000)
+     * @param basePath Base path of the URL (e.g http://localhost)
      * @return An instance of ApiClient
      */
     public ApiClient setBasePath(String basePath) {

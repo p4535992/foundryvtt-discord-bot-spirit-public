@@ -35,16 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultApi {
+public class MacrosApi {
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
 
-    public DefaultApi() {
+    public MacrosApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public DefaultApi(ApiClient apiClient) {
+    public MacrosApi(ApiClient apiClient) {
         this.localVarApiClient = apiClient;
     }
 
@@ -73,7 +73,11 @@ public class DefaultApi {
     }
 
     /**
-     * Build call for apiStatusGet
+     * Build call for macroUuidExecutePost
+     * @param uuid UUID of the macro to execute (required)
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -84,7 +88,7 @@ public class DefaultApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call apiStatusGetCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call macroUuidExecutePostCall(@jakarta.annotation.Nonnull String uuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -98,16 +102,21 @@ public class DefaultApi {
             basePath = null;
         }
 
-        Object localVarPostBody = null;
+        Object localVarPostBody = body;
 
         // create path and map variables
-        String localVarPath = "/api/status";
+        String localVarPath = "/macro/{uuid}/execute"
+            .replace("{" + "uuid" + "}", localVarApiClient.escapeString(uuid.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
 
         final String[] localVarAccepts = {
             "application/json"
@@ -118,25 +127,40 @@ public class DefaultApi {
         }
 
         final String[] localVarContentTypes = {
+            "application/json"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String[] localVarAuthNames = new String[] { "noauthAuth" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        if (xApiKey != null) {
+            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call apiStatusGetValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return apiStatusGetCall(_callback);
+    private okhttp3.Call macroUuidExecutePostValidateBeforeCall(@jakarta.annotation.Nonnull String uuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'uuid' is set
+        if (uuid == null) {
+            throw new ApiException("Missing the required parameter 'uuid' when calling macroUuidExecutePost(Async)");
+        }
+
+        return macroUuidExecutePostCall(uuid, xApiKey, clientId, body, _callback);
 
     }
 
     /**
-     * /api/status
-     * Returns the API status
+     * /macro/:uuid/execute
+     * ## Executes a macro
+     * @param uuid UUID of the macro to execute (required)
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -146,14 +170,18 @@ public class DefaultApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Object apiStatusGet() throws ApiException {
-        ApiResponse<Object> localVarResp = apiStatusGetWithHttpInfo();
+    public Object macroUuidExecutePost(@jakarta.annotation.Nonnull String uuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        ApiResponse<Object> localVarResp = macroUuidExecutePostWithHttpInfo(uuid, xApiKey, clientId, body);
         return localVarResp.getData();
     }
 
     /**
-     * /api/status
-     * Returns the API status
+     * /macro/:uuid/execute
+     * ## Executes a macro
+     * @param uuid UUID of the macro to execute (required)
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -163,15 +191,19 @@ public class DefaultApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> apiStatusGetWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = apiStatusGetValidateBeforeCall(null);
+    public ApiResponse<Object> macroUuidExecutePostWithHttpInfo(@jakarta.annotation.Nonnull String uuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        okhttp3.Call localVarCall = macroUuidExecutePostValidateBeforeCall(uuid, xApiKey, clientId, body, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /api/status (asynchronously)
-     * Returns the API status
+     * /macro/:uuid/execute (asynchronously)
+     * ## Executes a macro
+     * @param uuid UUID of the macro to execute (required)
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -182,16 +214,17 @@ public class DefaultApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call apiStatusGetAsync(final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call macroUuidExecutePostAsync(@jakarta.annotation.Nonnull String uuid, @jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = apiStatusGetValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = macroUuidExecutePostValidateBeforeCall(uuid, xApiKey, clientId, body, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for clientsGet
+     * Build call for macrosGet
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -199,10 +232,10 @@ public class DefaultApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call clientsGetCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call macrosGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -219,13 +252,17 @@ public class DefaultApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/clients";
+        String localVarPath = "/macros";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
 
         final String[] localVarAccepts = {
             "application/json"
@@ -247,57 +284,60 @@ public class DefaultApi {
         }
 
 
-        String[] localVarAuthNames = new String[] { "noauthAuth" };
+        String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call clientsGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
-        return clientsGetCall(xApiKey, _callback);
+    private okhttp3.Call macrosGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback _callback) throws ApiException {
+        return macrosGetCall(xApiKey, clientId, _callback);
 
     }
 
     /**
-     * /clients
-     * Returns connected client Foundry Worlds
+     * /macros
+     * ## Returns all available macros
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Object clientsGet(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        ApiResponse<Object> localVarResp = clientsGetWithHttpInfo(xApiKey);
+    public Object macrosGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId) throws ApiException {
+        ApiResponse<Object> localVarResp = macrosGetWithHttpInfo(xApiKey, clientId);
         return localVarResp.getData();
     }
 
     /**
-     * /clients
-     * Returns connected client Foundry Worlds
+     * /macros
+     * ## Returns all available macros
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> clientsGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        okhttp3.Call localVarCall = clientsGetValidateBeforeCall(xApiKey, null);
+    public ApiResponse<Object> macrosGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId) throws ApiException {
+        okhttp3.Call localVarCall = macrosGetValidateBeforeCall(xApiKey, clientId, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /clients (asynchronously)
-     * Returns connected client Foundry Worlds
+     * /macros (asynchronously)
+     * ## Returns all available macros
      * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -305,12 +345,12 @@ public class DefaultApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call clientsGetAsync(@jakarta.annotation.Nullable String xApiKey, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call macrosGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = clientsGetValidateBeforeCall(xApiKey, _callback);
+        okhttp3.Call localVarCall = macrosGetValidateBeforeCall(xApiKey, clientId, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
