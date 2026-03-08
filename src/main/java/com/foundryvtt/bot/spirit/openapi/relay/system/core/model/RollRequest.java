@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.openapi.relay.system.model;
+package com.foundryvtt.bot.spirit.openapi.relay.system.core.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

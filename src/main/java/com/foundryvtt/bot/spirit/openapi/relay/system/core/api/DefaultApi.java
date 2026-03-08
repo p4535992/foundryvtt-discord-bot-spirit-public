@@ -11,7 +11,7 @@
  */
 
 
-package com.foundryvtt.bot.spirit.openapi.relay.system.core;
+package com.foundryvtt.bot.spirit.openapi.relay.system.core.api;
 
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiCallback;
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiClient;
@@ -35,16 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SheetApi {
+public class DefaultApi {
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
 
-    public SheetApi() {
+    public DefaultApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public SheetApi(ApiClient apiClient) {
+    public DefaultApi(ApiClient apiClient) {
         this.localVarApiClient = apiClient;
     }
 
@@ -73,12 +73,7 @@ public class SheetApi {
     }
 
     /**
-     * Build call for sheetGet
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected (Optional) Tab to open if available (optional)
-     * @param actor (Optional) Return dark mode HTML. Default &#x3D; false (optional)
-     * @param scale  (optional)
+     * Build call for apiStatusGet
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -89,7 +84,7 @@ public class SheetApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sheetGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, @jakarta.annotation.Nullable BigDecimal scale, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call apiStatusGetCall(final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -106,7 +101,7 @@ public class SheetApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/sheet";
+        String localVarPath = "/api/status";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -114,24 +109,126 @@ public class SheetApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-        if (clientId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
         }
 
-        if (selected != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("selected", selected));
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        if (actor != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("actor", actor));
+        String[] localVarAuthNames = new String[] { "noauthAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call apiStatusGetValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return apiStatusGetCall(_callback);
+
+    }
+
+    /**
+     * /api/status
+     * Returns the API status
+     * @return Object
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public Object apiStatusGet() throws ApiException {
+        ApiResponse<Object> localVarResp = apiStatusGetWithHttpInfo();
+        return localVarResp.getData();
+    }
+
+    /**
+     * /api/status
+     * Returns the API status
+     * @return ApiResponse&lt;Object&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public ApiResponse<Object> apiStatusGetWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = apiStatusGetValidateBeforeCall(null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * /api/status (asynchronously)
+     * Returns the API status
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call apiStatusGetAsync(final ApiCallback<Object> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = apiStatusGetValidateBeforeCall(_callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for clientsGet
+     * @param xApiKey  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call clientsGetCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
         }
 
-        if (scale != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("scale", scale));
-        }
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/clients";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-            "text/plain"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -150,25 +247,21 @@ public class SheetApi {
         }
 
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "noauthAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call sheetGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, @jakarta.annotation.Nullable BigDecimal scale, final ApiCallback _callback) throws ApiException {
-        return sheetGetCall(xApiKey, clientId, selected, actor, scale, _callback);
+    private okhttp3.Call clientsGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
+        return clientsGetCall(xApiKey, _callback);
 
     }
 
     /**
-     * /sheet
-     * ## Returns raw HTML (or a string in a JSON response) for an entity  If returning HTML there are options for scale, tab to open (if available), and darkMode.  If returning JSON the HTML is untouched.
+     * /clients
+     * Returns connected client Foundry Worlds
      * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected (Optional) Tab to open if available (optional)
-     * @param actor (Optional) Return dark mode HTML. Default &#x3D; false (optional)
-     * @param scale  (optional)
-     * @return String
+     * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
@@ -177,20 +270,16 @@ public class SheetApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public String sheetGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, @jakarta.annotation.Nullable BigDecimal scale) throws ApiException {
-        ApiResponse<String> localVarResp = sheetGetWithHttpInfo(xApiKey, clientId, selected, actor, scale);
+    public Object clientsGet(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
+        ApiResponse<Object> localVarResp = clientsGetWithHttpInfo(xApiKey);
         return localVarResp.getData();
     }
 
     /**
-     * /sheet
-     * ## Returns raw HTML (or a string in a JSON response) for an entity  If returning HTML there are options for scale, tab to open (if available), and darkMode.  If returning JSON the HTML is untouched.
+     * /clients
+     * Returns connected client Foundry Worlds
      * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected (Optional) Tab to open if available (optional)
-     * @param actor (Optional) Return dark mode HTML. Default &#x3D; false (optional)
-     * @param scale  (optional)
-     * @return ApiResponse&lt;String&gt;
+     * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
@@ -199,20 +288,16 @@ public class SheetApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<String> sheetGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, @jakarta.annotation.Nullable BigDecimal scale) throws ApiException {
-        okhttp3.Call localVarCall = sheetGetValidateBeforeCall(xApiKey, clientId, selected, actor, scale, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
+    public ApiResponse<Object> clientsGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
+        okhttp3.Call localVarCall = clientsGetValidateBeforeCall(xApiKey, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /sheet (asynchronously)
-     * ## Returns raw HTML (or a string in a JSON response) for an entity  If returning HTML there are options for scale, tab to open (if available), and darkMode.  If returning JSON the HTML is untouched.
+     * /clients (asynchronously)
+     * Returns connected client Foundry Worlds
      * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected (Optional) Tab to open if available (optional)
-     * @param actor (Optional) Return dark mode HTML. Default &#x3D; false (optional)
-     * @param scale  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -223,10 +308,10 @@ public class SheetApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sheetGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, @jakarta.annotation.Nullable BigDecimal scale, final ApiCallback<String> _callback) throws ApiException {
+    public okhttp3.Call clientsGetAsync(@jakarta.annotation.Nullable String xApiKey, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sheetGetValidateBeforeCall(xApiKey, clientId, selected, actor, scale, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
+        okhttp3.Call localVarCall = clientsGetValidateBeforeCall(xApiKey, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

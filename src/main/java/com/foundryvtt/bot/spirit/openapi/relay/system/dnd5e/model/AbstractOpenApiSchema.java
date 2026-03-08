@@ -11,9 +11,9 @@
  */
 
 
-package com.foundryvtt.bot.spirit.openapi.relay.system.model;
+package com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.model;
 
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiException;
+import com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker.ApiException;
 import java.util.Objects;
 import java.lang.reflect.Type;
 import java.util.Map;

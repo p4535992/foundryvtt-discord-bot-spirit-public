@@ -1,8 +1,5 @@
-package com.foundryvtt.bot.spirit.openapi.relay.system.model;
+package com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.model;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.foundryvtt.bot.spirit.openapi.relay.system.model.Actor;
-import com.foundryvtt.bot.spirit.openapi.relay.system.model.Item;
 import java.util.HashMap;
 import java.util.Map;
 import jakarta.validation.constraints.*;
@@ -21,19 +18,21 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 
+/**
+ * Generic Actor payload aligned with Foundry document shape.
+ **/
 
+@org.eclipse.microprofile.openapi.annotations.media.Schema(description="Generic Actor payload aligned with Foundry document shape.")
 
-@org.eclipse.microprofile.openapi.annotations.media.Schema(description="")
-
-@JsonTypeName("_create_post_request")
+@JsonTypeName("Actor")
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.19.0")    @XmlAccessorType(XmlAccessType.FIELD)
-     @XmlType(name = "CreatePostRequest", propOrder =
+     @XmlType(name = "Actor", propOrder =
     { "type", "folder", "data", "flags"
     })
     
-    @XmlRootElement(name="CreatePostRequest")
+    
 
-public class CreatePostRequest   {
+public class Actor extends HashMap<String, Object>  {
   private String
  type;
   private String
@@ -47,20 +46,13 @@ Object
 >
  flags = new HashMap<>();
 
-  protected CreatePostRequest(CreatePostRequestBuilder<?, ?> b) {
-    this.type = b.type;
-    this.folder = b.folder;
-    this.data = b.data;
-    this.flags = b.flags;
-  }
-
-  public CreatePostRequest() {
+  public Actor() {
   }
 
   /**
-   * Foundry item type.
+   * Foundry document type (for example npc, character).
    **/
-  public CreatePostRequest type(String
+  public Actor type(String
  type) {
     this.type = type;
     return this;
@@ -68,7 +60,7 @@ Object
 
       @XmlElement(name="type")
   
-  @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "Foundry item type.")
+  @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "Foundry document type (for example npc, character).")
   
   @JsonProperty("type")
   
@@ -85,7 +77,7 @@ public String
 
   /**
    **/
-  public CreatePostRequest folder(String
+  public Actor folder(String
  folder) {
     this.folder = folder;
     return this;
@@ -110,7 +102,7 @@ public String
 
   /**
    **/
-  public CreatePostRequest data(Map<String, 
+  public Actor data(Map<String, 
 Object
 >
  data) {
@@ -139,7 +131,7 @@ Object
     this.data = data;
   }
 
-  public CreatePostRequest putDataItem(String key, Object dataItem) {
+  public Actor putDataItem(String key, Object dataItem) {
     if (this.data == null) {
       this.data = new HashMap<>();
     }
@@ -148,7 +140,7 @@ Object
     return this;
   }
 
-  public CreatePostRequest removeDataItem(String key) {
+  public Actor removeDataItem(String key) {
     if (this.data != null) {
       this.data.remove(key);
     }
@@ -157,7 +149,7 @@ Object
   }
   /**
    **/
-  public CreatePostRequest flags(Map<String, 
+  public Actor flags(Map<String, 
 Object
 >
  flags) {
@@ -186,7 +178,7 @@ Object
     this.flags = flags;
   }
 
-  public CreatePostRequest putFlagsItem(String key, Object flagsItem) {
+  public Actor putFlagsItem(String key, Object flagsItem) {
     if (this.flags == null) {
       this.flags = new HashMap<>();
     }
@@ -195,7 +187,7 @@ Object
     return this;
   }
 
-  public CreatePostRequest removeFlagsItem(String key) {
+  public Actor removeFlagsItem(String key) {
     if (this.flags != null) {
       this.flags.remove(key);
     }
@@ -211,23 +203,24 @@ Object
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreatePostRequest createPostRequest = (CreatePostRequest) o;
-    return Objects.equals(this.type, createPostRequest.type) &&
-        Objects.equals(this.folder, createPostRequest.folder) &&
-        Objects.equals(this.data, createPostRequest.data) &&
-        Objects.equals(this.flags, createPostRequest.flags);
+    Actor actor = (Actor) o;
+    return Objects.equals(this.type, actor.type) &&
+        Objects.equals(this.folder, actor.folder) &&
+        Objects.equals(this.data, actor.data) &&
+        Objects.equals(this.flags, actor.flags) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, folder, data, flags);
+    return Objects.hash(type, folder, data, flags, super.hashCode());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreatePostRequest {\n");
-    
+    sb.append("class Actor {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    folder: ").append(toIndentedString(folder)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
@@ -248,48 +241,5 @@ Object
   }
 
 
-  public static CreatePostRequestBuilder<?, ?> builder() {
-    return new CreatePostRequestBuilderImpl();
-  }
-
-  private static final class CreatePostRequestBuilderImpl extends CreatePostRequestBuilder<CreatePostRequest, CreatePostRequestBuilderImpl> {
-
-    @Override
-    protected CreatePostRequestBuilderImpl self() {
-      return this;
-    }
-
-    @Override
-    public CreatePostRequest build() {
-      return new CreatePostRequest(this);
-    }
-  }
-
-  public static abstract class CreatePostRequestBuilder<C extends CreatePostRequest, B extends CreatePostRequestBuilder<C, B>>  {
-    private String type;
-    private String folder;
-    private Map<String, Object> data = new HashMap<>();
-    private Map<String, Object> flags = new HashMap<>();
-    protected abstract B self();
-
-    public abstract C build();
-
-    public B type(String type) {
-      this.type = type;
-      return self();
-    }
-    public B folder(String folder) {
-      this.folder = folder;
-      return self();
-    }
-    public B data(Map<String, Object> data) {
-      this.data = data;
-      return self();
-    }
-    public B flags(Map<String, Object> flags) {
-      this.flags = flags;
-      return self();
-    }
-  }
 }
 

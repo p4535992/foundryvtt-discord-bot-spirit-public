@@ -11,7 +11,7 @@
  */
 
 
-package com.foundryvtt.bot.spirit.openapi.relay.system.core;
+package com.foundryvtt.bot.spirit.openapi.relay.system.core.api;
 
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiCallback;
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiClient;
@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import java.io.File;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -34,16 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SessionApi {
+public class FileSystemApi {
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
 
-    public SessionApi() {
+    public FileSystemApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public SessionApi(ApiClient apiClient) {
+    public FileSystemApi(ApiClient apiClient) {
         this.localVarApiClient = apiClient;
     }
 
@@ -72,9 +73,11 @@ public class SessionApi {
     }
 
     /**
-     * Build call for endSessionDelete
+     * Build call for downloadGet
      * @param xApiKey  (optional)
-     * @param sessionId The session to end (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param format  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -85,7 +88,7 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call endSessionDeleteCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call downloadGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String format, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -102,7 +105,7 @@ public class SessionApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/end-session";
+        String localVarPath = "/download";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -110,138 +113,17 @@ public class SessionApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-        if (sessionId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("sessionId", sessionId));
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
         }
 
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        if (path != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("path", path));
         }
 
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
+        if (format != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("format", format));
         }
-
-        if (xApiKey != null) {
-            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
-        }
-
-
-        String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call endSessionDeleteValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId, final ApiCallback _callback) throws ApiException {
-        return endSessionDeleteCall(xApiKey, sessionId, _callback);
-
-    }
-
-    /**
-     * /end-session
-     * Ends a headless Foundry session.
-     * @param xApiKey  (optional)
-     * @param sessionId The session to end (optional)
-     * @return Object
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
-     </table>
-     */
-    public Object endSessionDelete(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId) throws ApiException {
-        ApiResponse<Object> localVarResp = endSessionDeleteWithHttpInfo(xApiKey, sessionId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * /end-session
-     * Ends a headless Foundry session.
-     * @param xApiKey  (optional)
-     * @param sessionId The session to end (optional)
-     * @return ApiResponse&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
-     </table>
-     */
-    public ApiResponse<Object> endSessionDeleteWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId) throws ApiException {
-        okhttp3.Call localVarCall = endSessionDeleteValidateBeforeCall(xApiKey, sessionId, null);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * /end-session (asynchronously)
-     * Ends a headless Foundry session.
-     * @param xApiKey  (optional)
-     * @param sessionId The session to end (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call endSessionDeleteAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String sessionId, final ApiCallback<Object> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = endSessionDeleteValidateBeforeCall(xApiKey, sessionId, _callback);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for sessionGet
-     * @param xApiKey  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call sessionGetCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/session";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
             "application/json"
@@ -268,15 +150,18 @@ public class SessionApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call sessionGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, final ApiCallback _callback) throws ApiException {
-        return sessionGetCall(xApiKey, _callback);
+    private okhttp3.Call downloadGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String format, final ApiCallback _callback) throws ApiException {
+        return downloadGetCall(xApiKey, clientId, path, format, _callback);
 
     }
 
     /**
-     * /session
-     * Gets the currently active headless Foundry session.
+     * /download
+     * 
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param format  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -286,15 +171,18 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Object sessionGet(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        ApiResponse<Object> localVarResp = sessionGetWithHttpInfo(xApiKey);
+    public Object downloadGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String format) throws ApiException {
+        ApiResponse<Object> localVarResp = downloadGetWithHttpInfo(xApiKey, clientId, path, format);
         return localVarResp.getData();
     }
 
     /**
-     * /session
-     * Gets the currently active headless Foundry session.
+     * /download
+     * 
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param format  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -304,16 +192,19 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> sessionGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey) throws ApiException {
-        okhttp3.Call localVarCall = sessionGetValidateBeforeCall(xApiKey, null);
+    public ApiResponse<Object> downloadGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String format) throws ApiException {
+        okhttp3.Call localVarCall = downloadGetValidateBeforeCall(xApiKey, clientId, path, format, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /session (asynchronously)
-     * Gets the currently active headless Foundry session.
+     * /download (asynchronously)
+     * 
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param format  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -324,21 +215,17 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sessionGetAsync(@jakarta.annotation.Nullable String xApiKey, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call downloadGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String format, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sessionGetValidateBeforeCall(xApiKey, _callback);
+        okhttp3.Call localVarCall = downloadGetValidateBeforeCall(xApiKey, clientId, path, format, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for sessionHandshakePost
+     * Build call for fileSystemGet
      * @param xApiKey  (optional)
-     * @param xFoundryUrl The url to your foundry game (optional)
-     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
-     * @param xPassword The password to log in with (optional)
-     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
-     * @param requestBody  (optional)
+     * @param clientId  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -349,7 +236,7 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sessionHandshakePostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call fileSystemGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -363,16 +250,20 @@ public class SessionApi {
             basePath = null;
         }
 
-        Object localVarPostBody = requestBody;
+        Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/session-handshake";
+        String localVarPath = "/file-system";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
 
         final String[] localVarAccepts = {
             "application/json"
@@ -383,7 +274,6 @@ public class SessionApi {
         }
 
         final String[] localVarContentTypes = {
-            "application/json"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
@@ -395,45 +285,21 @@ public class SessionApi {
         }
 
 
-        if (xFoundryUrl != null) {
-            localVarHeaderParams.put("x-foundry-url", localVarApiClient.parameterToString(xFoundryUrl));
-        }
-
-
-        if (xUsername != null) {
-            localVarHeaderParams.put("x-username", localVarApiClient.parameterToString(xUsername));
-        }
-
-
-        if (xPassword != null) {
-            localVarHeaderParams.put("x-password", localVarApiClient.parameterToString(xPassword));
-        }
-
-
-        if (xWorldName != null) {
-            localVarHeaderParams.put("x-world-name", localVarApiClient.parameterToString(xWorldName));
-        }
-
-
         String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call sessionHandshakePostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        return sessionHandshakePostCall(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody, _callback);
+    private okhttp3.Call fileSystemGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback _callback) throws ApiException {
+        return fileSystemGetCall(xApiKey, clientId, _callback);
 
     }
 
     /**
-     * /session-handshake
-     * Creates a temporary, one-time-use, token that can be used to create a headless Foundry session.
+     * /file-system
+     * 
      * @param xApiKey  (optional)
-     * @param xFoundryUrl The url to your foundry game (optional)
-     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
-     * @param xPassword The password to log in with (optional)
-     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
-     * @param requestBody  (optional)
+     * @param clientId  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -443,20 +309,16 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Object sessionHandshakePost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Object> localVarResp = sessionHandshakePostWithHttpInfo(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody);
+    public Object fileSystemGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId) throws ApiException {
+        ApiResponse<Object> localVarResp = fileSystemGetWithHttpInfo(xApiKey, clientId);
         return localVarResp.getData();
     }
 
     /**
-     * /session-handshake
-     * Creates a temporary, one-time-use, token that can be used to create a headless Foundry session.
+     * /file-system
+     * 
      * @param xApiKey  (optional)
-     * @param xFoundryUrl The url to your foundry game (optional)
-     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
-     * @param xPassword The password to log in with (optional)
-     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
-     * @param requestBody  (optional)
+     * @param clientId  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -466,21 +328,17 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> sessionHandshakePostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = sessionHandshakePostValidateBeforeCall(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody, null);
+    public ApiResponse<Object> fileSystemGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId) throws ApiException {
+        okhttp3.Call localVarCall = fileSystemGetValidateBeforeCall(xApiKey, clientId, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /session-handshake (asynchronously)
-     * Creates a temporary, one-time-use, token that can be used to create a headless Foundry session.
+     * /file-system (asynchronously)
+     * 
      * @param xApiKey  (optional)
-     * @param xFoundryUrl The url to your foundry game (optional)
-     * @param xUsername The username to log in with (eg. \&quot;Gamemaster\&quot;) (optional)
-     * @param xPassword The password to log in with (optional)
-     * @param xWorldName (Optional) The name of the world as it appears in foundry if the world is not already loaded. (optional)
-     * @param requestBody  (optional)
+     * @param clientId  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -491,16 +349,20 @@ public class SessionApi {
         <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call sessionHandshakePostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String xFoundryUrl, @jakarta.annotation.Nullable String xUsername, @jakarta.annotation.Nullable String xPassword, @jakarta.annotation.Nullable String xWorldName, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call fileSystemGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sessionHandshakePostValidateBeforeCall(xApiKey, xFoundryUrl, xUsername, xPassword, xWorldName, requestBody, _callback);
+        okhttp3.Call localVarCall = fileSystemGetValidateBeforeCall(xApiKey, clientId, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for startSessionPost
+     * Build call for uploadPost
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param filename  (optional)
+     * @param overwrite  (optional)
      * @param body  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -509,10 +371,10 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call startSessionPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call uploadPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String filename, @jakarta.annotation.Nullable Boolean overwrite, @jakarta.annotation.Nullable File body, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -529,13 +391,29 @@ public class SessionApi {
         Object localVarPostBody = body;
 
         // create path and map variables
-        String localVarPath = "/start-session";
+        String localVarPath = "/upload";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
+
+        if (path != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("path", path));
+        }
+
+        if (filename != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("filename", filename));
+        }
+
+        if (overwrite != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("overwrite", overwrite));
+        }
 
         final String[] localVarAccepts = {
             "application/json"
@@ -546,7 +424,7 @@ public class SessionApi {
         }
 
         final String[] localVarContentTypes = {
-            "application/json"
+            "text/plain"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
@@ -563,15 +441,19 @@ public class SessionApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call startSessionPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        return startSessionPostCall(xApiKey, body, _callback);
+    private okhttp3.Call uploadPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String filename, @jakarta.annotation.Nullable Boolean overwrite, @jakarta.annotation.Nullable File body, final ApiCallback _callback) throws ApiException {
+        return uploadPostCall(xApiKey, clientId, path, filename, overwrite, body, _callback);
 
     }
 
     /**
-     * /start-session
-     * Starts a headless Foundry session. Must provide a handshake token and the encrypted password.
+     * /upload
+     * 
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param filename  (optional)
+     * @param overwrite  (optional)
      * @param body  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -579,18 +461,22 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public Object startSessionPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body) throws ApiException {
-        ApiResponse<Object> localVarResp = startSessionPostWithHttpInfo(xApiKey, body);
+    public Object uploadPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String filename, @jakarta.annotation.Nullable Boolean overwrite, @jakarta.annotation.Nullable File body) throws ApiException {
+        ApiResponse<Object> localVarResp = uploadPostWithHttpInfo(xApiKey, clientId, path, filename, overwrite, body);
         return localVarResp.getData();
     }
 
     /**
-     * /start-session
-     * Starts a headless Foundry session. Must provide a handshake token and the encrypted password.
+     * /upload
+     * 
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param filename  (optional)
+     * @param overwrite  (optional)
      * @param body  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -598,19 +484,23 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> startSessionPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body) throws ApiException {
-        okhttp3.Call localVarCall = startSessionPostValidateBeforeCall(xApiKey, body, null);
+    public ApiResponse<Object> uploadPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String filename, @jakarta.annotation.Nullable Boolean overwrite, @jakarta.annotation.Nullable File body) throws ApiException {
+        okhttp3.Call localVarCall = uploadPostValidateBeforeCall(xApiKey, clientId, path, filename, overwrite, body, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /start-session (asynchronously)
-     * Starts a headless Foundry session. Must provide a handshake token and the encrypted password.
+     * /upload (asynchronously)
+     * 
      * @param xApiKey  (optional)
+     * @param clientId  (optional)
+     * @param path  (optional)
+     * @param filename  (optional)
+     * @param overwrite  (optional)
      * @param body  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -619,12 +509,12 @@ public class SessionApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * X-Powered-By -  <br>  * Access-Control-Allow-Origin -  <br>  * Access-Control-Allow-Methods -  <br>  * Access-Control-Allow-Headers -  <br>  * Access-Control-Allow-Credentials -  <br>  * Content-Type -  <br>  * Content-Length -  <br>  * ETag -  <br>  * Date -  <br>  * Connection -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call startSessionPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call uploadPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String path, @jakarta.annotation.Nullable String filename, @jakarta.annotation.Nullable Boolean overwrite, @jakarta.annotation.Nullable File body, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = startSessionPostValidateBeforeCall(xApiKey, body, _callback);
+        okhttp3.Call localVarCall = uploadPostValidateBeforeCall(xApiKey, clientId, path, filename, overwrite, body, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

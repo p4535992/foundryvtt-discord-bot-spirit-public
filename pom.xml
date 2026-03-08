@@ -696,8 +696,8 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-core.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-core</output>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core</apiPackage>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.model</modelPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.api</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.model</modelPackage>
                                     <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker</invokerPackage>
                                     <configOptions>
                                         <library>okhttp-gson</library>
@@ -706,7 +706,7 @@
                                         <openApiNullable>false</openApiNullable>
                                         <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                     </configOptions>
-                                    <generateModels>false</generateModels>
+                                    <generateModels>true</generateModels>
                                     <generateApiTests>false</generateApiTests>
                                     <generateModelTests>false</generateModelTests>
                                     <generateApiDocumentation>false</generateApiDocumentation>
@@ -757,8 +757,8 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-dnd5e.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-dnd5e</output>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e</apiPackage>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.model</modelPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.api</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.model</modelPackage>
                                     <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker</invokerPackage>
                                     <configOptions>
                                         <library>okhttp-gson</library>
@@ -767,7 +767,7 @@
                                         <openApiNullable>false</openApiNullable>
                                         <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                     </configOptions>
-                                    <generateModels>false</generateModels>
+                                    <generateModels>true</generateModels>
                                     <generateApiTests>false</generateApiTests>
                                     <generateModelTests>false</generateModelTests>
                                     <generateApiDocumentation>false</generateApiDocumentation>
@@ -820,8 +820,8 @@
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay</output>
                                     <templateDirectory>${project.basedir}/openapi-templates/jaxrs-spec-mp-openapi</templateDirectory>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.model</modelPackage>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.api</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.server.model</modelPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.server.api</apiPackage>
                                     <configOptions>
                                         <useJakartaEe>true</useJakartaEe>
                                         <serializationLibrary>jackson</serializationLibrary>

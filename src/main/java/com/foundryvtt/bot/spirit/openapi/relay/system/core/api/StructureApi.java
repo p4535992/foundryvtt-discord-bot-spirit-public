@@ -11,7 +11,7 @@
  */
 
 
-package com.foundryvtt.bot.spirit.openapi.relay.system.core;
+package com.foundryvtt.bot.spirit.openapi.relay.system.core.api;
 
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiCallback;
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiClient;

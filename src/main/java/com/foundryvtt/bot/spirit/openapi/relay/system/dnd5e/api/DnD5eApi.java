@@ -11,7 +11,7 @@
  */
 
 
-package com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e;
+package com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.api;
 
 import com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker.ApiCallback;
 import com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker.ApiClient;

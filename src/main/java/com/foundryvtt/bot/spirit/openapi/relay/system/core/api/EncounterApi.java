@@ -11,7 +11,7 @@
  */
 
 
-package com.foundryvtt.bot.spirit.openapi.relay.system.core;
+package com.foundryvtt.bot.spirit.openapi.relay.system.core.api;
 
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiCallback;
 import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiClient;
@@ -28,7 +28,6 @@ import java.io.IOException;
 
 
 import java.math.BigDecimal;
-import com.foundryvtt.bot.spirit.openapi.relay.system.model.CreatePostRequest;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -36,16 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EntityApi {
+public class EncounterApi {
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
 
-    public EntityApi() {
+    public EncounterApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public EntityApi(ApiClient apiClient) {
+    public EncounterApi(ApiClient apiClient) {
         this.localVarApiClient = apiClient;
     }
 
@@ -74,149 +73,9 @@ public class EntityApi {
     }
 
     /**
-     * Build call for createPost
+     * Build call for addToEncounterPost
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param createPostRequest  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call createPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable CreatePostRequest createPostRequest, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = createPostRequest;
-
-        // create path and map variables
-        String localVarPath = "/create";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (clientId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        if (xApiKey != null) {
-            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
-        }
-
-
-        String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call createPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable CreatePostRequest createPostRequest, final ApiCallback _callback) throws ApiException {
-        return createPostCall(xApiKey, clientId, createPostRequest, _callback);
-
-    }
-
-    /**
-     * /create
-     * ## Creates a new entity in Foundry with the given JSON
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param createPostRequest  (optional)
-     * @return Object
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public Object createPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable CreatePostRequest createPostRequest) throws ApiException {
-        ApiResponse<Object> localVarResp = createPostWithHttpInfo(xApiKey, clientId, createPostRequest);
-        return localVarResp.getData();
-    }
-
-    /**
-     * /create
-     * ## Creates a new entity in Foundry with the given JSON
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param createPostRequest  (optional)
-     * @return ApiResponse&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public ApiResponse<Object> createPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable CreatePostRequest createPostRequest) throws ApiException {
-        okhttp3.Call localVarCall = createPostValidateBeforeCall(xApiKey, clientId, createPostRequest, null);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * /create (asynchronously)
-     * ## Creates a new entity in Foundry with the given JSON
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param createPostRequest  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call createPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable CreatePostRequest createPostRequest, final ApiCallback<Object> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = createPostValidateBeforeCall(xApiKey, clientId, createPostRequest, _callback);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for decreasePost
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param body  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -225,10 +84,10 @@ public class EntityApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call decreasePostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call addToEncounterPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -245,7 +104,7 @@ public class EntityApi {
         Object localVarPostBody = body;
 
         // create path and map variables
-        String localVarPath = "/decrease";
+        String localVarPath = "/add-to-encounter";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -255,10 +114,6 @@ public class EntityApi {
 
         if (clientId != null) {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        if (selected != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("selected", selected));
         }
 
         final String[] localVarAccepts = {
@@ -287,17 +142,16 @@ public class EntityApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call decreasePostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        return decreasePostCall(xApiKey, clientId, selected, body, _callback);
+    private okhttp3.Call addToEncounterPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        return addToEncounterPostCall(xApiKey, clientId, body, _callback);
 
     }
 
     /**
-     * /decrease
-     * ## Decrease an attribute
+     * /add-to-encounter
+     * ## Add to encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param body  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -305,20 +159,19 @@ public class EntityApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Object decreasePost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Object body) throws ApiException {
-        ApiResponse<Object> localVarResp = decreasePostWithHttpInfo(xApiKey, clientId, selected, body);
+    public Object addToEncounterPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        ApiResponse<Object> localVarResp = addToEncounterPostWithHttpInfo(xApiKey, clientId, body);
         return localVarResp.getData();
     }
 
     /**
-     * /decrease
-     * ## Decrease an attribute
+     * /add-to-encounter
+     * ## Add to encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param body  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -326,21 +179,20 @@ public class EntityApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> decreasePostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Object body) throws ApiException {
-        okhttp3.Call localVarCall = decreasePostValidateBeforeCall(xApiKey, clientId, selected, body, null);
+    public ApiResponse<Object> addToEncounterPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        okhttp3.Call localVarCall = addToEncounterPostValidateBeforeCall(xApiKey, clientId, body, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /decrease (asynchronously)
-     * ## Decrease an attribute
+     * /add-to-encounter (asynchronously)
+     * ## Add to encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param body  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -349,21 +201,20 @@ public class EntityApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call decreasePostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call addToEncounterPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = decreasePostValidateBeforeCall(xApiKey, clientId, selected, body, _callback);
+        okhttp3.Call localVarCall = addToEncounterPostValidateBeforeCall(xApiKey, clientId, body, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for deleteDelete
+     * Build call for encountersGet
      * @param xApiKey  (optional)
-     * @param clientId  (optional)
-     * @param selected  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -371,10 +222,10 @@ public class EntityApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call deleteDeleteCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call encountersGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -391,7 +242,7 @@ public class EntityApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/delete";
+        String localVarPath = "/encounters";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -401,10 +252,6 @@ public class EntityApi {
 
         if (clientId != null) {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        if (selected != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("selected", selected));
         }
 
         final String[] localVarAccepts = {
@@ -428,310 +275,20 @@ public class EntityApi {
 
 
         String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteDeleteValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, final ApiCallback _callback) throws ApiException {
-        return deleteDeleteCall(xApiKey, clientId, selected, _callback);
-
-    }
-
-    /**
-     * /delete
-     * ## Deletes an entity from Foundry
-     * @param xApiKey  (optional)
-     * @param clientId  (optional)
-     * @param selected  (optional)
-     * @return Object
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public Object deleteDelete(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected) throws ApiException {
-        ApiResponse<Object> localVarResp = deleteDeleteWithHttpInfo(xApiKey, clientId, selected);
-        return localVarResp.getData();
-    }
-
-    /**
-     * /delete
-     * ## Deletes an entity from Foundry
-     * @param xApiKey  (optional)
-     * @param clientId  (optional)
-     * @param selected  (optional)
-     * @return ApiResponse&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public ApiResponse<Object> deleteDeleteWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected) throws ApiException {
-        okhttp3.Call localVarCall = deleteDeleteValidateBeforeCall(xApiKey, clientId, selected, null);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * /delete (asynchronously)
-     * ## Deletes an entity from Foundry
-     * @param xApiKey  (optional)
-     * @param clientId  (optional)
-     * @param selected  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteDeleteAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, final ApiCallback<Object> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteDeleteValidateBeforeCall(xApiKey, clientId, selected, _callback);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getGet
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected Use selected entity (optional)
-     * @param actor Use selected entity&#39;s actor (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getGetCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/get";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (clientId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        if (selected != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("selected", selected));
-        }
-
-        if (actor != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("actor", actor));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        if (xApiKey != null) {
-            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
-        }
-
-
-        String[] localVarAuthNames = new String[] { "noauthAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, final ApiCallback _callback) throws ApiException {
-        return getGetCall(xApiKey, clientId, selected, actor, _callback);
+    private okhttp3.Call encountersGetValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback _callback) throws ApiException {
+        return encountersGetCall(xApiKey, clientId, _callback);
 
     }
 
     /**
-     * /get
-     * ## Returns JSON data for entity
+     * /encounters
+     * ## Returns all encounters
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected Use selected entity (optional)
-     * @param actor Use selected entity&#39;s actor (optional)
-     * @return Object
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public Object getGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor) throws ApiException {
-        ApiResponse<Object> localVarResp = getGetWithHttpInfo(xApiKey, clientId, selected, actor);
-        return localVarResp.getData();
-    }
-
-    /**
-     * /get
-     * ## Returns JSON data for entity
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected Use selected entity (optional)
-     * @param actor Use selected entity&#39;s actor (optional)
-     * @return ApiResponse&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public ApiResponse<Object> getGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor) throws ApiException {
-        okhttp3.Call localVarCall = getGetValidateBeforeCall(xApiKey, clientId, selected, actor, null);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * /get (asynchronously)
-     * ## Returns JSON data for entity
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected Use selected entity (optional)
-     * @param actor Use selected entity&#39;s actor (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Boolean actor, final ApiCallback<Object> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getGetValidateBeforeCall(xApiKey, clientId, selected, actor, _callback);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for givePost
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param body  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call givePostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = body;
-
-        // create path and map variables
-        String localVarPath = "/give";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (clientId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        if (xApiKey != null) {
-            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
-        }
-
-
-        String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call givePostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        return givePostCall(xApiKey, clientId, body, _callback);
-
-    }
-
-    /**
-     * /remove
-     * ## Give an item to an actor  - Item uuid required  - Selected actor or actor uuid  - Optionally take from another actor  - Optionally specify quantity
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param body  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -741,17 +298,16 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Object givePost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
-        ApiResponse<Object> localVarResp = givePostWithHttpInfo(xApiKey, clientId, body);
+    public Object encountersGet(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId) throws ApiException {
+        ApiResponse<Object> localVarResp = encountersGetWithHttpInfo(xApiKey, clientId);
         return localVarResp.getData();
     }
 
     /**
-     * /remove
-     * ## Give an item to an actor  - Item uuid required  - Selected actor or actor uuid  - Optionally take from another actor  - Optionally specify quantity
+     * /encounters
+     * ## Returns all encounters
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param body  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -761,18 +317,17 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> givePostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
-        okhttp3.Call localVarCall = givePostValidateBeforeCall(xApiKey, clientId, body, null);
+    public ApiResponse<Object> encountersGetWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId) throws ApiException {
+        okhttp3.Call localVarCall = encountersGetValidateBeforeCall(xApiKey, clientId, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /remove (asynchronously)
-     * ## Give an item to an actor  - Item uuid required  - Selected actor or actor uuid  - Optionally take from another actor  - Optionally specify quantity
+     * /encounters (asynchronously)
+     * ## Returns all encounters
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param body  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -783,165 +338,17 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call givePostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call encountersGetAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = givePostValidateBeforeCall(xApiKey, clientId, body, _callback);
+        okhttp3.Call localVarCall = encountersGetValidateBeforeCall(xApiKey, clientId, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for increasePost
+     * Build call for endEncounterPost
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
-     * @param body  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call increasePostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = body;
-
-        // create path and map variables
-        String localVarPath = "/increase";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (clientId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        if (uuid != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("uuid", uuid));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        if (xApiKey != null) {
-            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
-        }
-
-
-        String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call increasePostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        return increasePostCall(xApiKey, clientId, uuid, body, _callback);
-
-    }
-
-    /**
-     * /increase
-     * ## Increase an attribute
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
-     * @param body  (optional)
-     * @return Object
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public Object increasePost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body) throws ApiException {
-        ApiResponse<Object> localVarResp = increasePostWithHttpInfo(xApiKey, clientId, uuid, body);
-        return localVarResp.getData();
-    }
-
-    /**
-     * /increase
-     * ## Increase an attribute
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
-     * @param body  (optional)
-     * @return ApiResponse&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public ApiResponse<Object> increasePostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body) throws ApiException {
-        okhttp3.Call localVarCall = increasePostValidateBeforeCall(xApiKey, clientId, uuid, body, null);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * /increase (asynchronously)
-     * ## Increase an attribute
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
-     * @param body  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * date -  <br>  * etag -  <br>  * keep-alive -  <br>  * content-encoding -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
-     </table>
-     */
-    public okhttp3.Call increasePostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = increasePostValidateBeforeCall(xApiKey, clientId, uuid, body, _callback);
-        Type localVarReturnType = new TypeToken<Object>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for killPost
-     * @param xApiKey  (optional)
-     * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param requestBody  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -953,7 +360,7 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call killPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call endEncounterPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -970,7 +377,7 @@ public class EntityApi {
         Object localVarPostBody = requestBody;
 
         // create path and map variables
-        String localVarPath = "/kill";
+        String localVarPath = "/end-encounter";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -980,10 +387,6 @@ public class EntityApi {
 
         if (clientId != null) {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        if (selected != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("selected", selected));
         }
 
         final String[] localVarAccepts = {
@@ -1012,17 +415,16 @@ public class EntityApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call killPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        return killPostCall(xApiKey, clientId, selected, requestBody, _callback);
+    private okhttp3.Call endEncounterPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return endEncounterPostCall(xApiKey, clientId, requestBody, _callback);
 
     }
 
     /**
-     * /kill
-     * ## Reduce to 0hp and mark dead and defeated
+     * /end-encounter
+     * ## End an encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param requestBody  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -1033,17 +435,16 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Object killPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        ApiResponse<Object> localVarResp = killPostWithHttpInfo(xApiKey, clientId, selected, requestBody);
+    public Object endEncounterPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        ApiResponse<Object> localVarResp = endEncounterPostWithHttpInfo(xApiKey, clientId, requestBody);
         return localVarResp.getData();
     }
 
     /**
-     * /kill
-     * ## Reduce to 0hp and mark dead and defeated
+     * /end-encounter
+     * ## End an encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param requestBody  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -1054,18 +455,17 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> killPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = killPostValidateBeforeCall(xApiKey, clientId, selected, requestBody, null);
+    public ApiResponse<Object> endEncounterPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = endEncounterPostValidateBeforeCall(xApiKey, clientId, requestBody, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /kill (asynchronously)
-     * ## Reduce to 0hp and mark dead and defeated
+     * /end-encounter (asynchronously)
+     * ## End an encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param selected  (optional)
      * @param requestBody  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -1077,19 +477,18 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call killPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Boolean selected, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call endEncounterPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = killPostValidateBeforeCall(xApiKey, clientId, selected, requestBody, _callback);
+        okhttp3.Call localVarCall = endEncounterPostValidateBeforeCall(xApiKey, clientId, requestBody, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
-     * Build call for updatePut
+     * Build call for lastRoundPost
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
-     * @param body  (optional)
+     * @param requestBody  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -1100,7 +499,7 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call updatePutCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call lastRoundPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1114,10 +513,10 @@ public class EntityApi {
             basePath = null;
         }
 
-        Object localVarPostBody = body;
+        Object localVarPostBody = requestBody;
 
         // create path and map variables
-        String localVarPath = "/update";
+        String localVarPath = "/last-round";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1127,10 +526,6 @@ public class EntityApi {
 
         if (clientId != null) {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
-        }
-
-        if (uuid != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("uuid", uuid));
         }
 
         final String[] localVarAccepts = {
@@ -1155,21 +550,576 @@ public class EntityApi {
 
 
         String[] localVarAuthNames = new String[] {  };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call updatePutValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
-        return updatePutCall(xApiKey, clientId, uuid, body, _callback);
+    private okhttp3.Call lastRoundPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return lastRoundPostCall(xApiKey, clientId, requestBody, _callback);
 
     }
 
     /**
-     * /update
-     * ## Updates and entity with the given JSON props
+     * /last-round
+     * ## Move backward 1 round
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
+     * @param requestBody  (optional)
+     * @return Object
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public Object lastRoundPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        ApiResponse<Object> localVarResp = lastRoundPostWithHttpInfo(xApiKey, clientId, requestBody);
+        return localVarResp.getData();
+    }
+
+    /**
+     * /last-round
+     * ## Move backward 1 round
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return ApiResponse&lt;Object&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public ApiResponse<Object> lastRoundPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = lastRoundPostValidateBeforeCall(xApiKey, clientId, requestBody, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * /last-round (asynchronously)
+     * ## Move backward 1 round
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call lastRoundPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = lastRoundPostValidateBeforeCall(xApiKey, clientId, requestBody, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for lastTurnPost
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call lastTurnPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = requestBody;
+
+        // create path and map variables
+        String localVarPath = "/last-turn";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (xApiKey != null) {
+            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call lastTurnPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return lastTurnPostCall(xApiKey, clientId, requestBody, _callback);
+
+    }
+
+    /**
+     * /last-turn
+     * ## Move backward 1 turn
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return Object
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public Object lastTurnPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        ApiResponse<Object> localVarResp = lastTurnPostWithHttpInfo(xApiKey, clientId, requestBody);
+        return localVarResp.getData();
+    }
+
+    /**
+     * /last-turn
+     * ## Move backward 1 turn
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return ApiResponse&lt;Object&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public ApiResponse<Object> lastTurnPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = lastTurnPostValidateBeforeCall(xApiKey, clientId, requestBody, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * /last-turn (asynchronously)
+     * ## Move backward 1 turn
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call lastTurnPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = lastTurnPostValidateBeforeCall(xApiKey, clientId, requestBody, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for nextRoundPost
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call nextRoundPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = requestBody;
+
+        // create path and map variables
+        String localVarPath = "/next-round";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (xApiKey != null) {
+            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call nextRoundPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return nextRoundPostCall(xApiKey, clientId, requestBody, _callback);
+
+    }
+
+    /**
+     * /next-round
+     * ## Move forward 1 round
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return Object
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public Object nextRoundPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        ApiResponse<Object> localVarResp = nextRoundPostWithHttpInfo(xApiKey, clientId, requestBody);
+        return localVarResp.getData();
+    }
+
+    /**
+     * /next-round
+     * ## Move forward 1 round
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return ApiResponse&lt;Object&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public ApiResponse<Object> nextRoundPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = nextRoundPostValidateBeforeCall(xApiKey, clientId, requestBody, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * /next-round (asynchronously)
+     * ## Move forward 1 round
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call nextRoundPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = nextRoundPostValidateBeforeCall(xApiKey, clientId, requestBody, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for nextTurnPost
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call nextTurnPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = requestBody;
+
+        // create path and map variables
+        String localVarPath = "/next-turn";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (xApiKey != null) {
+            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call nextTurnPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+        return nextTurnPostCall(xApiKey, clientId, requestBody, _callback);
+
+    }
+
+    /**
+     * /next-turn
+     * ## Move forward 1 turn
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return Object
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public Object nextTurnPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        ApiResponse<Object> localVarResp = nextTurnPostWithHttpInfo(xApiKey, clientId, requestBody);
+        return localVarResp.getData();
+    }
+
+    /**
+     * /next-turn
+     * ## Move forward 1 turn
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @return ApiResponse&lt;Object&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public ApiResponse<Object> nextTurnPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody) throws ApiException {
+        okhttp3.Call localVarCall = nextTurnPostValidateBeforeCall(xApiKey, clientId, requestBody, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * /next-turn (asynchronously)
+     * ## Move forward 1 turn
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param requestBody  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call nextTurnPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Map<String, Object> requestBody, final ApiCallback<Object> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = nextTurnPostValidateBeforeCall(xApiKey, clientId, requestBody, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for removeFromEncounterPost
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call removeFromEncounterPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = body;
+
+        // create path and map variables
+        String localVarPath = "/remove-from-encounter";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (xApiKey != null) {
+            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call removeFromEncounterPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        return removeFromEncounterPostCall(xApiKey, clientId, body, _callback);
+
+    }
+
+    /**
+     * /remove-from-encounter
+     * ## Remove from encounter
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
      * @param body  (optional)
      * @return Object
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -1180,17 +1130,16 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public Object updatePut(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body) throws ApiException {
-        ApiResponse<Object> localVarResp = updatePutWithHttpInfo(xApiKey, clientId, uuid, body);
+    public Object removeFromEncounterPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        ApiResponse<Object> localVarResp = removeFromEncounterPostWithHttpInfo(xApiKey, clientId, body);
         return localVarResp.getData();
     }
 
     /**
-     * /update
-     * ## Updates and entity with the given JSON props
+     * /remove-from-encounter
+     * ## Remove from encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
      * @param body  (optional)
      * @return ApiResponse&lt;Object&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -1201,18 +1150,17 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public ApiResponse<Object> updatePutWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body) throws ApiException {
-        okhttp3.Call localVarCall = updatePutValidateBeforeCall(xApiKey, clientId, uuid, body, null);
+    public ApiResponse<Object> removeFromEncounterPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        okhttp3.Call localVarCall = removeFromEncounterPostValidateBeforeCall(xApiKey, clientId, body, null);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * /update (asynchronously)
-     * ## Updates and entity with the given JSON props
+     * /remove-from-encounter (asynchronously)
+     * ## Remove from encounter
      * @param xApiKey  (optional)
      * @param clientId Auth token to connect to specific Foundry world (optional)
-     * @param uuid  (optional)
      * @param body  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -1224,9 +1172,148 @@ public class EntityApi {
         <tr><td> 200 </td><td> OK </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
      </table>
      */
-    public okhttp3.Call updatePutAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String uuid, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
+    public okhttp3.Call removeFromEncounterPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = updatePutValidateBeforeCall(xApiKey, clientId, uuid, body, _callback);
+        okhttp3.Call localVarCall = removeFromEncounterPostValidateBeforeCall(xApiKey, clientId, body, _callback);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for startEncounterPost
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call startEncounterPostCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = body;
+
+        // create path and map variables
+        String localVarPath = "/start-encounter";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("clientId", clientId));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (xApiKey != null) {
+            localVarHeaderParams.put("x-api-key", localVarApiClient.parameterToString(xApiKey));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call startEncounterPostValidateBeforeCall(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback _callback) throws ApiException {
+        return startEncounterPostCall(xApiKey, clientId, body, _callback);
+
+    }
+
+    /**
+     * /start-encounter
+     * ## Starts an encouter
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
+     * @return Object
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public Object startEncounterPost(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        ApiResponse<Object> localVarResp = startEncounterPostWithHttpInfo(xApiKey, clientId, body);
+        return localVarResp.getData();
+    }
+
+    /**
+     * /start-encounter
+     * ## Starts an encouter
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
+     * @return ApiResponse&lt;Object&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public ApiResponse<Object> startEncounterPostWithHttpInfo(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body) throws ApiException {
+        okhttp3.Call localVarCall = startEncounterPostValidateBeforeCall(xApiKey, clientId, body, null);
+        Type localVarReturnType = new TypeToken<Object>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * /start-encounter (asynchronously)
+     * ## Starts an encouter
+     * @param xApiKey  (optional)
+     * @param clientId Auth token to connect to specific Foundry world (optional)
+     * @param body  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Created </td><td>  * x-powered-by -  <br>  * access-control-allow-origin -  <br>  * access-control-allow-methods -  <br>  * access-control-allow-headers -  <br>  * access-control-allow-credentials -  <br>  * content-type -  <br>  * content-encoding -  <br>  * etag -  <br>  * date -  <br>  * connection -  <br>  * transfer-encoding -  <br>  * server -  <br>  * via -  <br>  * fly-request-id -  <br>  </td></tr>
+     </table>
+     */
+    public okhttp3.Call startEncounterPostAsync(@jakarta.annotation.Nullable String xApiKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable Object body, final ApiCallback<Object> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = startEncounterPostValidateBeforeCall(xApiKey, clientId, body, _callback);
         Type localVarReturnType = new TypeToken<Object>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
