@@ -9,9 +9,9 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-import com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.DnD5eApi;
-import com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.invoker.ApiClient;
-import com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.invoker.ApiException;
+import com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.DnD5eApi;
+import com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker.ApiClient;
+import com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker.ApiException;
 import com.foundryvtt.bot.spirit.service.RestRelayService;
 import com.google.gson.reflect.TypeToken;
 

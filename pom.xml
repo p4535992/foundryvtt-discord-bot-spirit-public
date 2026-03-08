@@ -696,9 +696,9 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-core.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-core</output>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.client.core</apiPackage>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.model</modelPackage>
-                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.client.core.invoker</invokerPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.model</modelPackage>
+                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker</invokerPackage>
                                     <configOptions>
                                         <library>okhttp-gson</library>
                                         <dateLibrary>java-time</dateLibrary>
@@ -757,9 +757,9 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-dnd5e.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-dnd5e</output>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e</apiPackage>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.model</modelPackage>
-                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.client.dnd5e.invoker</invokerPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.model</modelPackage>
+                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker</invokerPackage>
                                     <configOptions>
                                         <library>okhttp-gson</library>
                                         <dateLibrary>java-time</dateLibrary>
@@ -817,17 +817,11 @@
                                 </goals>
                                 <configuration>
                                     <generatorName>jaxrs-spec</generatorName>
-                                    <inputSpec>
-                                        ${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay.yaml
-                                    </inputSpec>
-                                    <output>
-                                        ${project.build.directory}/generated-sources/openapi/relay
-                                    </output>
-                                    <templateDirectory>
-                                        ${project.basedir}/openapi-templates/jaxrs-spec-mp-openapi
-                                    </templateDirectory>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.model</modelPackage>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.server.api</apiPackage>
+                                    <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay.yaml</inputSpec>
+                                    <output>${project.build.directory}/generated-sources/openapi/relay</output>
+                                    <templateDirectory>${project.basedir}/openapi-templates/jaxrs-spec-mp-openapi</templateDirectory>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.model</modelPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.api</apiPackage>
                                     <configOptions>
                                         <useJakartaEe>true</useJakartaEe>
                                         <serializationLibrary>jackson</serializationLibrary>
@@ -866,9 +860,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
-                                        <source>
-                                            ${project.build.directory}/generated-sources/openapi/relay/src/gen/java
-                                        </source>
+                                        <source>${project.build.directory}/generated-sources/openapi/relay/src/gen/java</source>
                                     </sources>
                                 </configuration>
                             </execution>

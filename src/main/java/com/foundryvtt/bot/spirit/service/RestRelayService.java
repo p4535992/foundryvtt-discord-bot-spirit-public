@@ -3,7 +3,7 @@ package com.foundryvtt.bot.spirit.service;
 import java.net.URI;
 import java.util.Map;
 
-import com.foundryvtt.bot.spirit.openapi.relay.model.RollRequest;
+import com.foundryvtt.bot.spirit.openapi.relay.system.model.RollRequest;
 
 /**
  * Entry point for Foundry REST relay operations used by the Discord bot layer.
