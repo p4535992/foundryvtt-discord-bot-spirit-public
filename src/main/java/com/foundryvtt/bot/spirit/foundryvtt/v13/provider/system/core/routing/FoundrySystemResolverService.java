@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.SystemId;
-import com.foundryvtt.bot.spirit.service.RestRelayService;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service.RestRelayService;
 
 /**
  * Resolves the Foundry system id associated with a relay client.

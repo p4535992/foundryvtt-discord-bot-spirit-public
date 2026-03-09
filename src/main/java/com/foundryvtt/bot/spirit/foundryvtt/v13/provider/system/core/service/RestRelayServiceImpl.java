@@ -1,9 +1,6 @@
-package com.foundryvtt.bot.spirit.service;
+package com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service;
 
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,22 +22,12 @@ import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model.RollRequest
  * Default bridge service between Quarkus/JDA code and the generated relay OpenAPI client.
  */
 @ApplicationScoped
-public class RestRelayServiceImpl implements RestRelayService {
+public class RestRelayServiceImpl extends AbstractRelayClientService implements RestRelayService {
 
     /**
      * Logger for relay bridge activities.
      */
     private static final Logger LOG = Logger.getLogger(RestRelayServiceImpl.class);
-
-    /**
-     * Configured relay HTTP base URL.
-     */
-    private final String relayBaseUrl;
-
-    /**
-     * Configured relay API key.
-     */
-    private final String relayApiKey;
 
     /**
      * Configured relay websocket URL.
@@ -89,12 +76,11 @@ public class RestRelayServiceImpl implements RestRelayService {
             @ConfigProperty(name = "spirit.relay.base-url", defaultValue = "http://localhost:30000") String relayBaseUrl,
             @ConfigProperty(name = "spirit.relay.api-key", defaultValue = "") String relayApiKey,
             @ConfigProperty(name = "spirit.relay.websocket-url", defaultValue = "ws://localhost:30000/relay") String relayWebSocketUrl) {
-        this.relayBaseUrl = relayBaseUrl;
-        this.relayApiKey = relayApiKey;
+        super(relayBaseUrl, relayApiKey);
         this.relayWebSocketUrl = relayWebSocketUrl;
 
         this.relayApiClient = new ApiClient()
-                .setBasePath(relayBaseUrl)
+                .setBasePath(this.getRelayBaseUrl())
                 .setConnectTimeout(10_000)
                 .setReadTimeout(30_000)
                 .setWriteTimeout(30_000);
@@ -157,7 +143,8 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object startSession(String apiKeyOverride, Object requestBody) {
         try {
-            return this.sessionApi.startSessionPost(this.resolveApiKey(apiKeyOverride),
+            return this.sessionApi.startSessionPost(
+                    this.resolveApiKey(apiKeyOverride),
                     this.asStringObjectMapOrNull(requestBody));
         } catch (ApiException exception) {
             throw this.relayCallFailed("start session", exception);
@@ -213,7 +200,9 @@ public class RestRelayServiceImpl implements RestRelayService {
     @Override
     public Object executeJavaScript(String apiKeyOverride, String clientId, Object requestBody) {
         try {
-            return this.utilitiesApi.executeJsPost(this.resolveApiKey(apiKeyOverride), clientId,
+            return this.utilitiesApi.executeJsPost(
+                    this.resolveApiKey(apiKeyOverride),
+                    clientId,
                     this.asRequiredStringObjectMap(requestBody));
         } catch (ApiException exception) {
             throw this.relayCallFailed("execute javascript", exception);
@@ -222,112 +211,21 @@ public class RestRelayServiceImpl implements RestRelayService {
 
     @Override
     public URI buildRelayWebSocketUri(String clientId, String token) {
-        if (!this.hasText(clientId)) {
-            return URI.create(this.relayWebSocketUrl);
-        }
-
         String tokenValue = token;
         if (!this.hasText(tokenValue)) {
             tokenValue = this.resolveApiKey(null);
         }
-
-        if (!this.hasText(tokenValue)) {
-            return URI.create(this.relayWebSocketUrl);
-        }
-
-        String encodedClientId = URLEncoder.encode(clientId, StandardCharsets.UTF_8);
-        String encodedToken = URLEncoder.encode(tokenValue, StandardCharsets.UTF_8);
-        String separator = this.relayWebSocketUrl.contains("?") ? "&" : "?";
-        String fullWebSocketUrl = this.relayWebSocketUrl
-                + separator
-                + "id="
-                + encodedClientId
-                + "&token="
-                + encodedToken;
-        return URI.create(fullWebSocketUrl);
+        return this.buildRelayWebSocketUri(this.relayWebSocketUrl, clientId, tokenValue);
     }
 
     @Override
     public String getRelayBaseUrl() {
-        return this.relayBaseUrl;
+        return super.getRelayBaseUrl();
     }
 
     @Override
     public String getRelayWebSocketUrl() {
         return this.relayWebSocketUrl;
-    }
-
-    /**
-     * Resolves API key by preferring method override over configured key.
-     *
-     * @param apiKeyOverride runtime API key override
-     * @return effective API key, or {@code null} when both are empty
-     */
-    private String resolveApiKey(String apiKeyOverride) {
-        if (this.hasText(apiKeyOverride)) {
-            return apiKeyOverride;
-        }
-        if (this.hasText(this.relayApiKey)) {
-            return this.relayApiKey;
-        }
-        return null;
-    }
-
-    /**
-     * Checks if a value contains at least one non-whitespace character.
-     *
-     * @param value input value
-     * @return {@code true} when value has text
-     */
-    private boolean hasText(String value) {
-        return value != null && !value.isBlank();
-    }
-
-    /**
-     * Converts an object to a {@code Map<String, Object>} when possible.
-     *
-     * @param value source value
-     * @return converted map, or {@code null} when value is null
-     */
-    private Map<String, Object> asStringObjectMapOrNull(Object value) {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Map<?, ?>) {
-            return this.toStringObjectMap((Map<?, ?>) value);
-        }
-        throw new IllegalArgumentException("Request body must be a JSON object map.");
-    }
-
-    /**
-     * Converts an object to a required {@code Map<String, Object>}.
-     *
-     * @param value source value
-     * @return converted map
-     */
-    private Map<String, Object> asRequiredStringObjectMap(Object value) {
-        Map<String, Object> converted = this.asStringObjectMapOrNull(value);
-        if (converted == null) {
-            throw new IllegalArgumentException("Request body must not be null.");
-        }
-        return converted;
-    }
-
-    /**
-     * Converts an unknown map to {@code Map<String, Object>}.
-     *
-     * @param rawMap source map
-     * @return converted map
-     */
-    private Map<String, Object> toStringObjectMap(Map<?, ?> rawMap) {
-        Map<String, Object> converted = new HashMap<String, Object>();
-        for (Map.Entry<?, ?> entry : rawMap.entrySet()) {
-            if (entry.getKey() == null) {
-                continue;
-            }
-            converted.put(String.valueOf(entry.getKey()), entry.getValue());
-        }
-        return converted;
     }
 
     /**
@@ -338,15 +236,6 @@ public class RestRelayServiceImpl implements RestRelayService {
      * @return runtime exception to throw
      */
     private RuntimeException relayCallFailed(String actionName, ApiException exception) {
-        int statusCode = exception.getCode();
-        LOG.errorf(
-                exception,
-                "Relay call failed for action '%s' (status=%d, baseUrl=%s).",
-                actionName,
-                statusCode,
-                this.relayBaseUrl);
-        return new IllegalStateException(
-                "Relay call failed while trying to " + actionName + " (status=" + statusCode + ").",
-                exception);
+        return this.relayCallFailed(LOG, "Relay", actionName, exception.getCode(), exception);
     }
 }

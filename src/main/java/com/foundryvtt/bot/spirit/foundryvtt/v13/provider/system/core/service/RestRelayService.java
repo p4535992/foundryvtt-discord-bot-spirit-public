@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.service;
+package com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service;
 
 import java.net.URI;
 import java.util.Map;
