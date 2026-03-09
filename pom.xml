@@ -677,7 +677,7 @@
             </build>
         </profile>
         <profile>
-            <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate</id>
+            <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate-v13</id>
             <build>
                 <plugins>
                     <plugin>
@@ -686,7 +686,7 @@
                         <version>${openapi-generator-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate</id>
+                                <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate-v13</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>generate</goal>
@@ -696,9 +696,9 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-core.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-core</output>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.api</apiPackage>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.model</modelPackage>
-                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker</invokerPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model</modelPackage>
+                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.invoker</invokerPackage>
                                     <configOptions>
                                         <library>okhttp-gson</library>
                                         <dateLibrary>java-time</dateLibrary>
@@ -721,7 +721,7 @@
                         <version>${build-helper-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>add-relay-openapi-client-okhttp-gson-core-sources</id>
+                                <id>add-relay-openapi-client-okhttp-gson-core-sources-v13</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>add-source</goal>
@@ -738,7 +738,7 @@
             </build>
         </profile>
         <profile>
-            <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate</id>
+            <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate-v13</id>
             <build>
                 <plugins>
                     <plugin>
@@ -747,7 +747,7 @@
                         <version>${openapi-generator-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate</id>
+                                <id>generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate-v13</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>generate</goal>
@@ -757,9 +757,9 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-dnd5e.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-dnd5e</output>
-                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.api</apiPackage>
-                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.model</modelPackage>
-                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.system.dnd5e.invoker</invokerPackage>
+                                    <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.api</apiPackage>
+                                    <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.model</modelPackage>
+                                    <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker</invokerPackage>
                                     <configOptions>
                                         <library>okhttp-gson</library>
                                         <dateLibrary>java-time</dateLibrary>
@@ -782,7 +782,7 @@
                         <version>${build-helper-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>add-relay-openapi-client-okhttp-gson-dnd5e-sources</id>
+                                <id>add-relay-openapi-client-okhttp-gson-dnd5e-sources-v13</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>add-source</goal>
@@ -799,7 +799,7 @@
             </build>
         </profile>
         <profile>
-            <id>generate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec</id>
+            <id>generate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec-v13</id>
 
             <build>
                 <plugins>
@@ -810,7 +810,7 @@
 
                         <executions>
                             <execution>
-                                <id>generate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec-generate</id>
+                                <id>generate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec-generate-v13</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>generate</goal>

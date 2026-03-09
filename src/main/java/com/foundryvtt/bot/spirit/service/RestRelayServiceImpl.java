@@ -12,14 +12,14 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.api.DefaultApi;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.api.RollApi;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.api.SearchApi;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.api.SessionApi;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.api.UtilitiesApi;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiClient;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.invoker.ApiException;
-import com.foundryvtt.bot.spirit.openapi.relay.system.core.model.RollRequest;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.DefaultApi;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.RollApi;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.SearchApi;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.SessionApi;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.UtilitiesApi;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.invoker.ApiClient;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.invoker.ApiException;
+import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model.RollRequest;
 
 /**
  * Default bridge service between Quarkus/JDA code and the generated relay OpenAPI client.

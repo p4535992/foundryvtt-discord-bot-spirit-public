@@ -1,4 +1,4 @@
-﻿# Foundry VTT Discord Bot Spirit
+# Foundry VTT Discord Bot Spirit
 
 This application is based on Quarkus and includes Maven/OpenAPI tooling for code generation.
 
@@ -32,12 +32,11 @@ The `/src/*` tree follows the default Quarkus structure.
 ## Useful Maven Commands
 
 - Project install: `./mvnw clean install`
-- Generate relay OpenAPI client (full spec): `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-jackson-generate generate-sources`
-- Generate relay OpenAPI client (core only): `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-jackson-core-generate generate-sources`
-- Generate relay OpenAPI client (dnd5e only): `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-jackson-dnd5e-generate generate-sources`
-- Generate split relay clients together: `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-jackson-core-generate,generate-foundryvtt-rest-relay-openapi-client-java-okhttp-jackson-dnd5e-generate generate-sources`
-- Generate relay OpenAPI server: `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec generate-sources`
-- Generate relay OpenAPI client + server together: `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-jackson-generate,generate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec generate-sources`
+- Generate relay OpenAPI client (core only): `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate-v13 generate-sources`
+- Generate relay OpenAPI client (dnd5e only): `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate-v13 generate-sources`
+- Generate split relay clients together: `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate-v13,generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate-v13 generate-sources`
+- Generate relay OpenAPI server: `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec-v13 generate-sources`
+- Generate relay OpenAPI client + server together: `./mvnw -Pgenerate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-core-generate-v13,generate-foundryvtt-rest-relay-openapi-client-java-okhttp-gson-dnd5e-generate-v13,generate-foundryvtt-rest-relay-openapi-server-java-jaxrs-spec-v13 generate-sources`
 - Start Quarkus in dev mode: `./mvnw quarkus:dev`
 
 ## Java Package Schema (Current State)
