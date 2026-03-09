@@ -10,8 +10,8 @@ import jakarta.inject.Inject;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.Capability;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.SystemId;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.WorldContext;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.AbstractSystemModule;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemCommand;
-import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemModule;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.dnd5e.command.Dnd5eCommandNames;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.dnd5e.service.Dnd5eService;
 
@@ -19,7 +19,7 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.dnd5e.service.Dn
  * DnD5e system module implementation.
  */
 @ApplicationScoped
-public class Dnd5eSystemModule implements SystemModule {
+public class Dnd5eSystemModule extends AbstractSystemModule {
 
     /**
      * DnD5e service facade.
@@ -116,113 +116,4 @@ public class Dnd5eSystemModule implements SystemModule {
         }
     }
 
-    /**
-     * Validates routing context for DnD5e command execution.
-     *
-     * @param worldContext target context
-     */
-    private void validateWorldContext(WorldContext worldContext) {
-        if (worldContext == null) {
-            throw new IllegalArgumentException("worldContext must not be null");
-        }
-        if (worldContext.getSystemId() != SystemId.DND5E) {
-            throw new IllegalStateException(
-                    "DnD5e module cannot execute commands for system: "
-                            + worldContext.getSystemId().value());
-        }
-    }
-
-    /**
-     * Reads a required string from command payload.
-     *
-     * @param payload   command payload
-     * @param fieldName payload key
-     * @return non-blank string value
-     */
-    private String readRequiredString(Map<String, Object> payload, String fieldName) {
-        String value = this.readOptionalString(payload, fieldName);
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Missing required payload field: " + fieldName);
-        }
-        return value;
-    }
-
-    /**
-     * Reads an optional string from command payload.
-     *
-     * @param payload   command payload
-     * @param fieldName payload key
-     * @return optional string value
-     */
-    private String readOptionalString(Map<String, Object> payload, String fieldName) {
-        Object rawValue = payload.get(fieldName);
-        if (rawValue == null) {
-            return null;
-        }
-        return String.valueOf(rawValue);
-    }
-
-    /**
-     * Reads a required integer from command payload.
-     *
-     * @param payload   command payload
-     * @param fieldName payload key
-     * @return parsed integer value
-     */
-    private Integer readRequiredInteger(Map<String, Object> payload, String fieldName) {
-        Object rawValue = payload.get(fieldName);
-        if (rawValue == null) {
-            throw new IllegalArgumentException("Missing required payload field: " + fieldName);
-        }
-        if (rawValue instanceof Number) {
-            Number numberValue = (Number) rawValue;
-            return Integer.valueOf(numberValue.intValue());
-        }
-        String rawText = String.valueOf(rawValue).trim();
-        if (rawText.isEmpty()) {
-            throw new IllegalArgumentException("Missing required payload field: " + fieldName);
-        }
-        try {
-            return Integer.valueOf(rawText);
-        } catch (NumberFormatException exception) {
-            throw new IllegalArgumentException(
-                    "Invalid integer payload field '" + fieldName + "': " + rawText,
-                    exception);
-        }
-    }
-
-    /**
-     * Reads an optional nested map payload.
-     *
-     * @param payload   command payload
-     * @param fieldName payload key
-     * @return optional nested map
-     */
-    private Map<String, Object> readOptionalMap(Map<String, Object> payload, String fieldName) {
-        Object rawValue = payload.get(fieldName);
-        if (rawValue == null) {
-            return null;
-        }
-        if (rawValue instanceof Map<?, ?>) {
-            return this.toStringObjectMap((Map<?, ?>) rawValue);
-        }
-        throw new IllegalArgumentException("Payload field '" + fieldName + "' must be an object");
-    }
-
-    /**
-     * Converts an unknown map to {@code Map<String, Object>}.
-     *
-     * @param rawMap source map
-     * @return converted map
-     */
-    private Map<String, Object> toStringObjectMap(Map<?, ?> rawMap) {
-        Map<String, Object> converted = new java.util.HashMap<String, Object>();
-        for (Map.Entry<?, ?> entry : rawMap.entrySet()) {
-            if (entry.getKey() == null) {
-                continue;
-            }
-            converted.put(String.valueOf(entry.getKey()), entry.getValue());
-        }
-        return converted;
-    }
 }
