@@ -11,11 +11,11 @@ import org.jboss.logging.Logger;
 
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service.AbstractRelayClientService;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service.RestRelayService;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.mapper.FoundryDnd5eMapper;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyExperienceResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyItemChargesResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eUseAbilityResult;
-import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.service.FoundryDnd5eModelService;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.api.DnD5eApi;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker.ApiClient;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker.ApiException;
@@ -36,7 +36,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
      * Generated DnD5e API client facade.
      */
     private final DnD5eApi dnD5eApi;
-    private final FoundryDnd5eModelService foundryDnd5eModelService;
+    private final FoundryDnd5eMapper foundryDnd5eMapper;
 
     /**
      * Builds the DnD5e service.
@@ -47,10 +47,10 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
     @Inject
     public Dnd5eServiceImpl(
             RestRelayService restRelayService,
-            FoundryDnd5eModelService foundryDnd5eModelService,
+            FoundryDnd5eMapper foundryDnd5eMapper,
             @ConfigProperty(name = "spirit.relay.api-key", defaultValue = "") String relayDefaultApiKey) {
         super(restRelayService.getRelayBaseUrl(), relayDefaultApiKey);
-        this.foundryDnd5eModelService = foundryDnd5eModelService;
+        this.foundryDnd5eMapper = foundryDnd5eMapper;
 
         ApiClient apiClient = new ApiClient()
                 .setBasePath(this.getRelayBaseUrl())
@@ -75,7 +75,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     actorUuid,
                     details,
                     null));
-            return this.foundryDnd5eModelService.toActorDocument(payload);
+            return this.foundryDnd5eMapper.toActorDocument(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("get actor details", exception);
         }
@@ -96,7 +96,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     amount,
                     requestBody,
                     null));
-            return this.foundryDnd5eModelService.toModifyExperienceResult(payload);
+            return this.foundryDnd5eMapper.toModifyExperienceResult(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("modify experience", exception);
         }
@@ -119,7 +119,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     abilityName,
                     requestBody,
                     null));
-            return this.foundryDnd5eModelService.toUseAbilityResult(payload);
+            return this.foundryDnd5eMapper.toUseAbilityResult(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("use ability", exception);
         }
@@ -142,7 +142,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     amount,
                     requestBody,
                     null));
-            return this.foundryDnd5eModelService.toModifyItemChargesResult(payload);
+            return this.foundryDnd5eMapper.toModifyItemChargesResult(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("modify item charges", exception);
         }

@@ -1,7 +1,9 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.mapper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -9,6 +11,7 @@ import java.util.Set;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryActiveEffectDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryActorDocument;
@@ -16,7 +19,10 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryFolderDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryMacroDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayActorSheetResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEncounterResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEntityResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
@@ -26,13 +32,13 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStructureResult;
 
 /**
  * Default conversion service for typed Foundry v13 core models.
  */
 @ApplicationScoped
-public class FoundryCoreModelServiceImpl extends AbstractFoundryModelService
-        implements FoundryCoreModelService {
+public class FoundryCoreMapperImpl extends AbstractFoundryMapper implements FoundryCoreMapper {
 
     private final Map<String, Class<? extends FoundryDocument>> modelClasses;
 
@@ -42,7 +48,7 @@ public class FoundryCoreModelServiceImpl extends AbstractFoundryModelService
      * @param objectMapper shared Jackson mapper
      */
     @Inject
-    public FoundryCoreModelServiceImpl(ObjectMapper objectMapper) {
+    public FoundryCoreMapperImpl(ObjectMapper objectMapper) {
         super(objectMapper);
         Map<String, Class<? extends FoundryDocument>> localMap = new LinkedHashMap<String, Class<? extends FoundryDocument>>();
         localMap.put("actor", FoundryActorDocument.class);
@@ -153,6 +159,92 @@ public class FoundryCoreModelServiceImpl extends AbstractFoundryModelService
     @Override
     public RelayExecuteJavaScriptResult toExecuteJavaScriptResult(Object payload) {
         return this.convert(payload, RelayExecuteJavaScriptResult.class);
+    }
+
+    @Override
+    public RelayStructureResult toStructureResult(Object payload) {
+        return this.convert(payload, RelayStructureResult.class);
+    }
+
+    @Override
+    public RelayEncounterResult toEncounterResult(Object payload) {
+        return this.convert(payload, RelayEncounterResult.class);
+    }
+
+    @Override
+    public RelayEntityResult toEntityResult(Object payload) {
+        if (payload == null) {
+            return null;
+        }
+        RelayEntityResult result = this.convert(payload, RelayEntityResult.class);
+        if (!(payload instanceof Map<?, ?> rawMap)) {
+            return result;
+        }
+
+        Object uuidPayload = rawMap.get("uuid");
+        if (uuidPayload instanceof String uuidValue) {
+            result.setDocumentType(this.extractDocumentTypeFromUuid(uuidValue));
+        }
+
+        Object dataPayload = rawMap.get("data");
+        if (dataPayload == null) {
+            return result;
+        }
+
+        List<Object> rawEntries = this.asPayloadList(dataPayload);
+        List<JsonNode> rawData = new ArrayList<JsonNode>(rawEntries.size());
+        List<FoundryDocument> documents = new ArrayList<FoundryDocument>(rawEntries.size());
+        for (Object rawEntry : rawEntries) {
+            rawData.add(this.convert(rawEntry, JsonNode.class));
+            FoundryDocument document = this.tryConvertDocument(result.getDocumentType(), rawEntry);
+            if (document != null) {
+                documents.add(document);
+            }
+        }
+        result.setRawData(rawData);
+        result.setDocuments(documents);
+        return result;
+    }
+
+    @Override
+    public RelayActorSheetResult toActorSheetResult(Object payload) {
+        if (payload == null) {
+            return null;
+        }
+        if (payload instanceof String htmlPayload) {
+            RelayActorSheetResult result = new RelayActorSheetResult();
+            result.setHtml(htmlPayload);
+            return result;
+        }
+        return this.convert(payload, RelayActorSheetResult.class);
+    }
+
+    private List<Object> asPayloadList(Object payload) {
+        if (payload instanceof List<?> listPayload) {
+            return new ArrayList<Object>(listPayload);
+        }
+        return List.of(payload);
+    }
+
+    private FoundryDocument tryConvertDocument(String documentType, Object payload) {
+        if (documentType == null || documentType.isBlank()) {
+            return null;
+        }
+        if (this.findModelClass(documentType).isEmpty()) {
+            return null;
+        }
+        return this.toDocument(documentType, payload);
+    }
+
+    private String extractDocumentTypeFromUuid(String uuid) {
+        if (uuid == null || uuid.isBlank()) {
+            return null;
+        }
+        int separatorIndex = uuid.indexOf('.');
+        if (separatorIndex < 0) {
+            return uuid;
+        }
+        return uuid.substring(0, separatorIndex);
     }
 
     private String normalizeDocumentType(String documentType) {

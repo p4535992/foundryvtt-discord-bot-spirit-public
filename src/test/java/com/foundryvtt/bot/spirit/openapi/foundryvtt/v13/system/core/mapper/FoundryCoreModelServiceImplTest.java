@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,7 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryActorDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayActorSheetResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEncounterResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEntityResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
@@ -21,10 +24,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStructureResult;
 
 class FoundryCoreModelServiceImplTest {
 
-    private final FoundryCoreModelService service = new FoundryCoreModelServiceImpl(
+    private final FoundryCoreMapper service = new FoundryCoreMapperImpl(
             new ObjectMapper());
 
     @Test
@@ -193,5 +197,67 @@ class FoundryCoreModelServiceImplTest {
                         "result", "ws://localhost:3010/"));
         assertThat(executeJavaScript.getSuccess()).isTrue();
         assertThat(executeJavaScript.getResult().asText()).isEqualTo("ws://localhost:3010/");
+    }
+
+    @Test
+    void shouldConvertStructureEncounterEntityAndSheetResponses() {
+        RelayStructureResult structure = this.service.toStructureResult(Map.of(
+                "requestId", "structure-1",
+                "clientId", "client-1",
+                "folders", List.of(Map.of(
+                        "id", "folder-1",
+                        "name", "Actors",
+                        "type", "Compendium",
+                        "path", "Folder.folder-1",
+                        "sorting", 10))));
+        assertThat(structure.getRequestId()).isEqualTo("structure-1");
+        assertThat(structure.getFolders()).hasSize(1);
+        assertThat(structure.getFolders().get(0).getPath()).isEqualTo("Folder.folder-1");
+
+        RelayEncounterResult encounters = this.service.toEncounterResult(Map.of(
+                "requestId", "encounters-1",
+                "clientId", "client-1",
+                "encounters", List.of(Map.of(
+                        "id", "enc-1",
+                        "round", 2,
+                        "turn", 1,
+                        "current", Boolean.TRUE,
+                        "combatants", List.of(Map.of(
+                                "id", "cmb-1",
+                                "name", "Ape",
+                                "tokenUuid", "Scene.token-1",
+                                "actorUuid", "Actor.actor-1",
+                                "initiative", 20.2,
+                                "hidden", Boolean.FALSE,
+                                "defeated", Boolean.FALSE))))));
+        assertThat(encounters.getEncounters()).hasSize(1);
+        assertThat(encounters.getEncounters().get(0).getCombatants()).hasSize(1);
+        assertThat(encounters.getEncounters().get(0).getCombatants().get(0).getActorUuid())
+                .isEqualTo("Actor.actor-1");
+
+        RelayEntityResult entity = this.service.toEntityResult(Map.of(
+                "requestId", "entity-1",
+                "clientId", "client-1",
+                "uuid", "Actor.actor-1",
+                "data", List.of(Map.of(
+                        "_id", "actor-1",
+                        "name", "Big Ape",
+                        "type", "npc"))));
+        assertThat(entity.getDocumentType()).isEqualTo("Actor");
+        assertThat(entity.getDocuments()).hasSize(1);
+        assertThat(entity.getDocuments().get(0)).isInstanceOf(FoundryActorDocument.class);
+        assertThat(entity.getRawData()).hasSize(1);
+
+        RelayActorSheetResult sheet = this.service.toActorSheetResult(Map.of(
+                "requestId", "sheet-1",
+                "clientId", "client-1",
+                "uuid", "Actor.actor-1",
+                "html", "<div>sheet</div>",
+                "css", ".sheet {}"));
+        assertThat(sheet.getHtml()).isEqualTo("<div>sheet</div>");
+        assertThat(sheet.getCss()).isEqualTo(".sheet {}");
+
+        RelayActorSheetResult htmlOnlySheet = this.service.toActorSheetResult("<div>raw</div>");
+        assertThat(htmlOnlySheet.getHtml()).isEqualTo("<div>raw</div>");
     }
 }

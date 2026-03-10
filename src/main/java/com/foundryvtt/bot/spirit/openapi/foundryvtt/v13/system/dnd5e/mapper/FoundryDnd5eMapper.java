@@ -1,17 +1,20 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.mapper;
 
 import java.util.Optional;
 import java.util.Set;
 
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorDocument;
-import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyExperienceResult;
-import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyItemChargesResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorSystemData;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eItemSystemData;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyExperienceResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyItemChargesResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eUseAbilityResult;
 
-public interface FoundryDnd5eModelService {
+/**
+ * Conversion entry point between relay payloads and hand-written Foundry dnd5e models.
+ */
+public interface FoundryDnd5eMapper {
 
     Set<String> supportedActorTypes();
 

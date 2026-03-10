@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.mapper;
 
 import java.util.Locale;
 
@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Shared mapper utilities for hand-written Foundry model conversion services.
  */
-public abstract class AbstractFoundryModelService {
+public abstract class AbstractFoundryMapper {
 
     private final ObjectMapper objectMapper;
 
-    protected AbstractFoundryModelService(ObjectMapper objectMapper) {
+    protected AbstractFoundryMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

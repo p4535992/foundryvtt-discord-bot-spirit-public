@@ -1,9 +1,13 @@
 package com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Map;
 
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayActorSheetResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEncounterResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEntityResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
@@ -13,6 +17,7 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStructureResult;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model.RollRequest;
 
 /**
@@ -79,6 +84,19 @@ public interface RestRelayService {
      * @return end session payload
      */
     RelaySessionOperationResult endSession(String apiKeyOverride, String sessionId);
+
+    RelayStructureResult getStructure(String apiKeyOverride, String clientId);
+
+    RelayEncounterResult getEncounters(String apiKeyOverride, String clientId);
+
+    RelayEntityResult getEntity(String apiKeyOverride, String clientId, Boolean selected,
+            Boolean actor);
+
+    RelayEntityResult getEntityByUuid(String apiKeyOverride, String clientId, String uuid,
+            Boolean actor);
+
+    RelayActorSheetResult getActorSheet(String apiKeyOverride, String clientId, String uuid,
+            Boolean selected, Boolean actor, BigDecimal scale);
 
     /**
      * Executes a dice roll for a specific connected client.

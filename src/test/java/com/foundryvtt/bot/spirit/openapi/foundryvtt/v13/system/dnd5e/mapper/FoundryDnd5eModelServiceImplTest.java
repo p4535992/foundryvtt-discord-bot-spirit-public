@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +18,7 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5e
 
 class FoundryDnd5eModelServiceImplTest {
 
-    private final FoundryDnd5eModelService service = new FoundryDnd5eModelServiceImpl(
+    private final FoundryDnd5eMapper service = new FoundryDnd5eMapperImpl(
             new ObjectMapper());
 
     @Test

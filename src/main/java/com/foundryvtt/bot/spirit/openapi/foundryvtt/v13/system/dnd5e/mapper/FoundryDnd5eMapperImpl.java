@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.mapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service.AbstractFoundryModelService;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.mapper.AbstractFoundryMapper;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorSystemData;
@@ -28,14 +28,13 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5e
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eWeaponItemSystemData;
 
 @ApplicationScoped
-public class FoundryDnd5eModelServiceImpl extends AbstractFoundryModelService
-        implements FoundryDnd5eModelService {
+public class FoundryDnd5eMapperImpl extends AbstractFoundryMapper implements FoundryDnd5eMapper {
 
     private final Map<String, Class<? extends Dnd5eActorSystemData>> actorSystemClasses;
     private final Map<String, Class<? extends Dnd5eItemSystemData>> itemSystemClasses;
 
     @Inject
-    public FoundryDnd5eModelServiceImpl(ObjectMapper objectMapper) {
+    public FoundryDnd5eMapperImpl(ObjectMapper objectMapper) {
         super(objectMapper);
 
         Map<String, Class<? extends Dnd5eActorSystemData>> actorTypes =

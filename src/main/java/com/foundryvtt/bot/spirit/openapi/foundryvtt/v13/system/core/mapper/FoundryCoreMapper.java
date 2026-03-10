@@ -1,4 +1,4 @@
-package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service;
+package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.mapper;
 
 import java.util.Optional;
 import java.util.Set;
@@ -9,7 +9,10 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryFolderDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryMacroDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayActorSheetResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEncounterResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayEntityResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
@@ -19,11 +22,12 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStructureResult;
 
 /**
- * Utility entry point for resolving and converting core Foundry document payloads.
+ * Conversion entry point between relay payloads and hand-written Foundry core models.
  */
-public interface FoundryCoreModelService {
+public interface FoundryCoreMapper {
 
     Set<String> supportedDocumentTypes();
 
@@ -60,4 +64,12 @@ public interface FoundryCoreModelService {
     RelaySearchResult toSearchResult(Object payload);
 
     RelayExecuteJavaScriptResult toExecuteJavaScriptResult(Object payload);
+
+    RelayStructureResult toStructureResult(Object payload);
+
+    RelayEncounterResult toEncounterResult(Object payload);
+
+    RelayEntityResult toEntityResult(Object payload);
+
+    RelayActorSheetResult toActorSheetResult(Object payload);
 }
