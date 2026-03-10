@@ -9,6 +9,12 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service.FoundryCoreModelService;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.DefaultApi;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.RollApi;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api.SearchApi;
@@ -63,6 +69,7 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
      * Generated API facade for utility endpoints.
      */
     private final UtilitiesApi utilitiesApi;
+    private final FoundryCoreModelService foundryCoreModelService;
 
     /**
      * Builds the relay bridge service with Quarkus config values.
@@ -73,10 +80,12 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
      */
     @Inject
     public RestRelayServiceImpl(
+            FoundryCoreModelService foundryCoreModelService,
             @ConfigProperty(name = "spirit.relay.base-url", defaultValue = "http://localhost:30000") String relayBaseUrl,
             @ConfigProperty(name = "spirit.relay.api-key", defaultValue = "") String relayApiKey,
             @ConfigProperty(name = "spirit.relay.websocket-url", defaultValue = "ws://localhost:30000/relay") String relayWebSocketUrl) {
         super(relayBaseUrl, relayApiKey);
+        this.foundryCoreModelService = foundryCoreModelService;
         this.relayWebSocketUrl = relayWebSocketUrl;
 
         this.relayApiClient = new ApiClient()
@@ -93,34 +102,36 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
     }
 
     @Override
-    public Object getRelayStatus() {
+    public RelayStatusResult getRelayStatus() {
         try {
-            return this.defaultApi.apiStatusGet();
+            return this.foundryCoreModelService.toRelayStatusResult(this.defaultApi.apiStatusGet());
         } catch (ApiException exception) {
             throw this.relayCallFailed("get relay status", exception);
         }
     }
 
     @Override
-    public Object getConnectedClients(String apiKeyOverride) {
+    public RelayConnectedClientsResult getConnectedClients(String apiKeyOverride) {
         try {
-            return this.defaultApi.clientsGet(this.resolveApiKey(apiKeyOverride));
+            return this.foundryCoreModelService.toConnectedClientsResult(
+                    this.defaultApi.clientsGet(this.resolveApiKey(apiKeyOverride)));
         } catch (ApiException exception) {
             throw this.relayCallFailed("get connected clients", exception);
         }
     }
 
     @Override
-    public Object getCurrentSessions(String apiKeyOverride) {
+    public RelaySessionsResult getCurrentSessions(String apiKeyOverride) {
         try {
-            return this.sessionApi.sessionGet(this.resolveApiKey(apiKeyOverride));
+            return this.foundryCoreModelService.toSessionsResult(
+                    this.sessionApi.sessionGet(this.resolveApiKey(apiKeyOverride)));
         } catch (ApiException exception) {
             throw this.relayCallFailed("get active sessions", exception);
         }
     }
 
     @Override
-    public Object createSessionHandshake(
+    public RelaySessionHandshakeResult createSessionHandshake(
             String apiKeyOverride,
             String foundryUrl,
             String username,
@@ -128,33 +139,37 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
             String worldName,
             Map<String, Object> requestBody) {
         try {
-            return this.sessionApi.sessionHandshakePost(
-                    this.resolveApiKey(apiKeyOverride),
-                    foundryUrl,
-                    username,
-                    password,
-                    worldName,
-                    requestBody);
+            return this.foundryCoreModelService
+                    .toSessionHandshakeResult(this.sessionApi.sessionHandshakePost(
+                            this.resolveApiKey(apiKeyOverride),
+                            foundryUrl,
+                            username,
+                            password,
+                            worldName,
+                            requestBody));
         } catch (ApiException exception) {
             throw this.relayCallFailed("create session handshake", exception);
         }
     }
 
     @Override
-    public Object startSession(String apiKeyOverride, Object requestBody) {
+    public RelaySessionOperationResult startSession(String apiKeyOverride, Object requestBody) {
         try {
-            return this.sessionApi.startSessionPost(
-                    this.resolveApiKey(apiKeyOverride),
-                    this.asStringObjectMapOrNull(requestBody));
+            return this.foundryCoreModelService
+                    .toSessionOperationResult(this.sessionApi.startSessionPost(
+                            this.resolveApiKey(apiKeyOverride),
+                            this.asStringObjectMapOrNull(requestBody)));
         } catch (ApiException exception) {
             throw this.relayCallFailed("start session", exception);
         }
     }
 
     @Override
-    public Object endSession(String apiKeyOverride, String sessionId) {
+    public RelaySessionOperationResult endSession(String apiKeyOverride, String sessionId) {
         try {
-            return this.sessionApi.endSessionDelete(this.resolveApiKey(apiKeyOverride), sessionId);
+            return this.foundryCoreModelService.toSessionOperationResult(
+                    this.sessionApi.endSessionDelete(this.resolveApiKey(apiKeyOverride),
+                            sessionId));
         } catch (ApiException exception) {
             throw this.relayCallFailed("end session", exception);
         }

@@ -11,6 +11,11 @@ import org.jboss.logging.Logger;
 
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service.AbstractRelayClientService;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service.RestRelayService;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyExperienceResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyItemChargesResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eUseAbilityResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.service.FoundryDnd5eModelService;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.api.DnD5eApi;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker.ApiClient;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker.ApiException;
@@ -31,6 +36,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
      * Generated DnD5e API client facade.
      */
     private final DnD5eApi dnD5eApi;
+    private final FoundryDnd5eModelService foundryDnd5eModelService;
 
     /**
      * Builds the DnD5e service.
@@ -41,8 +47,10 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
     @Inject
     public Dnd5eServiceImpl(
             RestRelayService restRelayService,
+            FoundryDnd5eModelService foundryDnd5eModelService,
             @ConfigProperty(name = "spirit.relay.api-key", defaultValue = "") String relayDefaultApiKey) {
         super(restRelayService.getRelayBaseUrl(), relayDefaultApiKey);
+        this.foundryDnd5eModelService = foundryDnd5eModelService;
 
         ApiClient apiClient = new ApiClient()
                 .setBasePath(this.getRelayBaseUrl())
@@ -53,13 +61,13 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
     }
 
     @Override
-    public Object getActorDetails(
+    public Dnd5eActorDocument getActorDetails(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
             String details) {
         try {
-            return this.executeForObject(this.dnD5eApi.dnd5eGetActorDetailsGetCall(
+            Object payload = this.executeForObject(this.dnD5eApi.dnd5eGetActorDetailsGetCall(
                     this.resolveApiKey(apiKeyOverride),
                     actorUuid,
                     details,
@@ -67,40 +75,42 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     actorUuid,
                     details,
                     null));
+            return this.foundryDnd5eModelService.toActorDocument(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("get actor details", exception);
         }
     }
 
     @Override
-    public Object modifyExperience(
+    public Dnd5eModifyExperienceResult modifyExperience(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
             Integer amount,
             Map<String, Object> requestBody) {
         try {
-            return this.executeForObject(this.dnD5eApi.dnd5eModifyExperiencePostCall(
+            Object payload = this.executeForObject(this.dnD5eApi.dnd5eModifyExperiencePostCall(
                     this.resolveApiKey(apiKeyOverride),
                     clientId,
                     actorUuid,
                     amount,
                     requestBody,
                     null));
+            return this.foundryDnd5eModelService.toModifyExperienceResult(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("modify experience", exception);
         }
     }
 
     @Override
-    public Object useAbility(
+    public Dnd5eUseAbilityResult useAbility(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
             String abilityName,
             Map<String, Object> requestBody) {
         try {
-            return this.executeForObject(this.dnD5eApi.dnd5eUseAbilityPostCall(
+            Object payload = this.executeForObject(this.dnD5eApi.dnd5eUseAbilityPostCall(
                     this.resolveApiKey(apiKeyOverride),
                     actorUuid,
                     null,
@@ -109,13 +119,14 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     abilityName,
                     requestBody,
                     null));
+            return this.foundryDnd5eModelService.toUseAbilityResult(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("use ability", exception);
         }
     }
 
     @Override
-    public Object modifyItemCharges(
+    public Dnd5eModifyItemChargesResult modifyItemCharges(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
@@ -123,7 +134,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
             String amount,
             Map<String, Object> requestBody) {
         try {
-            return this.executeForObject(this.dnD5eApi.dnd5eModifyItemChargesPostCall(
+            Object payload = this.executeForObject(this.dnD5eApi.dnd5eModifyItemChargesPostCall(
                     this.resolveApiKey(apiKeyOverride),
                     clientId,
                     actorUuid,
@@ -131,6 +142,7 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
                     amount,
                     requestBody,
                     null));
+            return this.foundryDnd5eModelService.toModifyItemChargesResult(payload);
         } catch (ApiException exception) {
             throw this.dnd5eCallFailed("modify item charges", exception);
         }

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eCharacterActorSystemData;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eItemDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyExperienceResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eSpellItemSystemData;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eUseAbilityResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eWeaponItemSystemData;
 
 class FoundryDnd5eModelServiceImplTest {
@@ -61,14 +63,12 @@ class FoundryDnd5eModelServiceImplTest {
         assertThat(actor.getSystemData().getDetails().getAlignment()).isEqualTo("neutral good");
         assertThat(actor.getSystemData().getTraits().getLanguages().getValue()).contains("common",
                 "elvish");
-        assertThat(actor.getItems()).hasSize(2);
-        assertThat(actor.getItems().get(0)).isInstanceOf(Dnd5eItemDocument.class);
-        assertThat(((Dnd5eItemDocument) actor.getItems().get(0)).getSystemData())
+        assertThat(actor.getTypedItems()).hasSize(2);
+        assertThat(actor.getTypedItems().get(0).getSystemData())
                 .isInstanceOf(Dnd5eSpellItemSystemData.class);
-        assertThat(((Dnd5eSpellItemSystemData) ((Dnd5eItemDocument) actor.getItems().get(0))
-                .getSystemData())
+        assertThat(((Dnd5eSpellItemSystemData) actor.getTypedItems().get(0).getSystemData())
                 .getSchool()).isEqualTo("evo");
-        assertThat(((Dnd5eItemDocument) actor.getItems().get(1)).getSystemData())
+        assertThat(actor.getTypedItems().get(1).getSystemData())
                 .isInstanceOf(Dnd5eWeaponItemSystemData.class);
     }
 
@@ -88,5 +88,58 @@ class FoundryDnd5eModelServiceImplTest {
         assertThat(item.getSystemData().getIdentifier()).isEqualTo("rogue.sneak-attack");
         assertThat(this.service.supportedActorTypes()).contains("character", "npc");
         assertThat(this.service.supportedItemTypes()).contains("spell", "weapon");
+    }
+
+    @Test
+    void shouldConvertOperationResultsToTypedWrappers() {
+        Map<String, Object> modifyExperiencePayload = Map.of(
+                "requestId", "req-1",
+                "clientId", "client-1",
+                "success", Boolean.TRUE,
+                "amount", 300,
+                "actor", Map.of(
+                        "_id", "actor-1",
+                        "name", "Aelar",
+                        "type", "character",
+                        "system", Map.of(
+                                "details", Map.of("xp", Map.of("value", 1200)))));
+
+        Dnd5eModifyExperienceResult modifyExperienceResult = this.service.toModifyExperienceResult(
+                modifyExperiencePayload);
+
+        assertThat(modifyExperienceResult.getRequestId()).isEqualTo("req-1");
+        assertThat(modifyExperienceResult.getClientId()).isEqualTo("client-1");
+        assertThat(modifyExperienceResult.getSuccess()).isTrue();
+        assertThat(modifyExperienceResult.getActor()).isNotNull();
+        assertThat(modifyExperienceResult.getActor().getSystemData())
+                .isInstanceOf(Dnd5eCharacterActorSystemData.class);
+        assertThat(modifyExperienceResult.getActor().getSystemData().getDetails().getXp()
+                .path("value").asInt())
+                .isEqualTo(1200);
+
+        Map<String, Object> useAbilityPayload = Map.of(
+                "requestId", "req-2",
+                "clientId", "client-1",
+                "abilityName", "Magic Missile",
+                "actor", Map.of(
+                        "_id", "actor-1",
+                        "name", "Aelar",
+                        "type", "character",
+                        "system", Map.of()),
+                "item", Map.of(
+                        "_id", "item-1",
+                        "name", "Magic Missile",
+                        "type", "spell",
+                        "system", Map.of(
+                                "level", 1,
+                                "school", "evo")));
+
+        Dnd5eUseAbilityResult useAbilityResult = this.service.toUseAbilityResult(useAbilityPayload);
+
+        assertThat(useAbilityResult.getAbilityName()).isEqualTo("Magic Missile");
+        assertThat(useAbilityResult.getActor()).isNotNull();
+        assertThat(useAbilityResult.getAbility()).isNotNull();
+        assertThat(useAbilityResult.getAbility().getSystemData())
+                .isInstanceOf(Dnd5eSpellItemSystemData.class);
     }
 }

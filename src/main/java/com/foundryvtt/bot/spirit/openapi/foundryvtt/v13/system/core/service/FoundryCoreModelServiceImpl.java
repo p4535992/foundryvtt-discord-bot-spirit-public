@@ -2,7 +2,6 @@ package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.service;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -17,14 +16,19 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryFolderDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryMacroDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
 
 /**
  * Default conversion service for typed Foundry v13 core models.
  */
 @ApplicationScoped
-public class FoundryCoreModelServiceImpl implements FoundryCoreModelService {
+public class FoundryCoreModelServiceImpl extends AbstractFoundryModelService
+        implements FoundryCoreModelService {
 
-    private final ObjectMapper objectMapper;
     private final Map<String, Class<? extends FoundryDocument>> modelClasses;
 
     /**
@@ -34,7 +38,7 @@ public class FoundryCoreModelServiceImpl implements FoundryCoreModelService {
      */
     @Inject
     public FoundryCoreModelServiceImpl(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+        super(objectMapper);
         Map<String, Class<? extends FoundryDocument>> localMap = new LinkedHashMap<String, Class<? extends FoundryDocument>>();
         localMap.put("actor", FoundryActorDocument.class);
         localMap.put("item", FoundryItemDocument.class);
@@ -68,7 +72,7 @@ public class FoundryCoreModelServiceImpl implements FoundryCoreModelService {
         if (modelClass.isInstance(payload)) {
             return modelClass.cast(payload);
         }
-        return this.objectMapper.convertValue(payload, modelClass);
+        return this.convert(payload, modelClass);
     }
 
     @Override
@@ -96,21 +100,32 @@ public class FoundryCoreModelServiceImpl implements FoundryCoreModelService {
         return this.convert(payload, FoundryMacroDocument.class);
     }
 
-    private <T> T convert(Object payload, Class<T> targetType) {
-        if (payload == null) {
-            return null;
-        }
-        if (targetType.isInstance(payload)) {
-            return targetType.cast(payload);
-        }
-        return this.objectMapper.convertValue(payload, targetType);
+    @Override
+    public RelayStatusResult toRelayStatusResult(Object payload) {
+        return this.convert(payload, RelayStatusResult.class);
+    }
+
+    @Override
+    public RelayConnectedClientsResult toConnectedClientsResult(Object payload) {
+        return this.convert(payload, RelayConnectedClientsResult.class);
+    }
+
+    @Override
+    public RelaySessionsResult toSessionsResult(Object payload) {
+        return this.convert(payload, RelaySessionsResult.class);
+    }
+
+    @Override
+    public RelaySessionHandshakeResult toSessionHandshakeResult(Object payload) {
+        return this.convert(payload, RelaySessionHandshakeResult.class);
+    }
+
+    @Override
+    public RelaySessionOperationResult toSessionOperationResult(Object payload) {
+        return this.convert(payload, RelaySessionOperationResult.class);
     }
 
     private String normalizeDocumentType(String documentType) {
-        return documentType
-                .replace("-", "")
-                .replace("_", "")
-                .replace(" ", "")
-                .toLowerCase(Locale.ROOT);
+        return this.normalizeType(documentType);
     }
 }

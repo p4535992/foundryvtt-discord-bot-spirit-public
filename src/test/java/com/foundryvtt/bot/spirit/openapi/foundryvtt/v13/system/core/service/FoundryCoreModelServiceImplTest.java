@@ -11,6 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryActorDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
 
 class FoundryCoreModelServiceImplTest {
 
@@ -57,5 +62,54 @@ class FoundryCoreModelServiceImplTest {
         assertThat(item).isInstanceOf(FoundryItemDocument.class);
         assertThat(((FoundryItemDocument) item).getName()).isEqualTo("Longsword");
         assertThat(this.service.supportedDocumentTypes()).contains("actor", "item", "activeeffect");
+    }
+
+    @Test
+    void shouldConvertStableRelayCoreResponses() {
+        RelayStatusResult status = this.service.toRelayStatusResult(Map.of(
+                "status", "ok",
+                "version", "2.1.2",
+                "websocket", "/relay"));
+        assertThat(status.getStatus()).isEqualTo("ok");
+        assertThat(status.getVersion()).isEqualTo("2.1.2");
+
+        RelayConnectedClientsResult clients = this.service.toConnectedClientsResult(Map.of(
+                "total", 1,
+                "clients", List.of(Map.of(
+                        "id", "client-1",
+                        "systemId", "dnd5e",
+                        "worldTitle", "Example World"))));
+        assertThat(clients.getTotal()).isEqualTo(1);
+        assertThat(clients.getClients()).hasSize(1);
+        assertThat(clients.getClients().get(0).getSystemId()).isEqualTo("dnd5e");
+
+        RelaySessionsResult sessions = this.service.toSessionsResult(Map.of(
+                "activeSessions", List.of(Map.of(
+                        "id", "session-1",
+                        "clientId", "client-1",
+                        "systemId", "dnd5e")),
+                "pendingSessions", List.of(Map.of(
+                        "id", "pending-1",
+                        "status", "pending",
+                        "expectedClientId", "headless-user"))));
+        assertThat(sessions.getActiveSessions()).hasSize(1);
+        assertThat(sessions.getPendingSessions()).hasSize(1);
+        assertThat(sessions.getActiveSessions().get(0).getSystemId()).isEqualTo("dnd5e");
+
+        RelaySessionHandshakeResult handshake = this.service.toSessionHandshakeResult(Map.of(
+                "token", "token-1",
+                "publicKey", "public-key",
+                "nonce", "nonce-1",
+                "expires", 123456789L));
+        assertThat(handshake.getToken()).isEqualTo("token-1");
+        assertThat(handshake.getExpires()).isEqualTo(123456789L);
+
+        RelaySessionOperationResult operation = this.service.toSessionOperationResult(Map.of(
+                "success", Boolean.TRUE,
+                "message", "Foundry session started successfully",
+                "sessionId", "session-1",
+                "clientId", "client-1"));
+        assertThat(operation.getSuccess()).isTrue();
+        assertThat(operation.getSessionId()).isEqualTo("session-1");
     }
 }

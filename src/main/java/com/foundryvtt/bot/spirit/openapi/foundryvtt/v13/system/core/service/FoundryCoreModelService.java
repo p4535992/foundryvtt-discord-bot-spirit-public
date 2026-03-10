@@ -9,6 +9,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryFolderDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryMacroDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
 
 /**
  * Utility entry point for resolving and converting core Foundry document payloads.
@@ -30,4 +35,14 @@ public interface FoundryCoreModelService {
     FoundryFolderDocument toFolderDocument(Object payload);
 
     FoundryMacroDocument toMacroDocument(Object payload);
+
+    RelayStatusResult toRelayStatusResult(Object payload);
+
+    RelayConnectedClientsResult toConnectedClientsResult(Object payload);
+
+    RelaySessionsResult toSessionsResult(Object payload);
+
+    RelaySessionHandshakeResult toSessionHandshakeResult(Object payload);
+
+    RelaySessionOperationResult toSessionOperationResult(Object payload);
 }

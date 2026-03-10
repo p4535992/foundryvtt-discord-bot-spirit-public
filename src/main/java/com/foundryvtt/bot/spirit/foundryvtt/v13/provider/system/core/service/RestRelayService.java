@@ -3,6 +3,11 @@ package com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service;
 import java.net.URI;
 import java.util.Map;
 
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model.RollRequest;
 
 /**
@@ -15,7 +20,7 @@ public interface RestRelayService {
      *
      * @return relay status payload
      */
-    Object getRelayStatus();
+    RelayStatusResult getRelayStatus();
 
     /**
      * Lists currently connected Foundry clients.
@@ -23,7 +28,7 @@ public interface RestRelayService {
      * @param apiKeyOverride optional API key override
      * @return connected clients payload
      */
-    Object getConnectedClients(String apiKeyOverride);
+    RelayConnectedClientsResult getConnectedClients(String apiKeyOverride);
 
     /**
      * Reads current headless session state.
@@ -31,7 +36,7 @@ public interface RestRelayService {
      * @param apiKeyOverride optional API key override
      * @return current session payload
      */
-    Object getCurrentSessions(String apiKeyOverride);
+    RelaySessionsResult getCurrentSessions(String apiKeyOverride);
 
     /**
      * Starts a session handshake flow.
@@ -44,7 +49,7 @@ public interface RestRelayService {
      * @param requestBody    optional body data
      * @return handshake payload
      */
-    Object createSessionHandshake(
+    RelaySessionHandshakeResult createSessionHandshake(
             String apiKeyOverride,
             String foundryUrl,
             String username,
@@ -59,7 +64,7 @@ public interface RestRelayService {
      * @param requestBody    request payload
      * @return start session payload
      */
-    Object startSession(String apiKeyOverride, Object requestBody);
+    RelaySessionOperationResult startSession(String apiKeyOverride, Object requestBody);
 
     /**
      * Ends a headless Foundry session.
@@ -68,7 +73,7 @@ public interface RestRelayService {
      * @param sessionId      session identifier
      * @return end session payload
      */
-    Object endSession(String apiKeyOverride, String sessionId);
+    RelaySessionOperationResult endSession(String apiKeyOverride, String sessionId);
 
     /**
      * Executes a dice roll for a specific connected client.

@@ -2,6 +2,11 @@ package com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.dnd5e.service;
 
 import java.util.Map;
 
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eActorDocument;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyExperienceResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eModifyItemChargesResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eUseAbilityResult;
+
 /**
  * DnD5e-specific service facade over relay REST endpoints.
  */
@@ -14,9 +19,9 @@ public interface Dnd5eService {
      * @param clientId       relay client id
      * @param actorUuid      actor UUID
      * @param details        optional details selector
-     * @return operation result payload
+     * @return typed actor payload
      */
-    Object getActorDetails(
+    Dnd5eActorDocument getActorDetails(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
@@ -32,7 +37,7 @@ public interface Dnd5eService {
      * @param requestBody    optional request payload
      * @return operation result payload
      */
-    Object modifyExperience(
+    Dnd5eModifyExperienceResult modifyExperience(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
@@ -49,7 +54,7 @@ public interface Dnd5eService {
      * @param requestBody    optional request payload
      * @return operation result payload
      */
-    Object useAbility(
+    Dnd5eUseAbilityResult useAbility(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
@@ -67,7 +72,7 @@ public interface Dnd5eService {
      * @param requestBody    optional request payload
      * @return operation result payload
      */
-    Object modifyItemCharges(
+    Dnd5eModifyItemChargesResult modifyItemCharges(
             String apiKeyOverride,
             String clientId,
             String actorUuid,
