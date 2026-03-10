@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.SystemId;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.WorldContext;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.registry.SystemModuleRegistry;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.service.CoreCommandExecutorService;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemCommand;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemModule;
 
@@ -22,6 +23,7 @@ public class SystemCommandRouterService {
      * Resolver used to detect the game system for a relay client.
      */
     private final FoundrySystemResolverService foundrySystemResolverService;
+    private final CoreCommandExecutorService coreCommandExecutorService;
 
     /**
      * Registry of available modules.
@@ -37,8 +39,10 @@ public class SystemCommandRouterService {
     @Inject
     public SystemCommandRouterService(
             FoundrySystemResolverService foundrySystemResolverService,
+            CoreCommandExecutorService coreCommandExecutorService,
             SystemModuleRegistry systemModuleRegistry) {
         this.foundrySystemResolverService = foundrySystemResolverService;
+        this.coreCommandExecutorService = coreCommandExecutorService;
         this.systemModuleRegistry = systemModuleRegistry;
     }
 
@@ -51,6 +55,12 @@ public class SystemCommandRouterService {
      * @return command result payload
      */
     public Object route(String clientId, String apiKeyOverride, SystemCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException("command must not be null");
+        }
+        if (this.coreCommandExecutorService.supportsCommand(command.getCommandName())) {
+            return this.coreCommandExecutorService.execute(clientId, apiKeyOverride, command);
+        }
         WorldContext worldContext = this.resolveWorldContext(clientId, apiKeyOverride);
         return this.route(worldContext, command);
     }
@@ -68,6 +78,9 @@ public class SystemCommandRouterService {
         }
         if (command == null) {
             throw new IllegalArgumentException("command must not be null");
+        }
+        if (this.coreCommandExecutorService.supportsCommand(command.getCommandName())) {
+            return this.coreCommandExecutorService.execute(worldContext, command);
         }
 
         SystemModule systemModule = this.systemModuleRegistry

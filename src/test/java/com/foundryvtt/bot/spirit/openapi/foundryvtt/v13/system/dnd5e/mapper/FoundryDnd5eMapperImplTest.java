@@ -16,9 +16,9 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5e
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eUseAbilityResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5eWeaponItemSystemData;
 
-class FoundryDnd5eModelServiceImplTest {
+class FoundryDnd5eMapperImplTest {
 
-    private final FoundryDnd5eMapper service = new FoundryDnd5eMapperImpl(
+    private final FoundryDnd5eMapper mapper = new FoundryDnd5eMapperImpl(
             new ObjectMapper());
 
     @Test
@@ -56,7 +56,7 @@ class FoundryDnd5eModelServiceImplTest {
                                         "magicalBonus", 1,
                                         "properties", List.of("amm", "hvy")))));
 
-        Dnd5eActorDocument actor = this.service.toActorDocument(payload);
+        Dnd5eActorDocument actor = this.mapper.toActorDocument(payload);
 
         assertThat(actor.getSystemData()).isInstanceOf(Dnd5eCharacterActorSystemData.class);
         assertThat(actor.getSystemData().getAttributes().getHp().getValue()).isEqualTo(27);
@@ -82,12 +82,12 @@ class FoundryDnd5eModelServiceImplTest {
                         "identifier", "rogue.sneak-attack",
                         "uses", Map.of("spent", 0)));
 
-        Dnd5eItemDocument item = this.service.toItemDocument(payload);
+        Dnd5eItemDocument item = this.mapper.toItemDocument(payload);
 
         assertThat(item.getSystemData()).isNotInstanceOf(Dnd5eSpellItemSystemData.class);
         assertThat(item.getSystemData().getIdentifier()).isEqualTo("rogue.sneak-attack");
-        assertThat(this.service.supportedActorTypes()).contains("character", "npc");
-        assertThat(this.service.supportedItemTypes()).contains("spell", "weapon");
+        assertThat(this.mapper.supportedActorTypes()).contains("character", "npc");
+        assertThat(this.mapper.supportedItemTypes()).contains("spell", "weapon");
     }
 
     @Test
@@ -104,7 +104,7 @@ class FoundryDnd5eModelServiceImplTest {
                         "system", Map.of(
                                 "details", Map.of("xp", Map.of("value", 1200)))));
 
-        Dnd5eModifyExperienceResult modifyExperienceResult = this.service.toModifyExperienceResult(
+        Dnd5eModifyExperienceResult modifyExperienceResult = this.mapper.toModifyExperienceResult(
                 modifyExperiencePayload);
 
         assertThat(modifyExperienceResult.getRequestId()).isEqualTo("req-1");
@@ -134,7 +134,7 @@ class FoundryDnd5eModelServiceImplTest {
                                 "level", 1,
                                 "school", "evo")));
 
-        Dnd5eUseAbilityResult useAbilityResult = this.service.toUseAbilityResult(useAbilityPayload);
+        Dnd5eUseAbilityResult useAbilityResult = this.mapper.toUseAbilityResult(useAbilityPayload);
 
         assertThat(useAbilityResult.getAbilityName()).isEqualTo("Magic Missile");
         assertThat(useAbilityResult.getActor()).isNotNull();

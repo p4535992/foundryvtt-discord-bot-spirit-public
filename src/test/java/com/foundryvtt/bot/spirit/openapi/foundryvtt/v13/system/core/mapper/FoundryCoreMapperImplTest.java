@@ -26,9 +26,9 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStatusResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayStructureResult;
 
-class FoundryCoreModelServiceImplTest {
+class FoundryCoreMapperImplTest {
 
-    private final FoundryCoreMapper service = new FoundryCoreMapperImpl(
+    private final FoundryCoreMapper mapper = new FoundryCoreMapperImpl(
             new ObjectMapper());
 
     @Test
@@ -44,7 +44,7 @@ class FoundryCoreModelServiceImplTest {
                         "texture", Map.of("src", "tokens/big-ape.webp")),
                 "items", List.of(Map.of("_id", "item-1", "name", "Claws", "type", "weapon")));
 
-        FoundryActorDocument actor = this.service.toActorDocument(payload);
+        FoundryActorDocument actor = this.mapper.toActorDocument(payload);
 
         assertThat(actor.getId()).isEqualTo("actor-1");
         assertThat(actor.getType()).isEqualTo("npc");
@@ -66,23 +66,23 @@ class FoundryCoreModelServiceImplTest {
                 "type", "weapon",
                 "img", "icons/longsword.webp");
 
-        FoundryDocument item = this.service.toDocument("Item", payload);
+        FoundryDocument item = this.mapper.toDocument("Item", payload);
 
         assertThat(item).isInstanceOf(FoundryItemDocument.class);
         assertThat(((FoundryItemDocument) item).getName()).isEqualTo("Longsword");
-        assertThat(this.service.supportedDocumentTypes()).contains("actor", "item", "activeeffect");
+        assertThat(this.mapper.supportedDocumentTypes()).contains("actor", "item", "activeeffect");
     }
 
     @Test
     void shouldConvertStableRelayCoreResponses() {
-        RelayStatusResult status = this.service.toRelayStatusResult(Map.of(
+        RelayStatusResult status = this.mapper.toRelayStatusResult(Map.of(
                 "status", "ok",
                 "version", "2.1.2",
                 "websocket", "/relay"));
         assertThat(status.getStatus()).isEqualTo("ok");
         assertThat(status.getVersion()).isEqualTo("2.1.2");
 
-        RelayConnectedClientsResult clients = this.service.toConnectedClientsResult(Map.of(
+        RelayConnectedClientsResult clients = this.mapper.toConnectedClientsResult(Map.of(
                 "total", 1,
                 "clients", List.of(Map.of(
                         "id", "client-1",
@@ -92,7 +92,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(clients.getClients()).hasSize(1);
         assertThat(clients.getClients().get(0).getSystemId()).isEqualTo("dnd5e");
 
-        RelaySessionsResult sessions = this.service.toSessionsResult(Map.of(
+        RelaySessionsResult sessions = this.mapper.toSessionsResult(Map.of(
                 "activeSessions", List.of(Map.of(
                         "id", "session-1",
                         "clientId", "client-1",
@@ -105,7 +105,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(sessions.getPendingSessions()).hasSize(1);
         assertThat(sessions.getActiveSessions().get(0).getSystemId()).isEqualTo("dnd5e");
 
-        RelaySessionHandshakeResult handshake = this.service.toSessionHandshakeResult(Map.of(
+        RelaySessionHandshakeResult handshake = this.mapper.toSessionHandshakeResult(Map.of(
                 "token", "token-1",
                 "publicKey", "public-key",
                 "nonce", "nonce-1",
@@ -113,7 +113,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(handshake.getToken()).isEqualTo("token-1");
         assertThat(handshake.getExpires()).isEqualTo(123456789L);
 
-        RelaySessionOperationResult operation = this.service.toSessionOperationResult(Map.of(
+        RelaySessionOperationResult operation = this.mapper.toSessionOperationResult(Map.of(
                 "success", Boolean.TRUE,
                 "message", "Foundry session started successfully",
                 "sessionId", "session-1",
@@ -124,7 +124,7 @@ class FoundryCoreModelServiceImplTest {
 
     @Test
     void shouldConvertRelayRollSearchAndUtilityResponses() {
-        RelayRollResult roll = this.service.toRollResult(Map.of(
+        RelayRollResult roll = this.mapper.toRollResult(Map.of(
                 "clientId", "client-1",
                 "success", Boolean.TRUE,
                 "roll", Map.of(
@@ -146,7 +146,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(roll.getRoll().getRoll().getTotal()).isEqualTo(19);
         assertThat(roll.getRoll().getRoll().getDice().get(0).getResults()).hasSize(2);
 
-        RelayLastRollResult lastRoll = this.service.toLastRollResult(Map.of(
+        RelayLastRollResult lastRoll = this.mapper.toLastRollResult(Map.of(
                 "clientId", "client-1",
                 "roll", Map.of(
                         "id", "history-1",
@@ -162,7 +162,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(lastRoll.getRoll().getUser().getName()).isEqualTo("Gamemaster");
         assertThat(lastRoll.getRoll().getRollTotal()).isEqualTo(14);
 
-        RelayRollsResult rolls = this.service.toRollsResult(Map.of(
+        RelayRollsResult rolls = this.mapper.toRollsResult(Map.of(
                 "clientId", "client-1",
                 "rolls", List.of(
                         Map.of("id", "history-1", "formula", "1d20", "rollTotal", 14),
@@ -170,7 +170,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(rolls.getRolls()).hasSize(2);
         assertThat(rolls.getRolls().get(1).getFormula()).isEqualTo("2d6");
 
-        RelaySearchResult search = this.service.toSearchResult(Map.of(
+        RelaySearchResult search = this.mapper.toSearchResult(Map.of(
                 "requestId", "search-1",
                 "clientId", "client-1",
                 "query", "abo",
@@ -189,7 +189,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(search.getResults()).hasSize(1);
         assertThat(search.getResults().get(0).getPackageId()).isEqualTo("dnd5e.monsters");
 
-        RelayExecuteJavaScriptResult executeJavaScript = this.service
+        RelayExecuteJavaScriptResult executeJavaScript = this.mapper
                 .toExecuteJavaScriptResult(Map.of(
                         "requestId", "execute-js-1",
                         "clientId", "client-1",
@@ -201,7 +201,7 @@ class FoundryCoreModelServiceImplTest {
 
     @Test
     void shouldConvertStructureEncounterEntityAndSheetResponses() {
-        RelayStructureResult structure = this.service.toStructureResult(Map.of(
+        RelayStructureResult structure = this.mapper.toStructureResult(Map.of(
                 "requestId", "structure-1",
                 "clientId", "client-1",
                 "folders", List.of(Map.of(
@@ -214,7 +214,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(structure.getFolders()).hasSize(1);
         assertThat(structure.getFolders().get(0).getPath()).isEqualTo("Folder.folder-1");
 
-        RelayEncounterResult encounters = this.service.toEncounterResult(Map.of(
+        RelayEncounterResult encounters = this.mapper.toEncounterResult(Map.of(
                 "requestId", "encounters-1",
                 "clientId", "client-1",
                 "encounters", List.of(Map.of(
@@ -235,7 +235,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(encounters.getEncounters().get(0).getCombatants().get(0).getActorUuid())
                 .isEqualTo("Actor.actor-1");
 
-        RelayEntityResult entity = this.service.toEntityResult(Map.of(
+        RelayEntityResult entity = this.mapper.toEntityResult(Map.of(
                 "requestId", "entity-1",
                 "clientId", "client-1",
                 "uuid", "Actor.actor-1",
@@ -248,7 +248,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(entity.getDocuments().get(0)).isInstanceOf(FoundryActorDocument.class);
         assertThat(entity.getRawData()).hasSize(1);
 
-        RelayActorSheetResult sheet = this.service.toActorSheetResult(Map.of(
+        RelayActorSheetResult sheet = this.mapper.toActorSheetResult(Map.of(
                 "requestId", "sheet-1",
                 "clientId", "client-1",
                 "uuid", "Actor.actor-1",
@@ -257,7 +257,7 @@ class FoundryCoreModelServiceImplTest {
         assertThat(sheet.getHtml()).isEqualTo("<div>sheet</div>");
         assertThat(sheet.getCss()).isEqualTo(".sheet {}");
 
-        RelayActorSheetResult htmlOnlySheet = this.service.toActorSheetResult("<div>raw</div>");
+        RelayActorSheetResult htmlOnlySheet = this.mapper.toActorSheetResult("<div>raw</div>");
         assertThat(htmlOnlySheet.getHtml()).isEqualTo("<div>raw</div>");
     }
 }
