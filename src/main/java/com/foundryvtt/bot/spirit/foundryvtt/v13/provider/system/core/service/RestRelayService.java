@@ -4,6 +4,11 @@ import java.net.URI;
 import java.util.Map;
 
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySearchResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
@@ -83,7 +88,7 @@ public interface RestRelayService {
      * @param rollRequest    roll request payload
      * @return roll payload
      */
-    Object roll(String apiKeyOverride, String clientId, RollRequest rollRequest);
+    RelayRollResult roll(String apiKeyOverride, String clientId, RollRequest rollRequest);
 
     /**
      * Reads the latest roll for a target client.
@@ -92,7 +97,7 @@ public interface RestRelayService {
      * @param clientId       target client id
      * @return last roll payload
      */
-    Object getLastRoll(String apiKeyOverride, String clientId);
+    RelayLastRollResult getLastRoll(String apiKeyOverride, String clientId);
 
     /**
      * Reads recent roll history for a target client.
@@ -102,7 +107,7 @@ public interface RestRelayService {
      * @param limit          max records
      * @return rolls payload
      */
-    Object getRecentRolls(String apiKeyOverride, String clientId, Integer limit);
+    RelayRollsResult getRecentRolls(String apiKeyOverride, String clientId, Integer limit);
 
     /**
      * Searches Foundry entities through relay.
@@ -113,7 +118,7 @@ public interface RestRelayService {
      * @param filter         optional filter expression
      * @return search payload
      */
-    Object search(String apiKeyOverride, String clientId, String query, String filter);
+    RelaySearchResult search(String apiKeyOverride, String clientId, String query, String filter);
 
     /**
      * Executes raw JavaScript in the target Foundry world through relay.
@@ -123,7 +128,8 @@ public interface RestRelayService {
      * @param requestBody    request payload (for example {"script":"..."})
      * @return execution payload
      */
-    Object executeJavaScript(String apiKeyOverride, String clientId, Object requestBody);
+    RelayExecuteJavaScriptResult executeJavaScript(String apiKeyOverride, String clientId,
+            Object requestBody);
 
     /**
      * Builds a relay websocket URI based on configured base websocket endpoint.

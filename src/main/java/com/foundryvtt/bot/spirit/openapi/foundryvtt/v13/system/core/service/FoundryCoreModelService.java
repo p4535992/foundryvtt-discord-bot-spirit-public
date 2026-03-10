@@ -10,6 +10,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryMacroDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySearchResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
@@ -45,4 +50,14 @@ public interface FoundryCoreModelService {
     RelaySessionHandshakeResult toSessionHandshakeResult(Object payload);
 
     RelaySessionOperationResult toSessionOperationResult(Object payload);
+
+    RelayRollResult toRollResult(Object payload);
+
+    RelayLastRollResult toLastRollResult(Object payload);
+
+    RelayRollsResult toRollsResult(Object payload);
+
+    RelaySearchResult toSearchResult(Object payload);
+
+    RelayExecuteJavaScriptResult toExecuteJavaScriptResult(Object payload);
 }

@@ -17,6 +17,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryMacroDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySearchResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
@@ -123,6 +128,31 @@ public class FoundryCoreModelServiceImpl extends AbstractFoundryModelService
     @Override
     public RelaySessionOperationResult toSessionOperationResult(Object payload) {
         return this.convert(payload, RelaySessionOperationResult.class);
+    }
+
+    @Override
+    public RelayRollResult toRollResult(Object payload) {
+        return this.convert(payload, RelayRollResult.class);
+    }
+
+    @Override
+    public RelayLastRollResult toLastRollResult(Object payload) {
+        return this.convert(payload, RelayLastRollResult.class);
+    }
+
+    @Override
+    public RelayRollsResult toRollsResult(Object payload) {
+        return this.convert(payload, RelayRollsResult.class);
+    }
+
+    @Override
+    public RelaySearchResult toSearchResult(Object payload) {
+        return this.convert(payload, RelaySearchResult.class);
+    }
+
+    @Override
+    public RelayExecuteJavaScriptResult toExecuteJavaScriptResult(Object payload) {
+        return this.convert(payload, RelayExecuteJavaScriptResult.class);
     }
 
     private String normalizeDocumentType(String documentType) {

@@ -10,6 +10,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySearchResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
@@ -176,49 +181,57 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
     }
 
     @Override
-    public Object roll(String apiKeyOverride, String clientId, RollRequest rollRequest) {
+    public RelayRollResult roll(String apiKeyOverride, String clientId, RollRequest rollRequest) {
         try {
-            return this.rollApi.rollPost(this.resolveApiKey(apiKeyOverride), clientId, rollRequest);
+            return this.foundryCoreModelService.toRollResult(
+                    this.rollApi.rollPost(this.resolveApiKey(apiKeyOverride), clientId,
+                            rollRequest));
         } catch (ApiException exception) {
             throw this.relayCallFailed("execute roll", exception);
         }
     }
 
     @Override
-    public Object getLastRoll(String apiKeyOverride, String clientId) {
+    public RelayLastRollResult getLastRoll(String apiKeyOverride, String clientId) {
         try {
-            return this.rollApi.lastrollGet(this.resolveApiKey(apiKeyOverride), clientId);
+            return this.foundryCoreModelService.toLastRollResult(
+                    this.rollApi.lastrollGet(this.resolveApiKey(apiKeyOverride), clientId));
         } catch (ApiException exception) {
             throw this.relayCallFailed("get last roll", exception);
         }
     }
 
     @Override
-    public Object getRecentRolls(String apiKeyOverride, String clientId, Integer limit) {
+    public RelayRollsResult getRecentRolls(String apiKeyOverride, String clientId, Integer limit) {
         try {
-            return this.rollApi.rollsGet(this.resolveApiKey(apiKeyOverride), clientId, limit);
+            return this.foundryCoreModelService.toRollsResult(
+                    this.rollApi.rollsGet(this.resolveApiKey(apiKeyOverride), clientId, limit));
         } catch (ApiException exception) {
             throw this.relayCallFailed("get roll history", exception);
         }
     }
 
     @Override
-    public Object search(String apiKeyOverride, String clientId, String query, String filter) {
+    public RelaySearchResult search(String apiKeyOverride, String clientId, String query,
+            String filter) {
         try {
-            return this.searchApi.searchGet(this.resolveApiKey(apiKeyOverride), clientId, query,
-                    filter);
+            return this.foundryCoreModelService.toSearchResult(
+                    this.searchApi.searchGet(this.resolveApiKey(apiKeyOverride), clientId, query,
+                            filter));
         } catch (ApiException exception) {
             throw this.relayCallFailed("search entities", exception);
         }
     }
 
     @Override
-    public Object executeJavaScript(String apiKeyOverride, String clientId, Object requestBody) {
+    public RelayExecuteJavaScriptResult executeJavaScript(String apiKeyOverride, String clientId,
+            Object requestBody) {
         try {
-            return this.utilitiesApi.executeJsPost(
-                    this.resolveApiKey(apiKeyOverride),
-                    clientId,
-                    this.asRequiredStringObjectMap(requestBody));
+            return this.foundryCoreModelService.toExecuteJavaScriptResult(
+                    this.utilitiesApi.executeJsPost(
+                            this.resolveApiKey(apiKeyOverride),
+                            clientId,
+                            this.asRequiredStringObjectMap(requestBody)));
         } catch (ApiException exception) {
             throw this.relayCallFailed("execute javascript", exception);
         }

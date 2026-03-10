@@ -12,6 +12,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.Foundr
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.FoundryItemDocument;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayConnectedClientsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayExecuteJavaScriptResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayLastRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayRollsResult;
+import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySearchResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionHandshakeResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionOperationResult;
 import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelaySessionsResult;
@@ -111,5 +116,82 @@ class FoundryCoreModelServiceImplTest {
                 "clientId", "client-1"));
         assertThat(operation.getSuccess()).isTrue();
         assertThat(operation.getSessionId()).isEqualTo("session-1");
+    }
+
+    @Test
+    void shouldConvertRelayRollSearchAndUtilityResponses() {
+        RelayRollResult roll = this.service.toRollResult(Map.of(
+                "clientId", "client-1",
+                "success", Boolean.TRUE,
+                "roll", Map.of(
+                        "id", "manual-1",
+                        "chatMessageCreated", Boolean.TRUE,
+                        "roll", Map.of(
+                                "formula", "2d20kh + 5",
+                                "total", 19,
+                                "isCritical", Boolean.FALSE,
+                                "isFumble", Boolean.FALSE,
+                                "dice", List.of(Map.of(
+                                        "faces", 20,
+                                        "results", List.of(
+                                                Map.of("result", 19, "active", Boolean.TRUE),
+                                                Map.of("result", 3, "active", Boolean.FALSE)))),
+                                "timestamp", 1741128675737L))));
+        assertThat(roll.getSuccess()).isTrue();
+        assertThat(roll.getRoll().getId()).isEqualTo("manual-1");
+        assertThat(roll.getRoll().getRoll().getTotal()).isEqualTo(19);
+        assertThat(roll.getRoll().getRoll().getDice().get(0).getResults()).hasSize(2);
+
+        RelayLastRollResult lastRoll = this.service.toLastRollResult(Map.of(
+                "clientId", "client-1",
+                "roll", Map.of(
+                        "id", "history-1",
+                        "messageId", "message-1",
+                        "user", Map.of("id", "user-1", "name", "Gamemaster"),
+                        "speaker", Map.of("alias", "Gamemaster"),
+                        "formula", "1d20",
+                        "rollTotal", 14,
+                        "dice", List.of(Map.of(
+                                "faces", 20,
+                                "results", List.of(Map.of("result", 14, "active", Boolean.TRUE)))),
+                        "timestamp", 1741128440641L)));
+        assertThat(lastRoll.getRoll().getUser().getName()).isEqualTo("Gamemaster");
+        assertThat(lastRoll.getRoll().getRollTotal()).isEqualTo(14);
+
+        RelayRollsResult rolls = this.service.toRollsResult(Map.of(
+                "clientId", "client-1",
+                "rolls", List.of(
+                        Map.of("id", "history-1", "formula", "1d20", "rollTotal", 14),
+                        Map.of("id", "history-2", "formula", "2d6", "rollTotal", 7))));
+        assertThat(rolls.getRolls()).hasSize(2);
+        assertThat(rolls.getRolls().get(1).getFormula()).isEqualTo("2d6");
+
+        RelaySearchResult search = this.service.toSearchResult(Map.of(
+                "requestId", "search-1",
+                "clientId", "client-1",
+                "query", "abo",
+                "filter", "actor",
+                "totalResults", 1,
+                "results", List.of(Map.of(
+                        "documentType", "Actor",
+                        "id", "actor-1",
+                        "name", "Aboleth",
+                        "package", "dnd5e.monsters",
+                        "packageName", "Monsters (SRD)",
+                        "subType", "npc",
+                        "uuid", "Compendium.dnd5e.monsters.actor-1",
+                        "resultType", "CompendiumSearchItem"))));
+        assertThat(search.getRequestId()).isEqualTo("search-1");
+        assertThat(search.getResults()).hasSize(1);
+        assertThat(search.getResults().get(0).getPackageId()).isEqualTo("dnd5e.monsters");
+
+        RelayExecuteJavaScriptResult executeJavaScript = this.service
+                .toExecuteJavaScriptResult(Map.of(
+                        "requestId", "execute-js-1",
+                        "clientId", "client-1",
+                        "success", Boolean.TRUE,
+                        "result", "ws://localhost:3010/"));
+        assertThat(executeJavaScript.getSuccess()).isTrue();
+        assertThat(executeJavaScript.getResult().asText()).isEqualTo("ws://localhost:3010/");
     }
 }
