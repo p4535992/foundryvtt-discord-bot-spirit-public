@@ -1,6 +1,7 @@
 package com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.routing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -13,6 +14,9 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.CoreCommandNames;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandEnvelope;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandResponseEnvelope;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.mapper.SystemCommandEnvelopeMapper;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.Capability;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.SystemId;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.WorldContext;
@@ -31,6 +35,7 @@ class SystemCommandRouterServiceTest {
         SystemCommandRouterService routerService = new SystemCommandRouterService(
                 resolverService,
                 coreExecutorService,
+                new SystemCommandEnvelopeMapper(),
                 moduleRegistry);
 
         SystemCommand command = new SystemCommand(CoreCommandNames.GET_RELAY_STATUS);
@@ -55,6 +60,7 @@ class SystemCommandRouterServiceTest {
         SystemCommandRouterService routerService = new SystemCommandRouterService(
                 resolverService,
                 coreExecutorService,
+                new SystemCommandEnvelopeMapper(),
                 moduleRegistry);
 
         SystemCommand command = new SystemCommand("dnd5e.actor.getDetails",
@@ -79,6 +85,7 @@ class SystemCommandRouterServiceTest {
         SystemCommandRouterService routerService = new SystemCommandRouterService(
                 resolverService,
                 coreExecutorService,
+                new SystemCommandEnvelopeMapper(),
                 moduleRegistry);
         WorldContext worldContext = new WorldContext("client-2", "api-key", SystemId.DND5E);
         SystemCommand command = new SystemCommand(CoreCommandNames.GET_CURRENT_SESSIONS);
@@ -91,6 +98,70 @@ class SystemCommandRouterServiceTest {
         assertThat(result).isEqualTo("sessions");
         verify(coreExecutorService).execute(worldContext, command);
         verify(moduleRegistry, never()).getRequiredModule(SystemId.DND5E);
+    }
+
+    @Test
+    void shouldRouteTypedEnvelopeUsingEnvelopeMapper() {
+        FoundrySystemResolverService resolverService = mock(FoundrySystemResolverService.class);
+        CoreCommandExecutorService coreExecutorService = mock(CoreCommandExecutorService.class);
+        SystemModuleRegistry moduleRegistry = mock(SystemModuleRegistry.class);
+        SystemCommandRouterService routerService = new SystemCommandRouterService(
+                resolverService,
+                coreExecutorService,
+                new SystemCommandEnvelopeMapper(),
+                moduleRegistry);
+        SystemCommandEnvelope envelope = new SystemCommandEnvelope(
+                "client-9",
+                "api-key",
+                CoreCommandNames.GET_RELAY_STATUS,
+                Map.of());
+
+        when(coreExecutorService.supportsCommand(CoreCommandNames.GET_RELAY_STATUS))
+                .thenReturn(true);
+        when(coreExecutorService.execute(eq("client-9"), eq("api-key"),
+                argThat(command -> command != null
+                        && CoreCommandNames.GET_RELAY_STATUS.equals(command.getCommandName())
+                        && command.getPayload().isEmpty())))
+                .thenReturn("ok");
+
+        Object result = routerService.route(envelope);
+
+        assertThat(result).isEqualTo("ok");
+    }
+
+    @Test
+    void shouldWrapCoreEnvelopeResultIntoTypedResponse() {
+        FoundrySystemResolverService resolverService = mock(FoundrySystemResolverService.class);
+        CoreCommandExecutorService coreExecutorService = mock(CoreCommandExecutorService.class);
+        SystemModuleRegistry moduleRegistry = mock(SystemModuleRegistry.class);
+        SystemCommandRouterService routerService = new SystemCommandRouterService(
+                resolverService,
+                coreExecutorService,
+                new SystemCommandEnvelopeMapper(),
+                moduleRegistry);
+        SystemCommandEnvelope envelope = new SystemCommandEnvelope(
+                "client-10",
+                "api-key",
+                CoreCommandNames.GET_RELAY_STATUS,
+                Map.of());
+
+        when(coreExecutorService.supportsCommand(CoreCommandNames.GET_RELAY_STATUS))
+                .thenReturn(true);
+        when(coreExecutorService.execute(
+                eq("client-10"),
+                eq("api-key"),
+                argThat(command -> command != null
+                        && CoreCommandNames.GET_RELAY_STATUS.equals(command.getCommandName()))))
+                .thenReturn("ok");
+
+        SystemCommandResponseEnvelope response = routerService.routeForResponse(envelope);
+
+        assertThat(response.getClientId()).isEqualTo("client-10");
+        assertThat(response.getCommandName()).isEqualTo(CoreCommandNames.GET_RELAY_STATUS);
+        assertThat(response.getCoreCommand()).isTrue();
+        assertThat(response.getSystemId()).isNull();
+        assertThat(response.getResult()).isEqualTo("ok");
+        assertThat(response.getMetadata()).containsEntry("scope", "core");
     }
 
     private static final class StubSystemModule implements SystemModule {

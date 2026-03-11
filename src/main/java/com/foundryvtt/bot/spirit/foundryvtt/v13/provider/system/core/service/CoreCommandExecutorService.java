@@ -65,13 +65,16 @@ public class CoreCommandExecutorService {
         Map<String, Object> payload = command.getPayload();
 
         switch (command.getCommandName()) {
-        case CoreCommandNames.GET_RELAY_STATUS:
+        case CoreCommandNames.GET_RELAY_STATUS -> {
             return this.restRelayService.getRelayStatus();
-        case CoreCommandNames.GET_CONNECTED_CLIENTS:
+        }
+        case CoreCommandNames.GET_CONNECTED_CLIENTS -> {
             return this.restRelayService.getConnectedClients(apiKeyOverride);
-        case CoreCommandNames.GET_CURRENT_SESSIONS:
+        }
+        case CoreCommandNames.GET_CURRENT_SESSIONS -> {
             return this.restRelayService.getCurrentSessions(apiKeyOverride);
-        case CoreCommandNames.CREATE_SESSION_HANDSHAKE: {
+        }
+        case CoreCommandNames.CREATE_SESSION_HANDSHAKE -> {
             SessionHandshakeCommandRequest request = this.coreCommandRequestMapper
                     .toSessionHandshakeRequest(payload);
             return this.restRelayService.createSessionHandshake(
@@ -82,29 +85,29 @@ public class CoreCommandExecutorService {
                     request.worldName(),
                     request.requestBody());
         }
-        case CoreCommandNames.START_SESSION: {
+        case CoreCommandNames.START_SESSION -> {
             BodyOnlyCommandRequest request = this.coreCommandRequestMapper
                     .toBodyOnlyRequest(payload);
             return this.restRelayService.startSession(apiKeyOverride, request.requestBody());
         }
-        case CoreCommandNames.END_SESSION: {
+        case CoreCommandNames.END_SESSION -> {
             SessionIdCommandRequest request = this.coreCommandRequestMapper
                     .toSessionIdRequest(payload);
             return this.restRelayService.endSession(apiKeyOverride, request.sessionId());
         }
-        case CoreCommandNames.GET_STRUCTURE: {
+        case CoreCommandNames.GET_STRUCTURE -> {
             ClientCommandRequest request = this.coreCommandRequestMapper.toClientCommandRequest(
                     clientId,
                     payload);
             return this.restRelayService.getStructure(apiKeyOverride, request.clientId());
         }
-        case CoreCommandNames.GET_ENCOUNTERS: {
+        case CoreCommandNames.GET_ENCOUNTERS -> {
             ClientCommandRequest request = this.coreCommandRequestMapper.toClientCommandRequest(
                     clientId,
                     payload);
             return this.restRelayService.getEncounters(apiKeyOverride, request.clientId());
         }
-        case CoreCommandNames.GET_ENTITY: {
+        case CoreCommandNames.GET_ENTITY -> {
             EntityCommandRequest request = this.coreCommandRequestMapper.toEntityRequest(
                     clientId,
                     payload);
@@ -114,7 +117,7 @@ public class CoreCommandExecutorService {
                     request.selected(),
                     request.actor());
         }
-        case CoreCommandNames.GET_ENTITY_BY_UUID: {
+        case CoreCommandNames.GET_ENTITY_BY_UUID -> {
             EntityByUuidCommandRequest request = this.coreCommandRequestMapper
                     .toEntityByUuidRequest(
                             clientId,
@@ -125,7 +128,7 @@ public class CoreCommandExecutorService {
                     request.uuid(),
                     request.actor());
         }
-        case CoreCommandNames.GET_ACTOR_SHEET: {
+        case CoreCommandNames.GET_ACTOR_SHEET -> {
             ActorSheetCommandRequest request = this.coreCommandRequestMapper.toActorSheetRequest(
                     clientId,
                     payload);
@@ -137,7 +140,7 @@ public class CoreCommandExecutorService {
                     request.actor(),
                     request.scale());
         }
-        case CoreCommandNames.ROLL: {
+        case CoreCommandNames.ROLL -> {
             RollCommandRequest request = this.coreCommandRequestMapper.toRollRequest(clientId,
                     payload);
             return this.restRelayService.roll(
@@ -145,13 +148,13 @@ public class CoreCommandExecutorService {
                     request.clientId(),
                     request.rollRequest());
         }
-        case CoreCommandNames.GET_LAST_ROLL: {
+        case CoreCommandNames.GET_LAST_ROLL -> {
             ClientCommandRequest request = this.coreCommandRequestMapper.toClientCommandRequest(
                     clientId,
                     payload);
             return this.restRelayService.getLastRoll(apiKeyOverride, request.clientId());
         }
-        case CoreCommandNames.GET_RECENT_ROLLS: {
+        case CoreCommandNames.GET_RECENT_ROLLS -> {
             RecentRollsCommandRequest request = this.coreCommandRequestMapper.toRecentRollsRequest(
                     clientId,
                     payload);
@@ -160,7 +163,7 @@ public class CoreCommandExecutorService {
                     request.clientId(),
                     request.limit());
         }
-        case CoreCommandNames.SEARCH: {
+        case CoreCommandNames.SEARCH -> {
             SearchCommandRequest request = this.coreCommandRequestMapper.toSearchRequest(
                     clientId,
                     payload);
@@ -170,7 +173,7 @@ public class CoreCommandExecutorService {
                     request.query(),
                     request.filter());
         }
-        case CoreCommandNames.EXECUTE_JAVASCRIPT: {
+        case CoreCommandNames.EXECUTE_JAVASCRIPT -> {
             ClientBodyCommandRequest request = this.coreCommandRequestMapper.toClientBodyRequest(
                     clientId,
                     payload);
@@ -179,9 +182,8 @@ public class CoreCommandExecutorService {
                     request.clientId(),
                     request.requestBody());
         }
-        default:
-            throw new IllegalStateException(
-                    "Unsupported core command: " + command.getCommandName());
+        default -> throw new IllegalStateException(
+                "Unsupported core command: " + command.getCommandName());
         }
     }
 }

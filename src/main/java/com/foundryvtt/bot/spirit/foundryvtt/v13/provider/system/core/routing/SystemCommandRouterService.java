@@ -6,6 +6,9 @@ import java.util.Map;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandEnvelope;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandResponseEnvelope;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.mapper.SystemCommandEnvelopeMapper;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.SystemId;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.WorldContext;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.registry.SystemModuleRegistry;
@@ -24,6 +27,7 @@ public class SystemCommandRouterService {
      */
     private final FoundrySystemResolverService foundrySystemResolverService;
     private final CoreCommandExecutorService coreCommandExecutorService;
+    private final SystemCommandEnvelopeMapper systemCommandEnvelopeMapper;
 
     /**
      * Registry of available modules.
@@ -40,10 +44,70 @@ public class SystemCommandRouterService {
     public SystemCommandRouterService(
             FoundrySystemResolverService foundrySystemResolverService,
             CoreCommandExecutorService coreCommandExecutorService,
+            SystemCommandEnvelopeMapper systemCommandEnvelopeMapper,
             SystemModuleRegistry systemModuleRegistry) {
         this.foundrySystemResolverService = foundrySystemResolverService;
         this.coreCommandExecutorService = coreCommandExecutorService;
+        this.systemCommandEnvelopeMapper = systemCommandEnvelopeMapper;
         this.systemModuleRegistry = systemModuleRegistry;
+    }
+
+    /**
+     * Routes an external typed command envelope.
+     *
+     * @param envelope external command envelope
+     * @return command result payload
+     */
+    public Object route(SystemCommandEnvelope envelope) {
+        if (envelope == null) {
+            throw new IllegalArgumentException("envelope must not be null");
+        }
+        return this.route(
+                envelope.getClientId(),
+                envelope.getApiKeyOverride(),
+                this.systemCommandEnvelopeMapper.toSystemCommand(envelope));
+    }
+
+    /**
+     * Routes an external typed command envelope and wraps the result in a typed response.
+     *
+     * @param envelope external command envelope
+     * @return typed command response envelope
+     */
+    public SystemCommandResponseEnvelope routeForResponse(SystemCommandEnvelope envelope) {
+        if (envelope == null) {
+            throw new IllegalArgumentException("envelope must not be null");
+        }
+        SystemCommand command = this.systemCommandEnvelopeMapper.toSystemCommand(envelope);
+        if (this.coreCommandExecutorService.supportsCommand(command.getCommandName())) {
+            Object result = this.coreCommandExecutorService.execute(
+                    envelope.getClientId(),
+                    envelope.getApiKeyOverride(),
+                    command);
+            Map<String, Object> metadata = new HashMap<String, Object>();
+            metadata.put("scope", "core");
+            return new SystemCommandResponseEnvelope(
+                    envelope.getClientId(),
+                    command.getCommandName(),
+                    null,
+                    Boolean.TRUE,
+                    result,
+                    metadata);
+        }
+
+        WorldContext worldContext = this.resolveWorldContext(
+                envelope.getClientId(),
+                envelope.getApiKeyOverride());
+        Object result = this.route(worldContext, command);
+        Map<String, Object> metadata = new HashMap<String, Object>(worldContext.getMetadata());
+        metadata.put("scope", "system");
+        return new SystemCommandResponseEnvelope(
+                worldContext.getClientId(),
+                command.getCommandName(),
+                worldContext.getSystemId().value(),
+                Boolean.FALSE,
+                result,
+                metadata);
     }
 
     /**

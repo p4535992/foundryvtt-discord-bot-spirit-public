@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.jboss.logging.Logger;
 
+import com.foundryvtt.bot.spirit.exception.RelayClientException;
+
 /**
  * Shared base class for services backed by generated relay OpenAPI clients.
  */
@@ -88,7 +90,7 @@ public abstract class AbstractRelayClientService {
         return URI.create(fullWebSocketUrl);
     }
 
-    protected IllegalStateException relayCallFailed(
+    protected RelayClientException relayCallFailed(
             Logger logger,
             String serviceLabel,
             String actionName,
@@ -101,7 +103,10 @@ public abstract class AbstractRelayClientService {
                 actionName,
                 statusCode,
                 this.relayBaseUrl);
-        return new IllegalStateException(
+        return new RelayClientException(
+                serviceLabel,
+                actionName,
+                statusCode,
                 serviceLabel
                         + " call failed while trying to "
                         + actionName
