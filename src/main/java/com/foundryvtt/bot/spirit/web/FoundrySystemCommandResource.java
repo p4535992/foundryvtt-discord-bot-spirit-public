@@ -7,7 +7,15 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandEnvelope;
+import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandErrorResponseEnvelope;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.model.SystemCommandResponseEnvelope;
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.routing.SystemCommandRouterService;
 
@@ -17,6 +25,7 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.routing.Sys
 @Path("/api/foundryvtt/v13/provider/system/command")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Foundry Provider Commands", description = "Provider-level command routing facade over the relay-backed Foundry integration.")
 public class FoundrySystemCommandResource {
 
     private final SystemCommandRouterService systemCommandRouterService;
@@ -28,6 +37,14 @@ public class FoundrySystemCommandResource {
 
     @POST
     @Path("/route")
+    @Operation(operationId = "routeFoundrySystemCommand", summary = "Route a provider command", description = "Routes a core or system-specific provider command through the Foundry VTT v13 provider layer.")
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Command executed successfully.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandResponseEnvelope.class))),
+            @APIResponse(responseCode = "400", description = "Invalid request envelope or payload.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandErrorResponseEnvelope.class))),
+            @APIResponse(responseCode = "422", description = "Command could not be routed or executed in the current provider state.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandErrorResponseEnvelope.class))),
+            @APIResponse(responseCode = "502", description = "Downstream relay call failed.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandErrorResponseEnvelope.class))),
+            @APIResponse(responseCode = "500", description = "Unexpected internal error.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandErrorResponseEnvelope.class)))
+    })
     public SystemCommandResponseEnvelope route(SystemCommandEnvelope envelope) {
         return this.systemCommandRouterService.routeForResponse(envelope);
     }

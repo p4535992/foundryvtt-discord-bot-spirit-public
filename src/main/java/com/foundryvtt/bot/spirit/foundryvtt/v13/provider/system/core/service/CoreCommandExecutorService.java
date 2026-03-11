@@ -63,18 +63,18 @@ public class CoreCommandExecutorService {
 
     private Object executeInternal(String clientId, String apiKeyOverride, SystemCommand command) {
         Map<String, Object> payload = command.getPayload();
+        String commandName = command.getCommandName();
 
-        switch (command.getCommandName()) {
-        case CoreCommandNames.GET_RELAY_STATUS -> {
+        if (CoreCommandNames.GET_RELAY_STATUS.equals(commandName)) {
             return this.restRelayService.getRelayStatus();
         }
-        case CoreCommandNames.GET_CONNECTED_CLIENTS -> {
+        if (CoreCommandNames.GET_CONNECTED_CLIENTS.equals(commandName)) {
             return this.restRelayService.getConnectedClients(apiKeyOverride);
         }
-        case CoreCommandNames.GET_CURRENT_SESSIONS -> {
+        if (CoreCommandNames.GET_CURRENT_SESSIONS.equals(commandName)) {
             return this.restRelayService.getCurrentSessions(apiKeyOverride);
         }
-        case CoreCommandNames.CREATE_SESSION_HANDSHAKE -> {
+        if (CoreCommandNames.CREATE_SESSION_HANDSHAKE.equals(commandName)) {
             SessionHandshakeCommandRequest request = this.coreCommandRequestMapper
                     .toSessionHandshakeRequest(payload);
             return this.restRelayService.createSessionHandshake(
@@ -85,29 +85,29 @@ public class CoreCommandExecutorService {
                     request.worldName(),
                     request.requestBody());
         }
-        case CoreCommandNames.START_SESSION -> {
+        if (CoreCommandNames.START_SESSION.equals(commandName)) {
             BodyOnlyCommandRequest request = this.coreCommandRequestMapper
                     .toBodyOnlyRequest(payload);
             return this.restRelayService.startSession(apiKeyOverride, request.requestBody());
         }
-        case CoreCommandNames.END_SESSION -> {
+        if (CoreCommandNames.END_SESSION.equals(commandName)) {
             SessionIdCommandRequest request = this.coreCommandRequestMapper
                     .toSessionIdRequest(payload);
             return this.restRelayService.endSession(apiKeyOverride, request.sessionId());
         }
-        case CoreCommandNames.GET_STRUCTURE -> {
+        if (CoreCommandNames.GET_STRUCTURE.equals(commandName)) {
             ClientCommandRequest request = this.coreCommandRequestMapper.toClientCommandRequest(
                     clientId,
                     payload);
             return this.restRelayService.getStructure(apiKeyOverride, request.clientId());
         }
-        case CoreCommandNames.GET_ENCOUNTERS -> {
+        if (CoreCommandNames.GET_ENCOUNTERS.equals(commandName)) {
             ClientCommandRequest request = this.coreCommandRequestMapper.toClientCommandRequest(
                     clientId,
                     payload);
             return this.restRelayService.getEncounters(apiKeyOverride, request.clientId());
         }
-        case CoreCommandNames.GET_ENTITY -> {
+        if (CoreCommandNames.GET_ENTITY.equals(commandName)) {
             EntityCommandRequest request = this.coreCommandRequestMapper.toEntityRequest(
                     clientId,
                     payload);
@@ -117,7 +117,7 @@ public class CoreCommandExecutorService {
                     request.selected(),
                     request.actor());
         }
-        case CoreCommandNames.GET_ENTITY_BY_UUID -> {
+        if (CoreCommandNames.GET_ENTITY_BY_UUID.equals(commandName)) {
             EntityByUuidCommandRequest request = this.coreCommandRequestMapper
                     .toEntityByUuidRequest(
                             clientId,
@@ -128,7 +128,7 @@ public class CoreCommandExecutorService {
                     request.uuid(),
                     request.actor());
         }
-        case CoreCommandNames.GET_ACTOR_SHEET -> {
+        if (CoreCommandNames.GET_ACTOR_SHEET.equals(commandName)) {
             ActorSheetCommandRequest request = this.coreCommandRequestMapper.toActorSheetRequest(
                     clientId,
                     payload);
@@ -140,7 +140,7 @@ public class CoreCommandExecutorService {
                     request.actor(),
                     request.scale());
         }
-        case CoreCommandNames.ROLL -> {
+        if (CoreCommandNames.ROLL.equals(commandName)) {
             RollCommandRequest request = this.coreCommandRequestMapper.toRollRequest(clientId,
                     payload);
             return this.restRelayService.roll(
@@ -148,13 +148,13 @@ public class CoreCommandExecutorService {
                     request.clientId(),
                     request.rollRequest());
         }
-        case CoreCommandNames.GET_LAST_ROLL -> {
+        if (CoreCommandNames.GET_LAST_ROLL.equals(commandName)) {
             ClientCommandRequest request = this.coreCommandRequestMapper.toClientCommandRequest(
                     clientId,
                     payload);
             return this.restRelayService.getLastRoll(apiKeyOverride, request.clientId());
         }
-        case CoreCommandNames.GET_RECENT_ROLLS -> {
+        if (CoreCommandNames.GET_RECENT_ROLLS.equals(commandName)) {
             RecentRollsCommandRequest request = this.coreCommandRequestMapper.toRecentRollsRequest(
                     clientId,
                     payload);
@@ -163,7 +163,7 @@ public class CoreCommandExecutorService {
                     request.clientId(),
                     request.limit());
         }
-        case CoreCommandNames.SEARCH -> {
+        if (CoreCommandNames.SEARCH.equals(commandName)) {
             SearchCommandRequest request = this.coreCommandRequestMapper.toSearchRequest(
                     clientId,
                     payload);
@@ -173,7 +173,7 @@ public class CoreCommandExecutorService {
                     request.query(),
                     request.filter());
         }
-        case CoreCommandNames.EXECUTE_JAVASCRIPT -> {
+        if (CoreCommandNames.EXECUTE_JAVASCRIPT.equals(commandName)) {
             ClientBodyCommandRequest request = this.coreCommandRequestMapper.toClientBodyRequest(
                     clientId,
                     payload);
@@ -182,8 +182,6 @@ public class CoreCommandExecutorService {
                     request.clientId(),
                     request.requestBody());
         }
-        default -> throw new IllegalStateException(
-                "Unsupported core command: " + command.getCommandName());
-        }
+        throw new IllegalStateException("Unsupported core command: " + commandName);
     }
 }

@@ -46,9 +46,9 @@ public class Dnd5eCommandExecutorService {
         Map<String, Object> payload = command.getPayload();
         String apiKeyOverride = worldContext.getApiKeyOverride();
         String clientId = worldContext.getClientId();
+        String commandName = command.getCommandName();
 
-        switch (command.getCommandName()) {
-        case Dnd5eCommandNames.GET_ACTOR_DETAILS: {
+        if (Dnd5eCommandNames.GET_ACTOR_DETAILS.equals(commandName)) {
             ActorDetailsCommandRequest request = this.dnd5eCommandRequestMapper
                     .toActorDetailsRequest(payload);
             return this.dnd5eService.getActorDetails(
@@ -57,7 +57,7 @@ public class Dnd5eCommandExecutorService {
                     request.actorUuid(),
                     request.details());
         }
-        case Dnd5eCommandNames.MODIFY_EXPERIENCE: {
+        if (Dnd5eCommandNames.MODIFY_EXPERIENCE.equals(commandName)) {
             ModifyExperienceCommandRequest request = this.dnd5eCommandRequestMapper
                     .toModifyExperienceRequest(payload);
             return this.dnd5eService.modifyExperience(
@@ -67,7 +67,7 @@ public class Dnd5eCommandExecutorService {
                     request.amount(),
                     request.requestBody());
         }
-        case Dnd5eCommandNames.USE_ABILITY: {
+        if (Dnd5eCommandNames.USE_ABILITY.equals(commandName)) {
             UseAbilityCommandRequest request = this.dnd5eCommandRequestMapper
                     .toUseAbilityRequest(payload);
             return this.dnd5eService.useAbility(
@@ -77,7 +77,7 @@ public class Dnd5eCommandExecutorService {
                     request.abilityName(),
                     request.requestBody());
         }
-        case Dnd5eCommandNames.MODIFY_ITEM_CHARGES: {
+        if (Dnd5eCommandNames.MODIFY_ITEM_CHARGES.equals(commandName)) {
             ModifyItemChargesCommandRequest request = this.dnd5eCommandRequestMapper
                     .toModifyItemChargesRequest(payload);
             return this.dnd5eService.modifyItemCharges(
@@ -88,9 +88,6 @@ public class Dnd5eCommandExecutorService {
                     request.amount(),
                     request.requestBody());
         }
-        default:
-            throw new IllegalStateException(
-                    "Unsupported DnD5e command: " + command.getCommandName());
-        }
+        throw new IllegalStateException("Unsupported DnD5e command: " + commandName);
     }
 }

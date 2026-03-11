@@ -4,17 +4,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Typed external envelope for routing a provider command.
  */
+@Schema(name = "SystemCommandEnvelope", description = "External request envelope for provider command routing.")
 public class SystemCommandEnvelope {
 
+    @Schema(description = "Target relay client id.", example = "client-1")
     private final String clientId;
+    @Schema(description = "Optional API key override for the target relay.", example = "relay-api-key")
     private final String apiKeyOverride;
+    @Schema(description = "Provider command identifier.", required = true, example = "core.getRelayStatus")
     private final String commandName;
+    @Schema(description = "Command payload object.")
     private final Map<String, Object> payload;
 
     @JsonCreator
