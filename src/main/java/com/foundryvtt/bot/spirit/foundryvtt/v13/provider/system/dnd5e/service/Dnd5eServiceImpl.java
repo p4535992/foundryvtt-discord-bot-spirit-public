@@ -23,6 +23,11 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Default DnD5e relay service implementation.
+ *
+ * <p>
+ * This service keeps the same separation of concerns used by the core provider service: generated
+ * relay dnd5e client calls stay inside this class, while the rest of the application only sees
+ * manual dnd5e models produced by {@link FoundryDnd5eMapper}.
  */
 @ApplicationScoped
 public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5eService {
@@ -148,6 +153,17 @@ public class Dnd5eServiceImpl extends AbstractRelayClientService implements Dnd5
         }
     }
 
+    /**
+     * Executes a generated dnd5e relay call and extracts its raw payload.
+     *
+     * <p>
+     * The raw payload is immediately converted to a manual dnd5e model by the caller, so generated
+     * relay models do not leak outside this service.
+     *
+     * @param call prepared OkHttp call
+     * @return raw relay payload
+     * @throws ApiException when the relay client fails
+     */
     private Object executeForObject(okhttp3.Call call) throws ApiException {
         Type responseType = new TypeToken<Object>() {
         }.getType();

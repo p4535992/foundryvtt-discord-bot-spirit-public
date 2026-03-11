@@ -17,7 +17,16 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemC
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemModule;
 
 /**
- * Routes generic commands to the correct game-system module.
+ * Central provider router for Foundry VTT v13 commands.
+ *
+ * <p>
+ * This service is the pivot point between the external provider API and the internal execution
+ * graph: external envelope -> internal command -> core executor or system module -> typed result.
+ *
+ * <p>
+ * Core commands are handled immediately by {@link CoreCommandExecutorService}. Non-core commands
+ * first resolve the current world/system for the relay client and are then delegated to the
+ * matching {@link SystemModule}.
  */
 @ApplicationScoped
 public class SystemCommandRouterService {
@@ -53,10 +62,14 @@ public class SystemCommandRouterService {
     }
 
     /**
-     * Routes an external typed command envelope.
+     * Routes an external command envelope and returns the raw typed result.
+     *
+     * <p>
+     * This overload is useful for internal callers that already know they only need the result
+     * payload and not the provider response metadata.
      *
      * @param envelope external command envelope
-     * @return command result payload
+     * @return typed command result payload
      */
     public Object route(SystemCommandEnvelope envelope) {
         if (envelope == null) {
@@ -69,7 +82,11 @@ public class SystemCommandRouterService {
     }
 
     /**
-     * Routes an external typed command envelope and wraps the result in a typed response.
+     * Routes an external command envelope and wraps the result in a provider response.
+     *
+     * <p>
+     * This is the method used by the HTTP adapter. It preserves execution metadata such as resolved
+     * scope and system id so upstream callers can inspect how the command was handled.
      *
      * @param envelope external command envelope
      * @return typed command response envelope
@@ -111,12 +128,17 @@ public class SystemCommandRouterService {
     }
 
     /**
-     * Routes a command to the module associated with the provided relay client.
+     * Routes an internal command using only the relay client identity.
+     *
+     * <p>
+     * If the command belongs to the provider core, no world lookup is needed. Otherwise the current
+     * system is resolved through the relay and the command is delegated to the corresponding system
+     * module.
      *
      * @param clientId       relay client id
      * @param apiKeyOverride optional API key override
-     * @param command        command envelope
-     * @return command result payload
+     * @param command        internal command envelope
+     * @return typed command result payload
      */
     public Object route(String clientId, String apiKeyOverride, SystemCommand command) {
         if (command == null) {
@@ -132,9 +154,13 @@ public class SystemCommandRouterService {
     /**
      * Routes a command using a pre-resolved world context.
      *
+     * <p>
+     * This overload avoids repeating system resolution when the caller has already established the
+     * target Foundry world and system.
+     *
      * @param worldContext target world context
-     * @param command      command envelope
-     * @return command result payload
+     * @param command      internal command envelope
+     * @return typed command result payload
      */
     public Object route(WorldContext worldContext, SystemCommand command) {
         if (worldContext == null) {
@@ -161,7 +187,12 @@ public class SystemCommandRouterService {
     }
 
     /**
-     * Resolves a world context for a relay client.
+     * Resolves the execution context associated with a relay client.
+     *
+     * <p>
+     * The resulting {@link WorldContext} is the hand-off object between the routing layer and a
+     * concrete {@link SystemModule}. It carries the client identity, the resolved system id, the
+     * optional API key override, and lightweight routing metadata.
      *
      * @param clientId       relay client id
      * @param apiKeyOverride optional API key override

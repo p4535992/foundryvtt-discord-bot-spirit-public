@@ -10,6 +10,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayC
 
 /**
  * Resolves the Foundry system id associated with a relay client.
+ *
+ * <p>
+ * This service bridges a provider concern with a relay concern: the router only knows a relay
+ * client id, while system modules require a stable {@link SystemId}. The resolver asks the relay
+ * for connected clients and extracts the current Foundry system identifier from that payload.
  */
 @ApplicationScoped
 public class FoundrySystemResolverService {

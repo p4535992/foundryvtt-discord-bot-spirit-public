@@ -13,11 +13,25 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5e
 
 /**
  * Conversion entry point between relay payloads and hand-written Foundry dnd5e models.
+ *
+ * <p>This mapper sits on top of the core model layer and materializes dnd5e
+ * specific system data from relay payloads, while keeping generated relay
+ * classes out of the provider and command layers.
  */
 public interface FoundryDnd5eMapper {
 
+    /**
+     * Returns the actor types with explicit dnd5e system-data models.
+     *
+     * @return supported actor types
+     */
     Set<String> supportedActorTypes();
 
+    /**
+     * Returns the item types with explicit dnd5e system-data models.
+     *
+     * @return supported item types
+     */
     Set<String> supportedItemTypes();
 
     Optional<Class<? extends Dnd5eActorSystemData>> findActorSystemClass(String actorType);

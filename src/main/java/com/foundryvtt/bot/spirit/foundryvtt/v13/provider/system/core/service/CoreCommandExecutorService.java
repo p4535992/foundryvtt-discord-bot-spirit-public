@@ -22,7 +22,13 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.model.World
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.spi.SystemCommand;
 
 /**
- * Executes provider-level core relay commands and returns typed relay/domain models.
+ * Executes provider-level core commands.
+ *
+ * <p>
+ * This service is the core-side dispatcher behind
+ * {@link com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.routing.SystemCommandRouterService}.
+ * It takes the generic internal command payload, converts it into a typed request object, calls
+ * {@link RestRelayService}, and returns the typed manual model produced by the relay mapper layer.
  */
 @ApplicationScoped
 public class CoreCommandExecutorService {
@@ -37,10 +43,24 @@ public class CoreCommandExecutorService {
         this.coreCommandRequestMapper = coreCommandRequestMapper;
     }
 
+    /**
+     * Checks whether a command name belongs to the provider core namespace.
+     *
+     * @param commandName command identifier
+     * @return {@code true} when the command is handled by this executor
+     */
     public boolean supportsCommand(String commandName) {
         return CoreCommandNames.isSupported(commandName);
     }
 
+    /**
+     * Executes a core command when only client identity and optional API key are known.
+     *
+     * @param clientId       relay client id
+     * @param apiKeyOverride optional API key override
+     * @param command        internal command
+     * @return typed command result
+     */
     public Object execute(String clientId, String apiKeyOverride, SystemCommand command) {
         if (command == null) {
             throw new IllegalArgumentException("command must not be null");
@@ -48,6 +68,17 @@ public class CoreCommandExecutorService {
         return this.executeInternal(clientId, apiKeyOverride, command);
     }
 
+    /**
+     * Executes a core command using a pre-resolved world context.
+     *
+     * <p>
+     * The world context is only used to carry client identity and API key for core commands. No
+     * system-specific behavior happens in this class.
+     *
+     * @param worldContext target context
+     * @param command      internal command
+     * @return typed command result
+     */
     public Object execute(WorldContext worldContext, SystemCommand command) {
         if (command == null) {
             throw new IllegalArgumentException("command must not be null");
@@ -61,6 +92,18 @@ public class CoreCommandExecutorService {
                 command);
     }
 
+    /**
+     * Central {@code if/else} dispatcher for all core commands.
+     *
+     * <p>
+     * Each branch follows the same pattern: payload map -> typed request mapper -> relay service
+     * call -> typed manual model returned to the router/web layer.
+     *
+     * @param clientId       relay client id
+     * @param apiKeyOverride optional API key override
+     * @param command        internal command
+     * @return typed command result
+     */
     private Object executeInternal(String clientId, String apiKeyOverride, SystemCommand command) {
         Map<String, Object> payload = command.getPayload();
         String commandName = command.getCommandName();

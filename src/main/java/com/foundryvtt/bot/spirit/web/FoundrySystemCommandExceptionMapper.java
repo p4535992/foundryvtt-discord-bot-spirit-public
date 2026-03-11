@@ -16,6 +16,11 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.command.mod
 
 /**
  * Maps provider command exceptions to a stable JSON error envelope.
+ *
+ * <p>
+ * This keeps the HTTP contract of the provider API decoupled from the internal exception taxonomy.
+ * Validation errors, routing/state errors, and downstream relay failures are normalized here before
+ * being returned to the caller.
  */
 @Provider
 public class FoundrySystemCommandExceptionMapper implements ExceptionMapper<Throwable> {
@@ -23,6 +28,12 @@ public class FoundrySystemCommandExceptionMapper implements ExceptionMapper<Thro
     @Context
     UriInfo uriInfo;
 
+    /**
+     * Converts an uncaught provider exception into the public error envelope.
+     *
+     * @param exception uncaught exception
+     * @return HTTP response with typed error body
+     */
     @Override
     public Response toResponse(Throwable exception) {
         if (exception instanceof RelayClientException relayClientException) {

@@ -45,7 +45,16 @@ import com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model.RollRequest
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Default bridge service between Quarkus/JDA code and the generated relay OpenAPI client.
+ * Default bridge service between the provider layer and the generated relay OpenAPI client.
+ *
+ * <p>
+ * This class is where the separation between transport and domain is kept explicit: provider
+ * service call -> generated relay client call -> raw/generated relay payload ->
+ * {@link FoundryCoreMapper} -> manual provider-facing core model.
+ *
+ * <p>
+ * The rest of the application should depend on {@link RestRelayService}, not on the generated
+ * OpenAPI packages.
  */
 @ApplicationScoped
 public class RestRelayServiceImpl extends AbstractRelayClientService implements RestRelayService {
@@ -359,12 +368,34 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
         return this.relayCallFailed(LOG, "Relay", actionName, exception.getCode(), exception);
     }
 
+    /**
+     * Executes a manual relay call when the generated OpenAPI client does not expose the exact
+     * endpoint signature needed by the provider layer.
+     *
+     * <p>
+     * This is currently used for endpoints such as {@code getByUuid} and JSON-rendered actor
+     * sheets, where the relay supports additional query combinations not modeled cleanly by the
+     * generated client.
+     *
+     * @param call prepared OkHttp relay call
+     * @return raw payload returned by the relay
+     * @throws ApiException when the relay client fails
+     */
     private Object executeRelayObject(okhttp3.Call call) throws ApiException {
         Type responseType = new TypeToken<Object>() {
         }.getType();
         return this.relayApiClient.execute(call, responseType).getData();
     }
 
+    /**
+     * Builds a manual GET call against the relay using the shared generated client.
+     *
+     * @param path        relay path
+     * @param apiKey      resolved API key
+     * @param queryParams query string pairs
+     * @return prepared OkHttp call
+     * @throws ApiException when call construction fails
+     */
     private okhttp3.Call buildRelayGetCall(String path, String apiKey, List<Pair> queryParams)
             throws ApiException {
         Map<String, String> headerParams = new HashMap<String, String>();
@@ -384,6 +415,16 @@ public class RestRelayServiceImpl extends AbstractRelayClientService implements 
                 null);
     }
 
+    /**
+     * Utility to build query parameter pairs while skipping {@code null} values.
+     *
+     * <p>
+     * This keeps manual relay calls aligned with the generated client behavior and avoids sending
+     * blank optional query parameters.
+     *
+     * @param keyValues alternating key/value list
+     * @return query parameter list
+     */
     private List<Pair> queryPairs(Object... keyValues) {
         List<Pair> pairs = new ArrayList<Pair>();
         for (int index = 0; index < keyValues.length; index += 2) {

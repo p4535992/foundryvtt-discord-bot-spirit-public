@@ -21,6 +21,15 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.core.routing.Sys
 
 /**
  * HTTP adapter for provider-level system command routing.
+ *
+ * <p>
+ * The flow exposed by this resource is: request JSON -> {@link SystemCommandEnvelope} -> provider
+ * router -> core executor or system-specific module -> relay client -> manual Foundry-facing model
+ * -> {@link SystemCommandResponseEnvelope}.
+ *
+ * <p>
+ * This resource intentionally does not talk to the generated relay client directly. That boundary
+ * stays inside the provider services so the web layer only knows the provider contract.
  */
 @Path("/api/foundryvtt/v13/provider/system/command")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -45,6 +54,18 @@ public class FoundrySystemCommandResource {
             @APIResponse(responseCode = "502", description = "Downstream relay call failed.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandErrorResponseEnvelope.class))),
             @APIResponse(responseCode = "500", description = "Unexpected internal error.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SystemCommandErrorResponseEnvelope.class)))
     })
+    /**
+     * Routes a provider command received over HTTP.
+     *
+     * <p>
+     * The incoming envelope is already the public provider contract. The router converts it to the
+     * internal {@code SystemCommand}, resolves the target scope ({@code core} or a concrete Foundry
+     * system such as {@code dnd5e}), executes the downstream relay call, and wraps the typed result
+     * in a response envelope suitable for the upstream caller.
+     *
+     * @param envelope external provider command envelope
+     * @return typed provider response envelope
+     */
     public SystemCommandResponseEnvelope route(SystemCommandEnvelope envelope) {
         return this.systemCommandRouterService.routeForResponse(envelope);
     }

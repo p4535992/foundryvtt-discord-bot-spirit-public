@@ -85,16 +85,63 @@ public interface RestRelayService {
      */
     RelaySessionOperationResult endSession(String apiKeyOverride, String sessionId);
 
+    /**
+     * Reads the structural snapshot of the connected Foundry world.
+     *
+     * <p>
+     * The returned model is the manual core model, not the generated relay model. Conversion from
+     * generated transport payload to manual domain model happens inside the service implementation.
+     *
+     * @param apiKeyOverride optional API key override
+     * @param clientId       relay client id
+     * @return typed structure payload
+     */
     RelayStructureResult getStructure(String apiKeyOverride, String clientId);
 
+    /**
+     * Reads the current encounter state for a connected Foundry client.
+     *
+     * @param apiKeyOverride optional API key override
+     * @param clientId       relay client id
+     * @return typed encounter payload
+     */
     RelayEncounterResult getEncounters(String apiKeyOverride, String clientId);
 
+    /**
+     * Reads the currently selected entity or actor-scoped entity.
+     *
+     * @param apiKeyOverride optional API key override
+     * @param clientId       relay client id
+     * @param selected       when {@code true}, uses current selection
+     * @param actor          when {@code true}, resolves actor context
+     * @return typed entity payload
+     */
     RelayEntityResult getEntity(String apiKeyOverride, String clientId, Boolean selected,
             Boolean actor);
 
+    /**
+     * Reads a specific entity by Foundry UUID.
+     *
+     * @param apiKeyOverride optional API key override
+     * @param clientId       relay client id
+     * @param uuid           Foundry UUID
+     * @param actor          when {@code true}, resolves actor context
+     * @return typed entity payload
+     */
     RelayEntityResult getEntityByUuid(String apiKeyOverride, String clientId, String uuid,
             Boolean actor);
 
+    /**
+     * Reads a rendered actor sheet from the relay and normalizes it to JSON.
+     *
+     * @param apiKeyOverride optional API key override
+     * @param clientId       relay client id
+     * @param uuid           optional actor UUID
+     * @param selected       when {@code true}, uses current selection
+     * @param actor          when {@code true}, resolves actor context
+     * @param scale          optional render scale
+     * @return typed actor sheet payload
+     */
     RelayActorSheetResult getActorSheet(String apiKeyOverride, String clientId, String uuid,
             Boolean selected, Boolean actor, BigDecimal scale);
 

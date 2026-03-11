@@ -26,13 +26,36 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 
 /**
  * Conversion entry point between relay payloads and hand-written Foundry core models.
+ *
+ * <p>This mapper is the seam that keeps generated relay transport models out of
+ * the rest of the application. Provider services may receive raw/generated
+ * relay payloads, but they immediately convert them through this contract to
+ * the manual core models rooted under {@code openapi.foundryvtt.v13.system}.
  */
 public interface FoundryCoreMapper {
 
+    /**
+     * Returns the Foundry core document types explicitly modeled by this mapper.
+     *
+     * @return supported Foundry document types
+     */
     Set<String> supportedDocumentTypes();
 
+    /**
+     * Finds the manual Java model class associated with a Foundry document type.
+     *
+     * @param documentType Foundry document type
+     * @return manual model class when known
+     */
     Optional<Class<? extends FoundryDocument>> findModelClass(String documentType);
 
+    /**
+     * Converts a generic relay payload to the manual Foundry document model matching the type.
+     *
+     * @param documentType Foundry document type
+     * @param payload      raw relay payload
+     * @return typed manual document model
+     */
     FoundryDocument toDocument(String documentType, Object payload);
 
     FoundryActorDocument toActorDocument(Object payload);

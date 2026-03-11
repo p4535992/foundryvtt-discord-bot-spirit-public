@@ -15,7 +15,12 @@ import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.dnd5e.command.mo
 import com.foundryvtt.bot.spirit.foundryvtt.v13.provider.system.dnd5e.mapper.Dnd5eCommandRequestMapper;
 
 /**
- * Executes DnD5e provider commands and returns typed domain models.
+ * Executes DnD5e provider commands.
+ *
+ * <p>
+ * This is the dnd5e-side counterpart of the core command executor. It converts the generic provider
+ * payload into typed dnd5e request models, delegates to {@link Dnd5eService}, and returns the
+ * manual dnd5e models used by the provider layer.
  */
 @ApplicationScoped
 public class Dnd5eCommandExecutorService {
@@ -31,10 +36,27 @@ public class Dnd5eCommandExecutorService {
         this.dnd5eCommandRequestMapper = dnd5eCommandRequestMapper;
     }
 
+    /**
+     * Checks whether a command name belongs to the dnd5e namespace.
+     *
+     * @param commandName command identifier
+     * @return {@code true} when the command is handled by this executor
+     */
     public boolean supportsCommand(String commandName) {
         return Dnd5eCommandNames.isSupported(commandName);
     }
 
+    /**
+     * Executes a dnd5e command inside a pre-resolved Foundry world context.
+     *
+     * <p>
+     * System resolution already happened before this method is called, so the executor only
+     * performs payload mapping and service delegation.
+     *
+     * @param worldContext resolved world context
+     * @param command      internal command
+     * @return typed dnd5e result
+     */
     public Object execute(WorldContext worldContext, SystemCommand command) {
         if (worldContext == null) {
             throw new IllegalArgumentException("worldContext must not be null");
