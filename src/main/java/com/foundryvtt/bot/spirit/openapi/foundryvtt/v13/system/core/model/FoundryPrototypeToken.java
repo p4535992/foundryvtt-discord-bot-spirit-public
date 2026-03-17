@@ -2,6 +2,7 @@ package com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -281,28 +282,93 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Double rotation;
         private String tint;
 
-        public String getSrc() { return this.src; }
-        public void setSrc(String src) { this.src = src; }
-        public Double getAnchorX() { return this.anchorX; }
-        public void setAnchorX(Double anchorX) { this.anchorX = anchorX; }
-        public Double getAnchorY() { return this.anchorY; }
-        public void setAnchorY(Double anchorY) { this.anchorY = anchorY; }
-        public String getFit() { return this.fit; }
-        public void setFit(String fit) { this.fit = fit; }
-        public Double getAlphaThreshold() { return this.alphaThreshold; }
-        public void setAlphaThreshold(Double alphaThreshold) { this.alphaThreshold = alphaThreshold; }
-        public Double getScaleX() { return this.scaleX; }
-        public void setScaleX(Double scaleX) { this.scaleX = scaleX; }
-        public Double getScaleY() { return this.scaleY; }
-        public void setScaleY(Double scaleY) { this.scaleY = scaleY; }
-        public Double getOffsetX() { return this.offsetX; }
-        public void setOffsetX(Double offsetX) { this.offsetX = offsetX; }
-        public Double getOffsetY() { return this.offsetY; }
-        public void setOffsetY(Double offsetY) { this.offsetY = offsetY; }
-        public Double getRotation() { return this.rotation; }
-        public void setRotation(Double rotation) { this.rotation = rotation; }
-        public String getTint() { return this.tint; }
-        public void setTint(String tint) { this.tint = tint; }
+        public String getSrc() {
+            return this.src;
+        }
+
+        public void setSrc(String src) {
+            this.src = src;
+        }
+
+        public Double getAnchorX() {
+            return this.anchorX;
+        }
+
+        public void setAnchorX(Double anchorX) {
+            this.anchorX = anchorX;
+        }
+
+        public Double getAnchorY() {
+            return this.anchorY;
+        }
+
+        public void setAnchorY(Double anchorY) {
+            this.anchorY = anchorY;
+        }
+
+        public String getFit() {
+            return this.fit;
+        }
+
+        public void setFit(String fit) {
+            this.fit = fit;
+        }
+
+        public Double getAlphaThreshold() {
+            return this.alphaThreshold;
+        }
+
+        public void setAlphaThreshold(Double alphaThreshold) {
+            this.alphaThreshold = alphaThreshold;
+        }
+
+        public Double getScaleX() {
+            return this.scaleX;
+        }
+
+        public void setScaleX(Double scaleX) {
+            this.scaleX = scaleX;
+        }
+
+        public Double getScaleY() {
+            return this.scaleY;
+        }
+
+        public void setScaleY(Double scaleY) {
+            this.scaleY = scaleY;
+        }
+
+        public Double getOffsetX() {
+            return this.offsetX;
+        }
+
+        public void setOffsetX(Double offsetX) {
+            this.offsetX = offsetX;
+        }
+
+        public Double getOffsetY() {
+            return this.offsetY;
+        }
+
+        public void setOffsetY(Double offsetY) {
+            this.offsetY = offsetY;
+        }
+
+        public Double getRotation() {
+            return this.rotation;
+        }
+
+        public void setRotation(Double rotation) {
+            this.rotation = rotation;
+        }
+
+        public String getTint() {
+            return this.tint;
+        }
+
+        public void setTint(String tint) {
+            this.tint = tint;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -311,8 +377,13 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
 
         private String attribute;
 
-        public String getAttribute() { return this.attribute; }
-        public void setAttribute(String attribute) { this.attribute = attribute; }
+        public String getAttribute() {
+            return this.attribute;
+        }
+
+        public void setAttribute(String attribute) {
+            this.attribute = attribute;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -335,36 +406,125 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private FoundryLightAnimation animation;
         private FoundryDarknessRange darkness;
 
-        public Boolean getNegative() { return this.negative; }
-        public void setNegative(Boolean negative) { this.negative = negative; }
-        public Integer getPriority() { return this.priority; }
-        public void setPriority(Integer priority) { this.priority = priority; }
-        public Double getAlpha() { return this.alpha; }
-        public void setAlpha(Double alpha) { this.alpha = alpha; }
-        public Double getAngle() { return this.angle; }
-        public void setAngle(Double angle) { this.angle = angle; }
-        public Double getBright() { return this.bright; }
-        public void setBright(Double bright) { this.bright = bright; }
-        public String getColor() { return this.color; }
-        public void setColor(String color) { this.color = color; }
-        public Integer getColoration() { return this.coloration; }
-        public void setColoration(Integer coloration) { this.coloration = coloration; }
-        public Double getDim() { return this.dim; }
-        public void setDim(Double dim) { this.dim = dim; }
-        public Double getAttenuation() { return this.attenuation; }
-        public void setAttenuation(Double attenuation) { this.attenuation = attenuation; }
-        public Double getLuminosity() { return this.luminosity; }
-        public void setLuminosity(Double luminosity) { this.luminosity = luminosity; }
-        public Double getSaturation() { return this.saturation; }
-        public void setSaturation(Double saturation) { this.saturation = saturation; }
-        public Double getContrast() { return this.contrast; }
-        public void setContrast(Double contrast) { this.contrast = contrast; }
-        public Double getShadows() { return this.shadows; }
-        public void setShadows(Double shadows) { this.shadows = shadows; }
-        public FoundryLightAnimation getAnimation() { return this.animation; }
-        public void setAnimation(FoundryLightAnimation animation) { this.animation = animation; }
-        public FoundryDarknessRange getDarkness() { return this.darkness; }
-        public void setDarkness(FoundryDarknessRange darkness) { this.darkness = darkness; }
+        public Boolean getNegative() {
+            return this.negative;
+        }
+
+        public void setNegative(Boolean negative) {
+            this.negative = negative;
+        }
+
+        public Integer getPriority() {
+            return this.priority;
+        }
+
+        public void setPriority(Integer priority) {
+            this.priority = priority;
+        }
+
+        public Double getAlpha() {
+            return this.alpha;
+        }
+
+        public void setAlpha(Double alpha) {
+            this.alpha = alpha;
+        }
+
+        public Double getAngle() {
+            return this.angle;
+        }
+
+        public void setAngle(Double angle) {
+            this.angle = angle;
+        }
+
+        public Double getBright() {
+            return this.bright;
+        }
+
+        public void setBright(Double bright) {
+            this.bright = bright;
+        }
+
+        public String getColor() {
+            return this.color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public Integer getColoration() {
+            return this.coloration;
+        }
+
+        public void setColoration(Integer coloration) {
+            this.coloration = coloration;
+        }
+
+        public Double getDim() {
+            return this.dim;
+        }
+
+        public void setDim(Double dim) {
+            this.dim = dim;
+        }
+
+        public Double getAttenuation() {
+            return this.attenuation;
+        }
+
+        public void setAttenuation(Double attenuation) {
+            this.attenuation = attenuation;
+        }
+
+        public Double getLuminosity() {
+            return this.luminosity;
+        }
+
+        public void setLuminosity(Double luminosity) {
+            this.luminosity = luminosity;
+        }
+
+        public Double getSaturation() {
+            return this.saturation;
+        }
+
+        public void setSaturation(Double saturation) {
+            this.saturation = saturation;
+        }
+
+        public Double getContrast() {
+            return this.contrast;
+        }
+
+        public void setContrast(Double contrast) {
+            this.contrast = contrast;
+        }
+
+        public Double getShadows() {
+            return this.shadows;
+        }
+
+        public void setShadows(Double shadows) {
+            this.shadows = shadows;
+        }
+
+        public FoundryLightAnimation getAnimation() {
+            return this.animation;
+        }
+
+        public void setAnimation(FoundryLightAnimation animation) {
+            this.animation = animation;
+        }
+
+        public FoundryDarknessRange getDarkness() {
+            return this.darkness;
+        }
+
+        public void setDarkness(FoundryDarknessRange darkness) {
+            this.darkness = darkness;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -376,14 +536,37 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Integer intensity;
         private Boolean reverse;
 
-        public String getType() { return this.type; }
-        public void setType(String type) { this.type = type; }
-        public Integer getSpeed() { return this.speed; }
-        public void setSpeed(Integer speed) { this.speed = speed; }
-        public Integer getIntensity() { return this.intensity; }
-        public void setIntensity(Integer intensity) { this.intensity = intensity; }
-        public Boolean getReverse() { return this.reverse; }
-        public void setReverse(Boolean reverse) { this.reverse = reverse; }
+        public String getType() {
+            return this.type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Integer getSpeed() {
+            return this.speed;
+        }
+
+        public void setSpeed(Integer speed) {
+            this.speed = speed;
+        }
+
+        public Integer getIntensity() {
+            return this.intensity;
+        }
+
+        public void setIntensity(Integer intensity) {
+            this.intensity = intensity;
+        }
+
+        public Boolean getReverse() {
+            return this.reverse;
+        }
+
+        public void setReverse(Boolean reverse) {
+            this.reverse = reverse;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -393,10 +576,21 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Double min;
         private Double max;
 
-        public Double getMin() { return this.min; }
-        public void setMin(Double min) { this.min = min; }
-        public Double getMax() { return this.max; }
-        public void setMax(Double max) { this.max = max; }
+        public Double getMin() {
+            return this.min;
+        }
+
+        public void setMin(Double min) {
+            this.min = min;
+        }
+
+        public Double getMax() {
+            return this.max;
+        }
+
+        public void setMax(Double max) {
+            this.max = max;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -413,24 +607,77 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Double saturation;
         private Double contrast;
 
-        public Boolean getEnabled() { return this.enabled; }
-        public void setEnabled(Boolean enabled) { this.enabled = enabled; }
-        public Double getRange() { return this.range; }
-        public void setRange(Double range) { this.range = range; }
-        public Double getAngle() { return this.angle; }
-        public void setAngle(Double angle) { this.angle = angle; }
-        public String getVisionMode() { return this.visionMode; }
-        public void setVisionMode(String visionMode) { this.visionMode = visionMode; }
-        public String getColor() { return this.color; }
-        public void setColor(String color) { this.color = color; }
-        public Double getAttenuation() { return this.attenuation; }
-        public void setAttenuation(Double attenuation) { this.attenuation = attenuation; }
-        public Double getBrightness() { return this.brightness; }
-        public void setBrightness(Double brightness) { this.brightness = brightness; }
-        public Double getSaturation() { return this.saturation; }
-        public void setSaturation(Double saturation) { this.saturation = saturation; }
-        public Double getContrast() { return this.contrast; }
-        public void setContrast(Double contrast) { this.contrast = contrast; }
+        public Boolean getEnabled() {
+            return this.enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public Double getRange() {
+            return this.range;
+        }
+
+        public void setRange(Double range) {
+            this.range = range;
+        }
+
+        public Double getAngle() {
+            return this.angle;
+        }
+
+        public void setAngle(Double angle) {
+            this.angle = angle;
+        }
+
+        public String getVisionMode() {
+            return this.visionMode;
+        }
+
+        public void setVisionMode(String visionMode) {
+            this.visionMode = visionMode;
+        }
+
+        public String getColor() {
+            return this.color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public Double getAttenuation() {
+            return this.attenuation;
+        }
+
+        public void setAttenuation(Double attenuation) {
+            this.attenuation = attenuation;
+        }
+
+        public Double getBrightness() {
+            return this.brightness;
+        }
+
+        public void setBrightness(Double brightness) {
+            this.brightness = brightness;
+        }
+
+        public Double getSaturation() {
+            return this.saturation;
+        }
+
+        public void setSaturation(Double saturation) {
+            this.saturation = saturation;
+        }
+
+        public Double getContrast() {
+            return this.contrast;
+        }
+
+        public void setContrast(Double contrast) {
+            this.contrast = contrast;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -441,12 +688,29 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Boolean enabled;
         private Double range;
 
-        public String getId() { return this.id; }
-        public void setId(String id) { this.id = id; }
-        public Boolean getEnabled() { return this.enabled; }
-        public void setEnabled(Boolean enabled) { this.enabled = enabled; }
-        public Double getRange() { return this.range; }
-        public void setRange(Double range) { this.range = range; }
+        public String getId() {
+            return this.id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public Boolean getEnabled() {
+            return this.enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public Double getRange() {
+            return this.range;
+        }
+
+        public void setRange(Double range) {
+            this.range = range;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -455,8 +719,13 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
 
         private Double radius;
 
-        public Double getRadius() { return this.radius; }
-        public void setRadius(Double radius) { this.radius = radius; }
+        public Double getRadius() {
+            return this.radius;
+        }
+
+        public void setRadius(Double radius) {
+            this.radius = radius;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -468,14 +737,37 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Integer effects;
         private FoundryTokenRingSubject subject;
 
-        public Boolean getEnabled() { return this.enabled; }
-        public void setEnabled(Boolean enabled) { this.enabled = enabled; }
-        public FoundryTokenRingColors getColors() { return this.colors; }
-        public void setColors(FoundryTokenRingColors colors) { this.colors = colors; }
-        public Integer getEffects() { return this.effects; }
-        public void setEffects(Integer effects) { this.effects = effects; }
-        public FoundryTokenRingSubject getSubject() { return this.subject; }
-        public void setSubject(FoundryTokenRingSubject subject) { this.subject = subject; }
+        public Boolean getEnabled() {
+            return this.enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public FoundryTokenRingColors getColors() {
+            return this.colors;
+        }
+
+        public void setColors(FoundryTokenRingColors colors) {
+            this.colors = colors;
+        }
+
+        public Integer getEffects() {
+            return this.effects;
+        }
+
+        public void setEffects(Integer effects) {
+            this.effects = effects;
+        }
+
+        public FoundryTokenRingSubject getSubject() {
+            return this.subject;
+        }
+
+        public void setSubject(FoundryTokenRingSubject subject) {
+            this.subject = subject;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -485,10 +777,21 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private String ring;
         private String background;
 
-        public String getRing() { return this.ring; }
-        public void setRing(String ring) { this.ring = ring; }
-        public String getBackground() { return this.background; }
-        public void setBackground(String background) { this.background = background; }
+        public String getRing() {
+            return this.ring;
+        }
+
+        public void setRing(String ring) {
+            this.ring = ring;
+        }
+
+        public String getBackground() {
+            return this.background;
+        }
+
+        public void setBackground(String background) {
+            this.background = background;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -498,10 +801,21 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private Double scale;
         private String texture;
 
-        public Double getScale() { return this.scale; }
-        public void setScale(Double scale) { this.scale = scale; }
-        public String getTexture() { return this.texture; }
-        public void setTexture(String texture) { this.texture = texture; }
+        public Double getScale() {
+            return this.scale;
+        }
+
+        public void setScale(Double scale) {
+            this.scale = scale;
+        }
+
+        public String getTexture() {
+            return this.texture;
+        }
+
+        public void setTexture(String texture) {
+            this.texture = texture;
+        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -513,13 +827,36 @@ public class FoundryPrototypeToken extends AbstractFoundryModel {
         private String src;
         private Boolean disposition;
 
-        public Integer getMode() { return this.mode; }
-        public void setMode(Integer mode) { this.mode = mode; }
-        public String getAnimation() { return this.animation; }
-        public void setAnimation(String animation) { this.animation = animation; }
-        public String getSrc() { return this.src; }
-        public void setSrc(String src) { this.src = src; }
-        public Boolean getDisposition() { return this.disposition; }
-        public void setDisposition(Boolean disposition) { this.disposition = disposition; }
+        public Integer getMode() {
+            return this.mode;
+        }
+
+        public void setMode(Integer mode) {
+            this.mode = mode;
+        }
+
+        public String getAnimation() {
+            return this.animation;
+        }
+
+        public void setAnimation(String animation) {
+            this.animation = animation;
+        }
+
+        public String getSrc() {
+            return this.src;
+        }
+
+        public void setSrc(String src) {
+            this.src = src;
+        }
+
+        public Boolean getDisposition() {
+            return this.disposition;
+        }
+
+        public void setDisposition(Boolean disposition) {
+            this.disposition = disposition;
+        }
     }
 }

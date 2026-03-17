@@ -37,14 +37,12 @@ public class FoundryDnd5eMapperImpl extends AbstractFoundryMapper implements Fou
     public FoundryDnd5eMapperImpl(ObjectMapper objectMapper) {
         super(objectMapper);
 
-        Map<String, Class<? extends Dnd5eActorSystemData>> actorTypes =
-                new LinkedHashMap<String, Class<? extends Dnd5eActorSystemData>>();
+        Map<String, Class<? extends Dnd5eActorSystemData>> actorTypes = new LinkedHashMap<String, Class<? extends Dnd5eActorSystemData>>();
         actorTypes.put("character", Dnd5eCharacterActorSystemData.class);
         actorTypes.put("npc", Dnd5eNpcActorSystemData.class);
         this.actorSystemClasses = Collections.unmodifiableMap(actorTypes);
 
-        Map<String, Class<? extends Dnd5eItemSystemData>> itemTypes =
-                new LinkedHashMap<String, Class<? extends Dnd5eItemSystemData>>();
+        Map<String, Class<? extends Dnd5eItemSystemData>> itemTypes = new LinkedHashMap<String, Class<? extends Dnd5eItemSystemData>>();
         itemTypes.put("spell", Dnd5eSpellItemSystemData.class);
         itemTypes.put("weapon", Dnd5eWeaponItemSystemData.class);
         this.itemSystemClasses = Collections.unmodifiableMap(itemTypes);
@@ -84,7 +82,8 @@ public class FoundryDnd5eMapperImpl extends AbstractFoundryMapper implements Fou
         Dnd5eActorDocument actor = this.convert(payload, Dnd5eActorDocument.class);
         actor.setSystemData(this.toActorSystem(actor.getType(), actor.getSystem()));
         if (actor.getItems() != null && !actor.getItems().isEmpty()) {
-            List<Dnd5eItemDocument> convertedItems = new ArrayList<Dnd5eItemDocument>(actor.getItems().size());
+            List<Dnd5eItemDocument> convertedItems = new ArrayList<Dnd5eItemDocument>(
+                    actor.getItems().size());
             for (FoundryItemDocument item : actor.getItems()) {
                 convertedItems.add(this.toItemDocument(item));
             }
@@ -135,12 +134,14 @@ public class FoundryDnd5eMapperImpl extends AbstractFoundryMapper implements Fou
 
     @Override
     public Dnd5eActorSystemData toActorSystem(String actorType, Object payload) {
-        return this.convert(payload, this.findActorSystemClass(actorType).orElse(Dnd5eActorSystemData.class));
+        return this.convert(payload,
+                this.findActorSystemClass(actorType).orElse(Dnd5eActorSystemData.class));
     }
 
     @Override
     public Dnd5eItemSystemData toItemSystem(String itemType, Object payload) {
-        return this.convert(payload, this.findItemSystemClass(itemType).orElse(Dnd5eItemSystemData.class));
+        return this.convert(payload,
+                this.findItemSystemClass(itemType).orElse(Dnd5eItemSystemData.class));
     }
 
     private <T extends Dnd5eRelayOperationResult> T convertOperationResult(

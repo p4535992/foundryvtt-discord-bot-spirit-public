@@ -23,7 +23,8 @@ public class Dnd5eActorDocument extends FoundryActorDocument {
     }
 
     public List<Dnd5eItemDocument> getTypedItems() {
-        List<Dnd5eItemDocument> typedItems = new ArrayList<Dnd5eItemDocument>(this.getItems().size());
+        List<Dnd5eItemDocument> typedItems = new ArrayList<Dnd5eItemDocument>(
+                this.getItems().size());
         for (FoundryItemDocument item : this.getItems()) {
             if (item instanceof Dnd5eItemDocument typedItem) {
                 typedItems.add(typedItem);

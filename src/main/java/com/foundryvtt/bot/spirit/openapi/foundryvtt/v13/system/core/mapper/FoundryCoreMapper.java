@@ -27,10 +27,11 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.core.model.RelayS
 /**
  * Conversion entry point between relay payloads and hand-written Foundry core models.
  *
- * <p>This mapper is the seam that keeps generated relay transport models out of
- * the rest of the application. Provider services may receive raw/generated
- * relay payloads, but they immediately convert them through this contract to
- * the manual core models rooted under {@code openapi.foundryvtt.v13.system}.
+ * <p>
+ * This mapper is the seam that keeps generated relay transport models out of the rest of the
+ * application. Provider services may receive raw/generated relay payloads, but they immediately
+ * convert them through this contract to the manual core models rooted under
+ * {@code openapi.foundryvtt.v13.system}.
  */
 public interface FoundryCoreMapper {
 

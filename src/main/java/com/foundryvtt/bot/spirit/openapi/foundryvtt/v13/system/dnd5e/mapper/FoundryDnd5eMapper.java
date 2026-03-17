@@ -14,9 +14,9 @@ import com.foundryvtt.bot.spirit.openapi.foundryvtt.v13.system.dnd5e.model.Dnd5e
 /**
  * Conversion entry point between relay payloads and hand-written Foundry dnd5e models.
  *
- * <p>This mapper sits on top of the core model layer and materializes dnd5e
- * specific system data from relay payloads, while keeping generated relay
- * classes out of the provider and command layers.
+ * <p>
+ * This mapper sits on top of the core model layer and materializes dnd5e specific system data from
+ * relay payloads, while keeping generated relay classes out of the provider and command layers.
  */
 public interface FoundryDnd5eMapper {
 

@@ -415,9 +415,6 @@
                                 <include>src/main/java/**/*.java</include>
                                 <include>src/test/java/**/*.java</include>
                             </includes>
-                            <excludes>
-                                <exclude>src/main/java/com/foundryvtt/bot/spirit/openapi/**/*.java</exclude>
-                            </excludes>
                             <eclipse>
                                 <file>${project.basedir}/eclipse/formatter.xml</file>
                             </eclipse>
