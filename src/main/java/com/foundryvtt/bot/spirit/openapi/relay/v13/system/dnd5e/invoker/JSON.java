@@ -89,6 +89,9 @@ public class JSON {
         gsonBuilder.registerTypeAdapter(Date.class, dateTypeAdapter);
         gsonBuilder.registerTypeAdapter(java.sql.Date.class, sqlDateTypeAdapter);
         gsonBuilder.registerTypeAdapter(byte[].class, byteArrayAdapter);
+        gsonBuilder.registerTypeAdapterFactory(new com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.model.Actor.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.model.Item.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.model.RollRequest.CustomTypeAdapterFactory());
         gson = gsonBuilder.create();
     }
 

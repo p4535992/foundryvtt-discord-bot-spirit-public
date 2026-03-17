@@ -14,6 +14,8 @@
 package com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.model;
 
 import com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker.ApiException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Objects;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -43,6 +45,7 @@ public abstract class AbstractOpenApiSchema {
      *
      * @return an instance of the actual schema/object
      */
+    @JsonIgnore
     public abstract Map<String, Class<?>> getSchemas();
 
     /**
@@ -50,7 +53,7 @@ public abstract class AbstractOpenApiSchema {
      *
      * @return an instance of the actual schema/object
      */
-    //@JsonValue
+    @JsonValue
     public Object getActualInstance() {return instance;}
 
     /**
@@ -65,6 +68,7 @@ public abstract class AbstractOpenApiSchema {
      *
      * @return an instance of the actual schema/object
      */
+    @JsonIgnore
     public Object getActualInstanceRecursively() {
         return getActualInstanceRecursively(this);
     }
@@ -84,6 +88,7 @@ public abstract class AbstractOpenApiSchema {
      *
      * @return the schema type
      */
+    @JsonIgnore
     public String getSchemaType() {
         return schemaType;
     }
@@ -133,6 +138,7 @@ public abstract class AbstractOpenApiSchema {
      *
      * @return true if it's nullable
      */
+    @JsonIgnore
     public Boolean isNullable() {
         if (Boolean.TRUE.equals(isNullable)) {
             return Boolean.TRUE;

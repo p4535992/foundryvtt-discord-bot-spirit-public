@@ -696,6 +696,7 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-core.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-core</output>
+                                    <templateDirectory>${project.basedir}/openapi-templates/java-okhttp-gson-jackson</templateDirectory>
                                     <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.api</apiPackage>
                                     <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.model</modelPackage>
                                     <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.core.invoker</invokerPackage>
@@ -757,6 +758,7 @@
                                     <library>okhttp-gson</library>
                                     <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi/relay/v13_1/openapi-v3-foundry-rest-api-relay-dnd5e.yaml</inputSpec>
                                     <output>${project.build.directory}/generated-sources/openapi/relay-client-dnd5e</output>
+                                    <templateDirectory>${project.basedir}/openapi-templates/java-okhttp-gson-jackson</templateDirectory>
                                     <apiPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.api</apiPackage>
                                     <modelPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.model</modelPackage>
                                     <invokerPackage>com.foundryvtt.bot.spirit.openapi.relay.v13.system.dnd5e.invoker</invokerPackage>
