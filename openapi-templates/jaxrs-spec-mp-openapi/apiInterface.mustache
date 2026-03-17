@@ -1,18 +1,17 @@
     /**
-     * {{{notes}}}
+     * {{notes}}
      *
      {{#allParams}}
-     * @param {{paramName}} {{description}}
+     * @param {{paramName}}{{#description}} {{description}}{{/description}}{{^description}} parameter value.{{/description}}
      {{/allParams}}
      {{#responses}}
-     * @return {{{message}}}
+     * Response {{code}}: {{message}}
      {{/responses}}
      */
     @{{httpMethod}}{{#subresourceOperation}}
     @Path("{{{path}}}"){{/subresourceOperation}}{{#hasConsumes}}
     @Consumes({ {{#consumes}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/consumes}} }){{/hasConsumes}}{{#hasProduces}}
-    @Produces({ {{#produces}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/produces}} }){{/hasProduces}}
-    {{#useJakartaEe}}{{#interfaceOnly}}
+    @Produces({ {{#produces}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/produces}} }){{/hasProduces}}{{#useJakartaEe}}{{#interfaceOnly}}
     @Operation(operationId = "{{#vendorExtensions.x-tags}}{{tag}}_{{/vendorExtensions.x-tags}}{{{operationId}}}"{{#summary}}, summary = "{{{summary}}}"{{/summary}}{{#notes}}, description = "{{{notes}}}"{{/notes}})
     @APIResponses(value = { {{#responses}}
         @APIResponse(responseCode = "{{{code}}}"{{#message}}, description = "{{{message}}}"{{/message}}){{^-last}},{{/-last}}{{/responses}} })

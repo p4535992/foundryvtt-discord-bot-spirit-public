@@ -21,11 +21,11 @@ import {{javaxPackage}}.xml.bind.annotation.XmlEnumValue;
 {{#discriminator}}{{>typeInfoAnnotation}}{{/discriminator}}{{#description}}/**
  * {{.}}
  **/{{/description}}
-{{#useJakartaEe}}{{#interfaceOnly}}
-@org.eclipse.microprofile.openapi.annotations.media.Schema({{#title}}title="{{{.}}}", {{/title}}{{#description}}description="{{{.}}}"{{/description}}{{^description}}description=""{{/description}})
-{{/interfaceOnly}}{{/useJakartaEe}}
+{{>generatedAnnotation}}
+{{#useJakartaEe}}{{#interfaceOnly}}@org.eclipse.microprofile.openapi.annotations.media.Schema({{#title}}title="{{{.}}}", {{/title}}{{#description}}description="{{{.}}}"{{/description}}{{^description}}description=""{{/description}}){{/interfaceOnly}}{{/useJakartaEe}}
 {{#jackson}}@JsonTypeName("{{name}}"){{/jackson}}
-{{>generatedAnnotation}}{{>additionalModelTypeAnnotations}}{{>xmlPojoAnnotation}}
+{{>additionalModelTypeAnnotations}}
+{{>xmlPojoAnnotation}}
 {{#vendorExtensions.x-class-extra-annotation}}
 {{{vendorExtensions.x-class-extra-annotation}}}
 {{/vendorExtensions.x-class-extra-annotation}}
@@ -121,13 +121,10 @@ public class {{classname}} {{#parent}}extends {{{.}}}{{/parent}} {{#vendorExtens
     return this;
   }
 
-  {{#withXml}}
-      @XmlElement(name="{{baseName}}"{{#required}}, required = {{required}}{{/required}})
-  {{/withXml}}
-  {{#vendorExtensions.x-extra-annotation}}{{{vendorExtensions.x-extra-annotation}}}{{/vendorExtensions.x-extra-annotation}}{{#useJakartaEe}}{{#interfaceOnly}}
-  @org.eclipse.microprofile.openapi.annotations.media.Schema({{#example}}examples = {"{{{.}}}"}, {{/example}}{{#required}}required = {{required}}, {{/required}}description = "{{{description}}}")
-  {{/interfaceOnly}}{{/useJakartaEe}}
-  {{#jackson}}@JsonProperty({{#required}}required = {{required}}, value = {{/required}}"{{baseName}}"){{/jackson}}
+  {{#withXml}}@XmlElement(name = "{{baseName}}"{{#required}}, required = {{required}}{{/required}})
+  {{/withXml}}{{#vendorExtensions.x-extra-annotation}}{{{vendorExtensions.x-extra-annotation}}}
+  {{/vendorExtensions.x-extra-annotation}}{{#useJakartaEe}}{{#interfaceOnly}}@org.eclipse.microprofile.openapi.annotations.media.Schema({{#example}}examples = {"{{{.}}}"}, {{/example}}{{#required}}required = {{required}}, {{/required}}description = "{{{description}}}")
+  {{/interfaceOnly}}{{/useJakartaEe}}{{#jackson}}@JsonProperty({{#required}}required = {{required}}, value = {{/required}}"{{baseName}}"){{/jackson}}
   {{#vendorExtensions.x-is-jackson-optional-nullable}}
   public JsonNullable<{{>beanValidatedType}}> {{getter}}() {
     return {{name}};
@@ -139,10 +136,8 @@ public class {{classname}} {{#parent}}extends {{{.}}}{{/parent}} {{#vendorExtens
   }
   {{/vendorExtensions.x-is-jackson-optional-nullable}}
 
-  {{#jackson}}
-  @JsonProperty({{#required}}required = {{required}}, value = {{/required}}"{{baseName}}")
-  {{/jackson}}
-  {{#vendorExtensions.x-setter-extra-annotation}}{{{vendorExtensions.x-setter-extra-annotation}}}
+  {{#jackson}}@JsonProperty({{#required}}required = {{required}}, value = {{/required}}"{{baseName}}")
+  {{/jackson}}{{#vendorExtensions.x-setter-extra-annotation}}{{{vendorExtensions.x-setter-extra-annotation}}}
   {{/vendorExtensions.x-setter-extra-annotation}}public void {{setter}}({{>beanValidatedType}} {{name}}) {
   {{#vendorExtensions.x-is-jackson-optional-nullable}}
       this.{{name}} = JsonNullable.<{{{datatypeWithEnum}}}>of({{name}});
@@ -267,3 +262,7 @@ public class {{classname}} {{#parent}}extends {{{.}}}{{/parent}} {{#vendorExtens
     {{/vars}}
   }{{/additionalProperties}}{{/generateBuilders}}
 }
+
+
+
+

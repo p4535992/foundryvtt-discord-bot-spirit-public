@@ -40,8 +40,7 @@ import {{javaxPackage}}.validation.Valid;{{/useBeanValidation}}
 {{/-first}}{{/vendorExtensions.x-tags}}
 {{/-first}}{{/operation}}{{/operations}}
 {{/operationTagName}}
-{{/useTags}}{{/interfaceOnly}}{{/useJakartaEe}}
-@Path("{{commonPath}}"){{#hasConsumes}}
+{{/useTags}}{{/interfaceOnly}}{{/useJakartaEe}}@Path("{{commonPath}}"){{#hasConsumes}}
 @Consumes({ {{#consumes}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/consumes}} }){{/hasConsumes}}{{#hasProduces}}
 @Produces({ {{#produces}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/produces}} }){{/hasProduces}}
 {{>generatedAnnotation}}

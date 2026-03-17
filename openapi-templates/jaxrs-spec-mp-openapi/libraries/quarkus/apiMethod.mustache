@@ -1,7 +1,5 @@
-    {{#useGzipFeature}}
-    @GZIP
-    {{/useGzipFeature}}
-    @{{httpMethod}}{{#subresourceOperation}}
+    {{#useGzipFeature}}@GZIP
+    {{/useGzipFeature}}@{{httpMethod}}{{#subresourceOperation}}
     @Path("{{{path}}}"){{/subresourceOperation}}{{#hasConsumes}}
     @Consumes({ {{#consumes}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/consumes}} }){{/hasConsumes}}{{#hasProduces}}
     @Produces({ {{#produces}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/produces}} }){{/hasProduces}}{{#useJakartaEe}}{{#interfaceOnly}}
